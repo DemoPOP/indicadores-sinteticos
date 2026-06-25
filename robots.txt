@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://demopop.github.io/indicadores-sinteticos/sitemap.xml
