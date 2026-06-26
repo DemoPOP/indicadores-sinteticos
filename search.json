@@ -494,7 +494,7 @@
     "href": "index.html#arquivos-para-download",
     "title": "Produção de indicadores sintéticos",
     "section": "Arquivos para download",
-    "text": "Arquivos para download\n\nSlides da aula — a apresentação usada no workshop, no navegador (para PDF, acrescente ?print-pdf ao fim da URL e use Imprimir → Salvar como PDF).\nScript R completo (.R) — versão executável do tutorial, para rodar linha a linha no RStudio\nBase do Atlas — Radar IDHM 2012–2024 (.xlsx)\nMalha das Unidades da Federação (.geojson)\n\nPara reproduzir, baixe o script R e a base, mantendo o arquivo .xlsx (e o .geojson) numa pasta data/ no diretório de trabalho. O primeiro bloco do script instala automaticamente os pacotes necessários (readxl, dplyr, tidyr, ggplot2, sf, ggspatial); depois é só rodar de cima para baixo."
+    "text": "Arquivos para download\n\nScript R completo (.R) — versão executável do tutorial, para rodar linha a linha no RStudio\nBase do Atlas — Radar IDHM 2012–2024 (.xlsx)\nMalha das Unidades da Federação (.geojson)\n\nPara reproduzir, baixe o script R e a base, mantendo o arquivo .xlsx (e o .geojson) numa pasta data/ no diretório de trabalho. O primeiro bloco do script instala automaticamente os pacotes necessários (readxl, dplyr, tidyr, ggplot2, sf, ggspatial); depois é só rodar de cima para baixo."
   },
   {
     "objectID": "index.html#autor",
@@ -508,7 +508,7 @@
     "href": "index.html#como-citar",
     "title": "Produção de indicadores sintéticos",
     "section": "Como citar",
-    "text": "Como citar\n\nGonçalves, C. C. S. (2026). Produção de indicadores sintéticos [material de workshop]. Workshop de Métodos Demográficos — DEMOPOP, Departamento de Demografia / CEDEPLAR-UFMG. https://demopop.github.io/indicadores-sinteticos/"
+    "text": "Como citar\n\nGonçalves, C. C. S. (2026). Produção de indicadores sintéticos [material de workshop]. Workshop de Métodos Demográficos — DEMOPOP, Departamento de Demografia / CEDEPLAR-UFMG. https://doi.org/10.5281/zenodo.20905250"
   },
   {
     "objectID": "index.html#licença",
