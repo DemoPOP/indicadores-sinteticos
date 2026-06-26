@@ -8,7 +8,7 @@
 
 <meta name="author" content="Caio César Soares Gonçalves">
 
-<title>Produção de indicadores sintéticos – Indicadores sintéticos</title>
+<title>Building composite indicators – Indicadores sintéticos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,23 +27,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e16872440047994247dd28c82fe9c6b4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-e16872440047994247dd28c82fe9c6b4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,14 +74,14 @@ ul.task-list li input[type="checkbox"] {
 <meta name="google-site-verification" content="edJX37LiPL0RkwXcaY4JrGJbmbhJnkRpjafHZgDwlM8">
 
 
-<link rel="stylesheet" href="custom.css">
-<meta property="og:title" content="Produção de indicadores sintéticos – Indicadores sintéticos">
+<link rel="stylesheet" href="../custom.css">
+<meta property="og:title" content="Building composite indicators – Indicadores sintéticos">
 <meta property="og:description" content="Workshop · DEMOPOP 2026">
-<meta property="og:image" content="https://demopop.github.io/indicadores-sinteticos/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
+<meta property="og:image" content="https://demopop.github.io/indicadores-sinteticos/en/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta property="og:site_name" content="Indicadores sintéticos">
-<meta name="twitter:title" content="Produção de indicadores sintéticos – Indicadores sintéticos">
+<meta name="twitter:title" content="Building composite indicators – Indicadores sintéticos">
 <meta name="twitter:description" content="Workshop · DEMOPOP 2026">
-<meta name="twitter:image" content="https://demopop.github.io/indicadores-sinteticos/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
+<meta name="twitter:image" content="https://demopop.github.io/indicadores-sinteticos/en/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -92,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Indicadores sintéticos</span>
     </a>
   </div>
@@ -103,15 +103,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Início</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./tutorial.html"> 
+    <a class="nav-link" href="../tutorial.html"> 
 <span class="menu-text">Tutorial</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./slides.html"> 
+    <a class="nav-link" href="../slides.html"> 
 <span class="menu-text">Slides</span></a>
   </li>  
 </ul>
@@ -124,15 +124,15 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-idioma">    
         <li>
-    <a class="dropdown-item" href="./index.html">
+    <a class="dropdown-item" href="../index.html">
  <span class="dropdown-text">Português</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./en/index.html">
+    <a class="dropdown-item" href="../en/index.html">
  <span class="dropdown-text">English</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./es/index.html">
+    <a class="dropdown-item" href="../es/index.html">
  <span class="dropdown-text">Español</span></a>
   </li>  
     </ul>
@@ -163,12 +163,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Nesta página</h2>
    
   <ul>
-  <li><a href="#comece-aqui" id="toc-comece-aqui" class="nav-link active" data-scroll-target="#comece-aqui">Comece aqui</a></li>
-  <li><a href="#arquivos-para-download" id="toc-arquivos-para-download" class="nav-link" data-scroll-target="#arquivos-para-download">Arquivos para download</a></li>
-  <li><a href="#autor" id="toc-autor" class="nav-link" data-scroll-target="#autor">Autor</a></li>
-  <li><a href="#como-citar" id="toc-como-citar" class="nav-link" data-scroll-target="#como-citar">Como citar</a></li>
-  <li><a href="#licença" id="toc-licença" class="nav-link" data-scroll-target="#licença">Licença</a></li>
-  <li><a href="#dúvidas-e-correções" id="toc-dúvidas-e-correções" class="nav-link" data-scroll-target="#dúvidas-e-correções">Dúvidas e correções</a></li>
+  <li><a href="#start-here" id="toc-start-here" class="nav-link active" data-scroll-target="#start-here">Start here</a></li>
+  <li><a href="#downloads" id="toc-downloads" class="nav-link" data-scroll-target="#downloads">Downloads</a></li>
+  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author">Author</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
+  <li><a href="#questions-and-corrections" id="toc-questions-and-corrections" class="nav-link" data-scroll-target="#questions-and-corrections">Questions and corrections</a></li>
   </ul>
 </nav>
     </div>
@@ -177,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Produção de indicadores sintéticos</h1>
+<h1 class="title">Building composite indicators</h1>
 <p class="subtitle lead">Workshop · DEMOPOP 2026</p>
 </div>
 
@@ -191,7 +191,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
   <div class="quarto-title-meta-contents">
         <p class="affiliation">
-            Departamento de Demografia / CEDEPLAR-UFMG
+            Department of Demography / CEDEPLAR-UFMG
           </p>
       </div>
   </div>
@@ -208,42 +208,42 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Material do workshop <strong>Produção de indicadores sintéticos</strong> (DEMOPOP 2026), por <strong>Caio César Soares Gonçalves</strong> — Departamento de Demografia / CEDEPLAR-UFMG.</p>
-<p>O workshop reconstrói o <strong>Índice de Desenvolvimento Humano Municipal (IDHM)</strong> — aqui para as 27 Unidades da Federação, com a base pública do <strong>Radar IDHM (2012–2024)</strong> — passo a passo, seguindo as <strong>10 etapas</strong> do <em>Handbook on Constructing Composite Indicators</em> (OCDE, 2008). Em cada etapa, o IDHM é o caso âncora e catalogam-se as técnicas existentes, de modo que o método possa ser aplicado a qualquer conceito multidimensional.</p>
-<section id="comece-aqui" class="level2">
-<h2 class="anchored" data-anchor-id="comece-aqui">Comece aqui</h2>
-<p><a href="./tutorial.html"><strong>→ Abrir o Tutorial</strong></a></p>
+<p>Materials for the workshop <strong>Building composite indicators</strong> (DEMOPOP 2026), by <strong>Caio César Soares Gonçalves</strong> — Department of Demography / CEDEPLAR-UFMG.</p>
+<p>The workshop rebuilds the <strong>Municipal Human Development Index (MHDI)</strong> — here for Brazil’s 27 Federative Units (states), using the public <strong>Radar IDHM</strong> dataset (2012–2024) — step by step, following the <strong>10 steps</strong> of the <em>Handbook on Constructing Composite Indicators</em> (OECD, 2008). At each step the MHDI is the anchor case and the available techniques are catalogued, so that the method can be applied to any multidimensional concept.</p>
+<section id="start-here" class="level2">
+<h2 class="anchored" data-anchor-id="start-here">Start here</h2>
+<p><a href="../en/tutorial.html"><strong>→ Open the tutorial</strong></a></p>
 </section>
-<section id="arquivos-para-download" class="level2">
-<h2 class="anchored" data-anchor-id="arquivos-para-download">Arquivos para download</h2>
+<section id="downloads" class="level2">
+<h2 class="anchored" data-anchor-id="downloads">Downloads</h2>
 <ul>
-<li><a href="tutorial.R"><strong>Script R completo</strong> (<code>.R</code>)</a> — versão executável do tutorial, para rodar linha a linha no RStudio</li>
-<li><a href="data/adh_radar_base_2012_2024.xlsx">Base do Atlas — Radar IDHM 2012–2024 (<code>.xlsx</code>)</a></li>
-<li><a href="data/uf_brasil.geojson">Malha das Unidades da Federação (<code>.geojson</code>)</a></li>
+<li><a href="tutorial.R"><strong>Full R script</strong> (<code>.R</code>)</a> — an executable version of the tutorial, to run line by line in RStudio</li>
+<li><a href="../data/adh_radar_base_2012_2024.xlsx">Atlas dataset — Radar IDHM 2012–2024 (<code>.xlsx</code>)</a></li>
+<li><a href="../data/uf_brasil.geojson">Federative Units boundaries (<code>.geojson</code>)</a></li>
 </ul>
-<p>Para reproduzir, baixe o <strong>script R</strong> e a <strong>base</strong>, mantendo o arquivo <code>.xlsx</code> (e o <code>.geojson</code>) numa pasta <code>data/</code> no diretório de trabalho. O primeiro bloco do script instala automaticamente os pacotes necessários (<code>readxl</code>, <code>dplyr</code>, <code>tidyr</code>, <code>ggplot2</code>, <code>sf</code>, <code>ggspatial</code>); depois é só rodar de cima para baixo.</p>
+<p>To reproduce, download the <strong>R script</strong> and the <strong>dataset</strong>, keeping the <code>.xlsx</code> (and the <code>.geojson</code>) in a <code>data/</code> folder in your working directory. The first block of the script automatically installs the required packages (<code>readxl</code>, <code>dplyr</code>, <code>tidyr</code>, <code>ggplot2</code>, <code>sf</code>, <code>ggspatial</code>); then just run from top to bottom.</p>
 </section>
-<section id="autor" class="level2">
-<h2 class="anchored" data-anchor-id="autor">Autor</h2>
-<p><strong>Caio César Soares Gonçalves</strong> é professor do Departamento de Demografia do Cedeplar/UFMG, atuando em métodos estatísticos e computacionais e em ciência de dados. Doutor em População, Território e Estatísticas Públicas (ENCE/IBGE), mestre em Economia (UFRGS), especialista em Ciência de Dados e Big Data e economista (PUC Minas). Pesquisa métodos de produção de estatísticas demográficas, sociais e ambientais — combinando censos, pesquisas amostrais, registros administrativos e <em>big data</em>, com ênfase na estimação em pequenos domínios e na desagregação espaço-temporal de indicadores. Coordenou a área de indicadores sociais da Fundação João Pinheiro (IDHM e IMRS) e colaborou com IBGE, Ipea, IPEDF(Codeplan) e o <em>Office for National Statistics</em> (Reino Unido). Recebeu o <em>Young Statistician Prize</em> da IAOS (2021) e foi premiado no concurso de melhor tese de doutorado da ABE (2024).</p>
+<section id="author" class="level2">
+<h2 class="anchored" data-anchor-id="author">Author</h2>
+<p><strong>Caio César Soares Gonçalves</strong> is a professor at the Department of Demography of Cedeplar/UFMG, working on statistical and computational methods and on data science. He holds a PhD in Population, Territory and Public Statistics (ENCE/IBGE), a master’s in Economics (UFRGS), a specialization in Data Science and Big Data, and a bachelor’s in Economics (PUC Minas). His research focuses on methods for producing demographic, social and environmental statistics — combining censuses, sample surveys, administrative records and <em>big data</em>, with emphasis on small-area estimation and the spatio-temporal disaggregation of indicators. He coordinated the social indicators division of the João Pinheiro Foundation (MHDI and IMRS) and collaborated with IBGE, Ipea, IPEDF (Codeplan) and the Office for National Statistics (United Kingdom). He received the IAOS Young Statistician Prize (2021) and was awarded in the Brazilian Statistical Association’s (ABE) best doctoral dissertation competition (2024).</p>
 <p><a href="https://orcid.org/0000-0002-3366-7560">ORCID</a> · <a href="https://scholar.google.com/citations?user=_uOyB2AAAAAJ&amp;hl=en">Google Scholar</a> · <a href="http://lattes.cnpq.br/6829577347369187">Lattes</a> · <a href="https://www.researchgate.net/profile/Caio-Cesar-Soares-Goncalves">ResearchGate</a> · <a href="https://www.linkedin.com/in/caiocsg/">LinkedIn</a></p>
 </section>
-<section id="como-citar" class="level2">
-<h2 class="anchored" data-anchor-id="como-citar">Como citar</h2>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
 <blockquote class="blockquote">
-<p>Gonçalves, C. C. S. (2026). <em>Produção de indicadores sintéticos</em> [material de workshop]. Workshop de Métodos Demográficos — DEMOPOP, Departamento de Demografia / CEDEPLAR-UFMG. <a href="https://doi.org/10.5281/zenodo.20905250" class="uri">https://doi.org/10.5281/zenodo.20905250</a></p>
+<p>Gonçalves, C. C. S. (2026). <em>Building composite indicators</em> [workshop materials]. DEMOPOP — Department of Demography / CEDEPLAR-UFMG. <a href="https://doi.org/10.5281/zenodo.20905250" class="uri">https://doi.org/10.5281/zenodo.20905250</a></p>
 </blockquote>
 </section>
-<section id="licença" class="level2">
-<h2 class="anchored" data-anchor-id="licença">Licença</h2>
-<p>Material distribuído sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt-br">Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)</a> — livre para compartilhar e adaptar, inclusive para fins comerciais, desde que citada a autoria.</p>
+<section id="license" class="level2">
+<h2 class="anchored" data-anchor-id="license">License</h2>
+<p>Distributed under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0)</a> license — free to share and adapt, including for commercial purposes, as long as the author is credited.</p>
 </section>
-<section id="dúvidas-e-correções" class="level2">
-<h2 class="anchored" data-anchor-id="dúvidas-e-correções">Dúvidas e correções</h2>
-<p>Encontrou um erro ou tem sugestão? Abra uma <em>issue</em> no <a href="https://github.com/DemoPOP/indicadores-sinteticos">repositório do material</a> ou escreva para caiocsg@cedeplar.ufmg.br.</p>
-<p><em>Versão 1.0 · última atualização: junho de 2026.</em></p>
+<section id="questions-and-corrections" class="level2">
+<h2 class="anchored" data-anchor-id="questions-and-corrections">Questions and corrections</h2>
+<p>Found an error or have a suggestion? Open an <em>issue</em> in the <a href="https://github.com/DemoPOP/indicadores-sinteticos">material’s repository</a> or write to caiocsg@cedeplar.ufmg.br.</p>
+<p><em>Version 1.0 · last updated: June 2026.</em></p>
 <p style="text-align:center; margin-top:2.5rem;">
-<img src="assets/cedeplar-logo.png" height="46" style="margin:0 14px;"> <img src="assets/log_face.png" height="46" style="margin:0 14px;"> <img src="assets/Logo_UFMG.png" height="46" style="margin:0 14px;">
+<img src="../assets/cedeplar-logo.png" height="46" style="margin:0 14px;"> <img src="../assets/log_face.png" height="46" style="margin:0 14px;"> <img src="../assets/Logo_UFMG.png" height="46" style="margin:0 14px;">
 </p>
 
 

@@ -291,6 +291,41 @@ Caio César Soares Gonçalves — Demografia / CEDEPLAR-UFMG
       }</style></aside>
 </div>
 </section>
+<section id="as-10-etapas-do-handbook-ocde-2008" class="slide level2 smaller">
+<h2>As 10 etapas do Handbook (OCDE, 2008)</h2>
+<p>Um <strong>fluxo de trabalho</strong> — não dez decisões. As quatro decisões de todo índice (dimensões, normalização, agregação, ponderação) concentram-se em <strong>três etapas</strong>, em <strong>negrito</strong>:</p>
+<ol type="1">
+<li><strong>Marco teórico e conceitual</strong></li>
+<li>Seleção de dados</li>
+<li>Tratamento e preparação dos dados</li>
+<li>Análise multivariada</li>
+<li><strong>Normalização</strong></li>
+<li><strong>Ponderação e agregação</strong></li>
+<li>Análise de incerteza e sensibilidade</li>
+<li>Volta às dimensões</li>
+<li>Validação externa</li>
+<li>Visualização e comunicação</li>
+</ol>
+<p>Em cada etapa, o <strong>IDHM</strong> é o caso âncora — e catalogamos as técnicas disponíveis, inclusive as que ele não adota.</p>
+<aside class="notes">
+<p>As dez etapas são o roteiro do workshop. Não confundir as duas contagens: as quatro decisões são dimensões (1), normalizar (5) e ponderar e agregar (6); as demais preparam os dados (2–4), testam a robustez e desmontam o índice (7–8), validam (9) e comunicam (10).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="etapa-1-marco-teórico-e-conceitual" class="title-slide slide level1 center">
+<h1>Etapa 1 · Marco teórico e conceitual</h1>
+
+</section>
 <section id="a-escada-da-abstração" class="slide level2 smaller">
 <h2>A escada da abstração</h2>
 <p>Para medir um conceito abstrato, descemos uma <strong>escada</strong>:</p>
@@ -314,11 +349,6 @@ Caio César Soares Gonçalves — Demografia / CEDEPLAR-UFMG
           display:block!important;
       }</style></aside>
 </div>
-</section></section>
-<section>
-<section id="etapa-1-marco-teórico-e-conceitual" class="title-slide slide level1 center">
-<h1>Etapa 1 · Marco teórico e conceitual</h1>
-
 </section>
 <section id="o-conceito-de-desenvolvimento-humano" class="slide level2 smaller">
 <h2>O conceito de desenvolvimento humano</h2>
@@ -355,6 +385,33 @@ Caio César Soares Gonçalves — Demografia / CEDEPLAR-UFMG
 <li><strong>Educação</strong> → <strong>estoque</strong> (adultos com fundamental) + <strong>fluxo</strong> (jovens na idade certa) — combinados só na Etapa 6.</li>
 </ul>
 </div>
+</section>
+<section id="critérios-de-seleção-o-que-faz-um-bom-indicador" class="slide level2 smaller">
+<h2>Critérios de seleção — o que faz um bom indicador</h2>
+<p>O indicador <em>teoricamente ideal</em> nem sempre está disponível; escolhe-se à luz de critérios — que são também as <strong>propriedades de um bom indicador</strong>:</p>
+<ul>
+<li><strong>Relevância e validade</strong> — adere à dimensão e mede o que pretende (validade de construto)</li>
+<li><strong>Cobertura</strong> — alcança todas as unidades (as 27 UFs), sem lacunas sistemáticas</li>
+<li><strong>Comparabilidade</strong> — mesma definição e fonte no tempo e no espaço</li>
+<li><strong>Periodicidade e tempestividade</strong> — atualização regular e próxima do período</li>
+<li><strong>Confiabilidade e fonte</strong> — censo, amostra ou registro administrativo (cada um com seus <em>trade-offs</em>)</li>
+<li><strong>Sensibilidade e especificidade</strong> — capta a variação real sem reagir a ruído alheio</li>
+<li><strong>Parcimônia</strong> — disponível e não redundante (Etapa 4); proxies quando falta o ideal, documentando</li>
+<li><strong>Polaridade</strong> — maior = melhor ou pior? (decisão que reaparece na normalização)</li>
+</ul>
+<aside class="notes">
+<p>O indicador é condicionado pelo desenho da fonte: censo (exaustivo, decenal), amostra como a PNAD Contínua (periódica, mas limitada na desagregação geográfica) e registros/projeções (anuais, cobertura desigual). Daí o Radar atualizar Brasil, UFs e RMs nos anos intercensitários, não os municípios.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="rode-carregar-os-pacotes" class="slide level2 scrollable">
 <h2>Rode: carregar os pacotes</h2>
@@ -657,7 +714,7 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <section id="fixa-ou-amostral" class="slide level2 smaller">
 <h2>Fixa ou amostral?</h2>
 <p>Os indicadores têm unidades distintas (anos, %, R$): é preciso pô-los numa <strong>escala comum</strong>.</p>
-<p><strong>Pergunta:</strong> o “0” e o “1” devem vir de <strong>referências fixas</strong> (balizas externas) ou dos <strong>mín/máx observados</strong> na amostra?</p>
+<p><strong>Pergunta:</strong> o “0” e o “1” devem vir de <strong>referências fixas</strong> (balizas, ou <em>goalposts</em>) ou dos <strong>mín/máx observados</strong> na amostra?</p>
 <div class="fragment">
 <p><strong>IDHM → balizas fixas.</strong> É o que torna 2024 comparável a 2012. Com referência amostral, a melhor UF vira 1 <em>por definição</em>, e incluir/excluir uma UF muda o escore de todas.</p>
 <p><span class="math display">\[\text{min-max:}\; I = \frac{x - x_{\min}}{x_{\max} - x_{\min}} \qquad \text{z-score:}\; z = \frac{x - \bar{x}}{s}\]</span></p>
@@ -826,47 +883,60 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 </section>
 <section id="três-dimensões-pesos-e-compensação" class="slide level2 smaller">
 <h2>Três dimensões: pesos e compensação?</h2>
-<p><strong>Pergunta:</strong> as três dimensões pesam igual? Uma renda alta pode <strong>compensar</strong> uma educação baixa?</p>
+<p><strong>Pergunta:</strong> as três dimensões pesam igual? Uma nota <strong>alta</strong> numa dimensão pode <strong>compensar</strong> uma <strong>baixa</strong> em outra?</p>
 <div class="fragment">
 <p><strong>IDHM → pesos iguais + média geométrica</strong> (limita a compensação).</p>
 </div>
 </section>
 <section id="compensação-um-exemplo" class="slide level2 smaller">
 <h2>Compensação: um exemplo</h2>
-<p>Dois países com a <strong>mesma média aritmética</strong> (0,70):</p>
+<p>Dois países, com pontuações (0 a 1) em <strong>saúde, educação e renda</strong>:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
-<th style="text-align: center;">Dim. A</th>
-<th style="text-align: center;">Dim. B</th>
-<th style="text-align: center;">Dim. C</th>
+<th style="text-align: center;">Saúde</th>
+<th style="text-align: center;">Educação</th>
+<th style="text-align: center;">Renda</th>
 <th style="text-align: center;">Aritmética</th>
 <th style="text-align: center;">Geométrica</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>País 1</strong></td>
-<td style="text-align: center;">0,70</td>
-<td style="text-align: center;">0,70</td>
-<td style="text-align: center;">0,70</td>
-<td style="text-align: center;">0,70</td>
+<td><strong>País A</strong></td>
+<td style="text-align: center;">0,8</td>
+<td style="text-align: center;">0,2</td>
+<td style="text-align: center;">0,7</td>
+<td style="text-align: center;"><strong>0,567</strong></td>
 <td style="text-align: center;">?</td>
 </tr>
 <tr class="even">
-<td><strong>País 2</strong></td>
-<td style="text-align: center;">0,90</td>
-<td style="text-align: center;">0,70</td>
-<td style="text-align: center;">0,50</td>
-<td style="text-align: center;">0,70</td>
+<td><strong>País B</strong></td>
+<td style="text-align: center;">0,6</td>
+<td style="text-align: center;">0,6</td>
+<td style="text-align: center;">0,6</td>
+<td style="text-align: center;"><strong>0,600</strong></td>
 <td style="text-align: center;">?</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Pela média geométrica, qual fica maior?</strong></p>
+<p>Pela <strong>aritmética</strong>, quase empatam (0,567 vs 0,600) — mesmo o País A tendo educação baixíssima (0,2). <strong>E pela geométrica?</strong></p>
 <div class="fragment">
-<p><strong>País 1 = 0,70</strong> · <strong>País 2 ≈ 0,68.</strong> O país <strong>equilibrado</strong> vence: a geométrica <strong>penaliza o desequilíbrio</strong> — uma nota alta não compensa plenamente uma baixa.</p>
+<p><strong>País A ≈ 0,482</strong> · <strong>País B = 0,600.</strong> A geométrica <strong>penaliza o desequilíbrio</strong>: a nota alta em saúde <strong>não compensa</strong> plenamente a educação baixa do País A — a lacuna numa dimensão não pode ser ignorada.</p>
+<aside class="notes">
+<p>Aritmética de A: (0,8 + 0,2 + 0,7)/3 = 0,567. Geométrica de A: (0,8 · 0,2 · 0,7)^(1/3) ≈ 0,482. O País B é equilibrado, então aritmética = geométrica = 0,600. A geométrica derruba A justamente por causa do 0,2 em educação — é o mecanismo que o IDH adota desde 2010.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="rode-a-função-do-índice" class="slide level2 scrollable">
