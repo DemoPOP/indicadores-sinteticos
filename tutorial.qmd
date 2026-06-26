@@ -87,7 +87,7 @@ A passagem do conceito à medida percorre uma escada de abstração — do conce
 
 ## O conceito de desenvolvimento humano — e dois contrapontos
 
-Na formulação de Mahbub ul Haq, apoiada na abordagem das capacitações de Amartya Sen, o desenvolvimento humano é definido como a ampliação das liberdades e capacitações das pessoas, em contraposição à identificação do desenvolvimento com o mero crescimento da renda (PNUD, 1990; Sen, 2000). A renda não é abandonada — entra como uma das três dimensões —, mas rebaixada de fim a meio. Operacionalizada, a concepção se reduz a longevidade, educação e renda, deixando deliberadamente de fora a desigualdade, a liberdade política e a sustentabilidade ambiental — e é a primeira dessas ausências que reabre a tensão anunciada na introdução: um valor-síntese alto nada diz sobre como o desenvolvimento se reparte. Que essas ausências sejam reconhecidas evidencia-se no próprio fato de o PNUD tê-las, em parte, endereçado mais tarde por meio de índices irmãos — o IDH ajustado à desigualdade (IDHMAD, no caso brasileiro) para a primeira; o IDH ajustado às pressões planetárias para a terceira —, sinal de que as escolhas da Etapa 1 não são definitivas, mas convenções abertas a revisão.
+Na formulação de Mahbub ul Haq, apoiada na abordagem das capacitações de Amartya Sen, o desenvolvimento humano é definido como a ampliação das liberdades e capacitações das pessoas, em contraposição à identificação do desenvolvimento com o mero crescimento da renda (PNUD, 1990; Sen, 2000). A renda não é abandonada — entra como uma das três dimensões —, mas rebaixada de fim a meio. Operacionalizada, a concepção se reduz a longevidade, educação e renda, deixando deliberadamente de fora a desigualdade, a liberdade política e a sustentabilidade ambiental — e é a primeira dessas ausências que reabre a tensão anunciada na introdução: um valor-síntese alto nada diz sobre como o desenvolvimento se reparte. Que essas ausências sejam reconhecidas evidencia-se no próprio fato de o PNUD tê-las, em parte, endereçado mais tarde por meio de índices complementares — o IDH ajustado à desigualdade (IDHMAD, no caso brasileiro) para a primeira; o IDH ajustado às pressões planetárias para a terceira —, sinal de que as escolhas da Etapa 1 não são definitivas, mas convenções abertas a revisão.
 
 Esse mesmo passo — fixar um conceito e dele derivar dimensões — é dado de modos distintos por outros índices, e o contraste ilumina o quanto a Etapa 1 condiciona tudo o que segue:
 
@@ -764,7 +764,7 @@ Esta etapa — a "ligação com outras medidas" do Handbook — abriga dois exer
 - **Comparação com a referência oficial** (reprodução) — confronta o índice recalculado com o publicado, pela correlação e pela maior diferença absoluta (R base).
 - **Correlação com indicadores externos** relacionados — afere a validade convergente (e, no reverso, a discriminante) por Pearson/Spearman, com `cor()`.
 - **Concordância no nível das faixas** de classificação (não só do valor) — tabela cruzada das faixas; a concordância pode ainda ser medida formalmente pelo κ de Cohen (pacotes `irr`, `psych`).
-- **Comparação com índices irmãos** — p.ex. o IDHMAD, que mostra quanto a desigualdade reordena as unidades (ou um índice de vulnerabilidade, com quem se espera correlação negativa).
+- **Comparação com índices complementares** — p.ex. o IDHMAD, que mostra quanto a desigualdade reordena as unidades (ou um índice de vulnerabilidade, com quem se espera correlação negativa).
 
 ## Reprodução do índice oficial
 
@@ -836,7 +836,7 @@ sapply(externos, function(col) round(cor(ufs$idhm, ufs[[col]], method = "spearma
 Os três sinais são negativos, como a teoria prevê: onde o desenvolvimento humano é maior, há menos pobreza e menos mortalidade infantil. A correlação com **pobreza** (−0,83) e **mortalidade infantil** (−0,75) é forte — validade convergente —, mas longe de perfeita, o que afasta a suspeita de redundância: o IDHM não é mero decalque de nenhuma dessas medidas. Já a correlação fraca com o **Gini** (−0,31) é o achado mais instrutivo: o *nível* de desenvolvimento humano diz pouco sobre a *desigualdade* na sua repartição — precisamente a dimensão que o IDHM deixa de fora (Etapa 1) e que o IDHMAD reintroduz, abaixo.
 :::
 
-## Comparação com o índice irmão (IDHMAD)
+## Comparação com o índice complementar (IDHMAD)
 
 O IDHM ajustado à desigualdade desconta de cada dimensão a parcela corroída pela má distribuição. Confrontá-lo com o IDHM mede, em número, quanto a desigualdade reordena as UFs — fechando o fio condutor anunciado na introdução.
 
@@ -858,7 +858,7 @@ arrange(ad, desc(abs(desloca))) |> head(8)
 ```
 
 ::: {.leitura}
-A perda média ronda os 20%: um quinto do desenvolvimento humano agregado das UFs evapora quando se leva a desigualdade em conta. O ordenamento, porém, é largamente preservado (Spearman ≈ 0,96) — sinal de que desigualdade e nível caminham juntos no atacado, mas não no varejo: algumas UFs descem várias posições ao se descontar a má distribuição, e são justamente essas as que um IDHM "razoável" mascararia. É a tradução empírica da tese do tutorial: o valor-síntese cala o que o índice irmão devolve à vista.
+A perda média ronda os 20%: um quinto do desenvolvimento humano agregado das UFs evapora quando se leva a desigualdade em conta. O ordenamento, porém, é largamente preservado (Spearman ≈ 0,96) — sinal de que desigualdade e nível caminham juntos no atacado, mas não no varejo: algumas UFs descem várias posições ao se descontar a má distribuição, e são justamente essas as que um IDHM "razoável" mascararia. É a tradução empírica da tese do tutorial: o valor-síntese cala o que o índice complementar devolve à vista.
 :::
 
 ---
@@ -1016,7 +1016,7 @@ ggplot(mapa_meu) +
 Nenhum índice está imune a crítica, e o IDHM acumulou várias — úteis menos para descartá-lo do que para usá-lo melhor:
 
 - **O paradoxo da elegibilidade** — Guimarães e Jannuzzi (2005) mostram que usar o IDHM como critério *único* para selecionar entes carentes produz erros de focalização: uma unidade em situação grave numa dimensão específica (saneamento, nutrição) pode ficar de fora por exibir um IDHM agregado "razoável". A crítica original mira os **municípios** — é nessa escala que programas selecionam e excluem beneficiários —, e por isso não se transporta diretamente às 27 UFs, que raramente são "elegíveis" ou não a uma política. Mas o princípio independe da escala, e já o vimos em ação: Rio Grande do Norte e Roraima têm o mesmo IDHM por caminhos opostos (Etapa 8) — tratá-las como idênticas é exatamente o erro que a crítica denuncia.
-- **Dimensões ausentes** — o recorte em longevidade, educação e renda deixa de fora desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia. O próprio PNUD reconhece parte disso com índices irmãos (o IDHMAD para a desigualdade; o IDH ajustado às pressões planetárias para o ambiente), sinal de que a escolha da Etapa 1 é convenção, não verdade.
+- **Dimensões ausentes** — o recorte em longevidade, educação e renda deixa de fora desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia. O próprio PNUD reconhece parte disso com índices complementares (o IDHMAD para a desigualdade; o IDH ajustado às pressões planetárias para o ambiente), sinal de que a escolha da Etapa 1 é convenção, não verdade.
 - **Balizas e transformações são convenções** — os limites fixos (25–85 anos; R\$ 8–4.033) e o log da renda são decisões normativas, não fatos: alterá-los desloca os valores, como a Etapa 7 mostrou para o log.
 - **Efeito-teto** — à medida que um indicador se aproxima do seu limite superior (a frequência de 5–6 anos, quase universal; a longevidade, cada vez mais homogênea), ele perde poder de diferenciar as unidades, e o índice deixa de captar o que ainda varia.
 - **Falácia ecológica e reificação** — o valor de uma UF (ou município) não descreve nenhum de seus habitantes, e o número agregado, repetido, tende a virar um fim em si — o "fetichismo do indicador", contra o qual a volta às dimensões (Etapa 8) é o antídoto.

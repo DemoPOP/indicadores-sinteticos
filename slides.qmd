@@ -266,6 +266,13 @@ A pergunta central: **há redundância** entre os indicadores? Indicadores forte
 
 *O que faz:* calcula a correlação entre cada par de indicadores (de −1 a 1). *Responde:* quais indicadores andam juntos — isto é, são candidatos a redundância?
 
+. . .
+
+Dois tipos aparecem no workshop:
+
+- **Pearson** — associação **linear**, sobre os *valores*. É a da matriz abaixo.
+- **Spearman** — associação **monotônica**, sobre os *postos* (ranks): se uma sobe, a outra tende a subir, mesmo sem ser em linha reta. Robusta a outliers — e por isso a usamos adiante para comparar **rankings** (sensibilidade, validação).
+
 ## Rode: matriz de correlação {.scrollable}
 
 ```{r}
@@ -341,7 +348,9 @@ O 1º componente resume **metade** da variância (≈0,51): um eixo geral de des
 ## Rode: dendrograma {.scrollable}
 
 ```{r}
-#| fig-height: 4
+#| output-location: slide
+#| fig-width: 12
+#| fig-height: 6
 # scale() padroniza; dist() calcula as distâncias entre as UFs; hclust() as agrupa de forma
 # hierárquica. No dendrograma, quanto mais baixa a junção, mais parecidas são as UFs
 d  <- dist(scale(indicadores))
@@ -418,10 +427,6 @@ Duas decisões distintas (e independentes):
 - **Ponderação** — com que **peso** cada componente entra.
 - **Agregação** — a **regra** que funde os componentes (aritmética? geométrica? multiplicativa?).
 
-. . .
-
-> Sutileza: em agregação aditiva/geométrica, os pesos são **taxas de troca** (substituição), não "coeficientes de importância". "Pesos iguais" = taxa de troca unitária.
-
 ## Educação: que pesos? {.smaller}
 
 **Pergunta:** estoque e fluxo devem pesar igual? Qual importa mais para o *desenvolvimento futuro*?
@@ -455,9 +460,26 @@ data.frame(uf = ufs$NOME,
 
 . . .
 
-**IDHM → pesos iguais + média geométrica** (limita a compensação). A função parametriza ambas as escolhas:
+**IDHM → pesos iguais + média geométrica** (limita a compensação).
+
+## Compensação: um exemplo {.smaller}
+
+Dois países com a **mesma média aritmética** (0,70):
+
+| | Dim. A | Dim. B | Dim. C | Aritmética | Geométrica |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **País 1** | 0,70 | 0,70 | 0,70 | 0,70 | ? |
+| **País 2** | 0,90 | 0,70 | 0,50 | 0,70 | ? |
+
+**Pela média geométrica, qual fica maior?**
+
+. . .
+
+**País 1 = 0,70** · **País 2 ≈ 0,68.** O país **equilibrado** vence: a geométrica **penaliza o desequilíbrio** — uma nota alta não compensa plenamente uma baixa.
 
 ## Rode: a função do índice {.scrollable}
+
+A função parametriza ambas as escolhas:
 
 ```{r}
 # Definimos NOSSA própria função. function(...) lista os argumentos de entrada; os que têm
@@ -583,7 +605,9 @@ Spearman perto de 1 = ranking resiste. Valores baixos não tornam o índice "err
 ## Rode: Monte Carlo {.scrollable}
 
 ```{r}
-#| fig-height: 4.2
+#| output-location: slide
+#| fig-width: 9
+#| fig-height: 7
 # fixa a semente do gerador aleatório: garante que os "sorteios" saiam iguais a cada execução
 set.seed(2026)
 
@@ -608,9 +632,13 @@ ggplot(mc, aes(rank, uf)) +
   theme_minimal()
 ```
 
-::: {.notes}
-Caixas estreitas (DF, SP, SC no topo; MA, AL na base) = posições robustas; caixas largas no miolo (AM, AP) = posição é artefato da regra. A largura é uma medida honesta de confiança no ranking.
-:::
+## Monte Carlo: leitura {.smaller}
+
+Caixas **estreitas** (Distrito Federal, São Paulo e Santa Catarina no topo; Maranhão e Alagoas na base) indicam posições **robustas** às escolhas metodológicas.
+
+. . .
+
+Caixas **largas**, no miolo da distribuição (Amazonas, Amapá), assinalam unidades cuja posição é **artefato da regra adotada**, não um fato estável sobre o desenvolvimento. A largura da caixa é uma medida honesta de **quanta confiança** dar a cada posição do ranking.
 
 ## Rode: o efeito do log {.scrollable}
 
@@ -649,7 +677,9 @@ Por que isto "arma o leitor contra a crítica do encerramento"? Porque a crític
 ## Rode: contribuição das dimensões {.scrollable}
 
 ```{r}
-#| fig-height: 3.6
+#| output-location: slide
+#| fig-width: 11
+#| fig-height: 5.2
 ufs |>
   select(idhm, i.longev, i.educ, i.renda) |>          # mantém só o índice e os três subíndices
   pivot_longer(c(i.longev, i.educ, i.renda), names_to = "dimensao", values_to = "valor") |>
@@ -674,7 +704,9 @@ ufs |>
 ## Rode: dois perfis {.scrollable}
 
 ```{r}
-#| fig-height: 3.6
+#| output-location: slide
+#| fig-width: 9
+#| fig-height: 5.2
 # seleciona as duas UFs e empilha seus três subíndices para o gráfico
 perfil <- ufs |>
   filter(NOME %in% c("Rio Grande do Norte", "Roraima")) |>
@@ -763,7 +795,7 @@ sapply(externos, function(col) round(cor(ufs$idhm, ufs[[col]], method = "spearma
 
 Negativas, como a teoria prevê. Forte com **pobreza** (−0,83) e **mortalidade** (−0,75) — convergente, mas não redundante. Fraca com o **Gini** (−0,31): o *nível* diz pouco sobre a *desigualdade* — a dimensão que o IDHM deixa de fora.
 
-## Rode: o índice irmão (IDHMAD) {.scrollable}
+## Rode: o índice complementar (IDHMAD) {.scrollable}
 
 ```{r}
 # tabela com IDHM, IDHMAD (ajustado à desigualdade), a perda (%) e a posição em cada ranking;
@@ -794,12 +826,12 @@ A **perda média ~20%**: um quinto do desenvolvimento humano evapora ao consider
 2. **Paleta** — sequencial, perceptualmente uniforme e legível para daltônicos (*viridis*).
 3. **Viés de área** — UFs grandes dominam o olhar; acompanhe de um ranking.
 
-E os obrigatórios: título, legenda, **escala**, **norte**, **fonte**.
-
 ## Rode: mapa do IDHM {.scrollable}
 
 ```{r}
-#| fig-height: 4.4
+#| output-location: slide
+#| fig-width: 8.5
+#| fig-height: 6.6
 # st_read() (pacote sf) lê o arquivo geográfico com os contornos das UFs
 uf_geo <- st_read("data/uf_brasil.geojson", quiet = TRUE)
 
@@ -826,7 +858,9 @@ ggplot(mapa) +
 ## Rode: faixas oficiais, 2012 × 2024 {.scrollable}
 
 ```{r}
-#| fig-height: 4
+#| output-location: slide
+#| fig-width: 12
+#| fig-height: 6
 # paleta oficial do Atlas/PNUD: vermelho → laranja → amarelo → verde → azul
 cores_idhm <- c("Muito Baixo" = "#C0392B", "Baixo" = "#E67E22", "Médio" = "#F1C40F",
                 "Alto"        = "#1E8449", "Muito Alto" = "#5DADE2")
@@ -852,7 +886,9 @@ Entre 2012 e 2024, o "Médio" (amarelo) desaparece e surge o "Muito Alto" (azul)
 ## Rode: trajetória (slope chart) {.scrollable}
 
 ```{r}
-#| fig-height: 4
+#| output-location: slide
+#| fig-width: 8
+#| fig-height: 5.6
 # painel com os dois anos; ANO como fator vira eixo categórico (dois pontos no x)
 evol <- radar |>
   filter(AGREGACAO == "Unidade da Federação", ANO %in% c(2012, 2024)) |>
@@ -877,21 +913,17 @@ Todas as 27 sobem (≈ +0,065) e as retas convergem de leve: quem partia mais ba
 1. Escolha um cenário — outros pesos, agregação aritmética, ou sem renda (`pesos = c(1, 1, 0)`).
 2. Calcule com `construir_indice()` e gere ranking e mapa (com escala, norte, fonte).
 3. Quais UFs mais sobem/descem vs. o IDHM oficial? Por quê?
-4. A mudança é **substantiva** ou um **artefato**?
-
-. . .
-
-> **Artefato** = resultado que vem da **regra e dos pesos** que *você* escolheu, não da realidade medida. Se ao trocar a agregação uma UF sobe 10 posições, isso diz mais sobre a sua escolha do que sobre o desenvolvimento daquela UF. (Lembre: em agregação compensatória, o peso é uma **taxa de troca**, não um "coeficiente de importância".)
+4. A mudança é **substantiva**?
 
 # Encerramento
 
 ## As críticas ao IDHM {.smaller .scrollable}
 
 - **Paradoxo da elegibilidade** (Guimarães & Jannuzzi, 2005) — como **critério único** de seleção, exclui quem está grave numa dimensão específica (saneamento, nutrição) por ter um IDHM agregado "razoável". Vimos o princípio: RN e Roraima, mesmo IDHM por caminhos opostos.
-- **Dimensões ausentes** — o recorte em longevidade, educação e renda deixa de fora **desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia**. O próprio PNUD admite isso com índices irmãos (IDHMAD para a desigualdade).
+- **Dimensões ausentes** — o recorte em longevidade, educação e renda deixa de fora **desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia**. O próprio PNUD admite isso com índices complementares (IDHMAD para a desigualdade).
 - **Balizas e transformações são convenções** — os limites fixos (25–85 anos; R\$ 8–4.033) e o **log** da renda são decisões normativas, não fatos: mudá-los desloca os valores (vimos no efeito do log).
 - **Efeito-teto** — indicadores que se aproximam do limite (frequência de 5–6 anos, quase universal; longevidade cada vez mais homogênea) **perdem poder de diferenciar** as unidades.
-- **Falácia ecológica e reificação** — o valor de uma UF não descreve nenhum habitante; e o número agregado, repetido, vira um fim em si (o "fetichismo do indicador") — contra o que a volta às dimensões (Etapa 8) é o antídoto.
+- **Falácia ecológica e reificação** — concluir sobre uma *pessoa* a partir do *grupo* é a falácia ecológica: numa UF de renda média alta pode haver muita gente pobre — o morador não "é" a média (com um pé no forno e outro no freezer, *na média* você está confortável). Some-se a **reificação**: o número, repetido, vira um fim em si (o "fetichismo do indicador") — contra o que a volta às dimensões (Etapa 8) é o antídoto.
 
 ## Como ler *qualquer* índice {.smaller}
 
