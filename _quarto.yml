@@ -9,6 +9,7 @@ project:
     - assets/
     - robots.txt
     - tutorial.R
+    - google1a742885f5c8d2b5.html
 
 website:
   title: "Indicadores sintéticos"
@@ -47,3 +48,7 @@ format:
     fig-align: center
     open-graph: true
     twitter-card: true
+    include-in-header:
+      text: |
+        <meta name="google-site-verification" content="edJX37LiPL0RkwXcaY4JrGJbmbhJnkRpjafHZgDwlM8">
+
