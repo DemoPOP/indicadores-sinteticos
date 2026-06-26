@@ -320,16 +320,13 @@ Caio César Soares Gonçalves — Demografia / CEDEPLAR-UFMG
 <h1>Etapa 1 · Marco teórico e conceitual</h1>
 
 </section>
-<section id="o-que-é-desenvolvimento-humano" class="slide level2">
-<h2>O que é desenvolvimento humano?</h2>
-<p><strong>Para vocês:</strong> o que é “desenvolvimento humano”? Que dimensões ele teria?</p>
+<section id="o-conceito-de-desenvolvimento-humano" class="slide level2 smaller">
+<h2>O conceito de desenvolvimento humano</h2>
+<p>Na formulação de <strong>Mahbub ul Haq</strong>, apoiada na abordagem das <strong>capacitações</strong> de <strong>Amartya Sen</strong>, o desenvolvimento humano é a <strong>ampliação das liberdades e capacidades das pessoas</strong> — a possibilidade real de levarem a vida que têm razão para valorizar —, em contraposição à identificação do desenvolvimento com o mero crescimento da renda (PNUD, 1990; Sen, 2000).</p>
 <div class="fragment">
-<p>Na formulação de <strong>Mahbub ul Haq</strong>, apoiada em <strong>Amartya Sen</strong>: a <strong>ampliação das liberdades e capacidades</strong> das pessoas — em contraposição ao desenvolvimento como mero crescimento da renda.</p>
-</div>
-<div class="fragment">
-<p>O IDHM o operacionaliza em três dimensões — <strong>longevidade · educação · renda</strong>. E o que ficou <em>de fora</em>? — desigualdade, liberdade política, sustentabilidade ambiental.</p>
+<p>O IDHM operacionaliza essa concepção em três dimensões — <strong>longevidade, educação e renda</strong> —, deixando deliberadamente de fora aspectos como <strong>desigualdade, liberdade política e sustentabilidade ambiental</strong>.</p>
 <aside class="notes">
-<p>Deixar a sala propor dimensões antes de revelar. O “de fora” prepara a crítica do encerramento.</p>
+<p>Renda é meio, não fim: importa o que as pessoas conseguem ser e fazer (as capacitações). As três dimensões são uma convenção operacional; o “de fora” prepara a crítica do encerramento.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -357,42 +354,44 @@ Caio César Soares Gonçalves — Demografia / CEDEPLAR-UFMG
 <li><strong>Renda</strong> → <strong>renda domiciliar <em>per capita</em></strong> (entra em <strong>log</strong> na Etapa 5), não a Renda Nacional Bruta global.</li>
 <li><strong>Educação</strong> → <strong>estoque</strong> (adultos com fundamental) + <strong>fluxo</strong> (jovens na idade certa) — combinados só na Etapa 6.</li>
 </ul>
-<aside class="notes">
-<p>e0 sintetiza nível e estrutura da mortalidade, todas as causas. Renda domiciliar mais perto do padrão de vida vivido. Educação: duas naturezas.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </div>
 </section>
-<section id="rode-pacotes-e-dados" class="slide level2">
-<h2>Rode: pacotes e dados</h2>
+<section id="rode-carregar-os-pacotes" class="slide level2 scrollable">
+<h2>Rode: carregar os pacotes</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>radar <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/adh_radar_base_2012_2024.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Total"</span>)</span>
-<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># as 27 UFs no ano de 2024</span></span>
-<span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a>ufs <span class="ot">&lt;-</span> <span class="fu">filter</span>(radar, ANO <span class="sc">==</span> <span class="dv">2024</span>, AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># c() cria um vetor com os nomes dos pacotes que vamos usar:</span></span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># readxl (ler Excel), dplyr/tidyr (manipular tabelas), ggplot2 (gráficos), sf (mapas),</span></span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ggspatial (escala e rosa-dos-ventos nos mapas, Etapa 10)</span></span>
+<span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a>pacotes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"readxl"</span>, <span class="st">"dplyr"</span>, <span class="st">"tidyr"</span>, <span class="st">"ggplot2"</span>, <span class="st">"sf"</span>, <span class="st">"ggspatial"</span>)</span>
 <span id="cb3-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># os 4 indicadores de fluxo escolar</span></span>
-<span id="cb3-7"><a aria-hidden="true" tabindex="-1"></a>cols_fluxo <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"T_FREQ5A6"</span>, <span class="st">"T_FUND11A13"</span>, <span class="st">"T_FUND15A17"</span>, <span class="st">"T_MED18A20"</span>)</span>
-<span id="cb3-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(ufs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 27 83</code></pre>
-</div>
+<span id="cb3-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># setdiff() devolve os pacotes da lista que ainda NÃO estão instalados...</span></span>
+<span id="cb3-7"><a aria-hidden="true" tabindex="-1"></a>faltando <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(pacotes, <span class="fu">rownames</span>(<span class="fu">installed.packages</span>()))</span>
+<span id="cb3-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ...e, se houver algum faltando, instala-o automaticamente</span></span>
+<span id="cb3-9"><a aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(faltando) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(faltando)</span>
+<span id="cb3-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a aria-hidden="true" tabindex="-1"></a><span class="co"># carrega (library) cada pacote da lista; invisible() apenas suprime a saída no console</span></span>
+<span id="cb3-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(pacotes, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="o-que-temos" class="slide level2 smaller">
-<h2>O que temos</h2>
+<section id="rode-ler-os-dados" class="slide level2 scrollable">
+<h2>Rode: ler os dados</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ufs[, <span class="fu">c</span>(<span class="st">"NOME"</span>, <span class="st">"ESPVIDA"</span>, <span class="st">"T_FUND18M"</span>, cols_fluxo, <span class="st">"RDPC"</span>, <span class="st">"IDHM"</span>)])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># read_excel() lê a planilha; sheet = "Total" escolhe a aba. O resultado é guardado</span></span>
+<span id="cb4-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># (com a seta &lt;-, o operador de atribuição do R) no objeto 'radar': uma tabela (data frame)</span></span>
+<span id="cb4-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># com o painel 2012–2024 e vários recortes geográficos</span></span>
+<span id="cb4-4"><a aria-hidden="true" tabindex="-1"></a>radar <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/adh_radar_base_2012_2024.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Total"</span>)</span>
+<span id="cb4-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># filter() mantém apenas as linhas que satisfazem as condições (ano = 2024 E recorte = UF);</span></span>
+<span id="cb4-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># '==' testa igualdade (note os dois sinais de igual). Sobram as 27 UFs de 2024</span></span>
+<span id="cb4-8"><a aria-hidden="true" tabindex="-1"></a>ufs <span class="ot">&lt;-</span> <span class="fu">filter</span>(radar, ANO <span class="sc">==</span> <span class="dv">2024</span>, AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>)</span>
+<span id="cb4-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># vetor com os códigos das 4 colunas de FLUXO escolar, que reutilizaremos adiante</span></span>
+<span id="cb4-11"><a aria-hidden="true" tabindex="-1"></a>cols_fluxo <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"T_FREQ5A6"</span>, <span class="st">"T_FUND11A13"</span>, <span class="st">"T_FUND15A17"</span>, <span class="st">"T_MED18A20"</span>)</span>
+<span id="cb4-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() mostra um resumo das colunas escolhidas. Dentro de ufs[, c(...)], a vírgula</span></span>
+<span id="cb4-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># separa [linhas, colunas]: deixando o lado das linhas vazio, pedimos TODAS as linhas e só</span></span>
+<span id="cb4-15"><a aria-hidden="true" tabindex="-1"></a><span class="co"># as colunas listadas</span></span>
+<span id="cb4-16"><a aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ufs[, <span class="fu">c</span>(<span class="st">"NOME"</span>, <span class="st">"ESPVIDA"</span>, <span class="st">"T_FUND18M"</span>, cols_fluxo, <span class="st">"RDPC"</span>, <span class="st">"IDHM"</span>)])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 27
 Columns: 9
@@ -418,64 +417,98 @@ $ IDHM        &lt;dbl&gt; 0.786, 0.754, 0.767, 0.780, 0.758, 0.759, 0.797, 0.745
 </section>
 <section id="os-dados-estão-prontos" class="slide level2 smaller">
 <h2>Os dados estão prontos?</h2>
-<p>Mais que “imputar ausentes”: é onde o dado bruto se torna apto à análise — <strong>crítica de consistência, outliers, ausentes, suavização</strong> — e onde se fixam as referências e a polaridade que a normalização usará.</p>
-<div class="fragment">
-<p>Começamos checando ausências nos indicadores do cálculo:</p>
+<p>Mais que “imputar ausentes”: é onde o dado bruto se torna apto à análise — <strong>crítica de consistência, outliers, ausentes, suavização</strong> — e onde se fixam as referências e a polaridade que a normalização usará. Nem toda ausência aparece como <code>NA</code>: valores sentinela (0, −1, 99) podem mascarar dados faltantes.</p>
+</section>
+<section id="rode-checar-ausências" class="slide level2 scrollable">
+<h2>Rode: checar ausências</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a>cols_calc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ESPVIDA"</span>, <span class="st">"T_FUND18M"</span>, cols_fluxo, <span class="st">"RDPC"</span>, <span class="st">"IDHM"</span>)</span>
-<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(ufs[, cols_calc]))   <span class="co"># nº de ausências por indicador</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># dim() devolve as dimensões da tabela: número de linhas (UFs) e de colunas (variáveis)</span></span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(ufs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    ESPVIDA   T_FUND18M   T_FREQ5A6 T_FUND11A13 T_FUND15A17  T_MED18A20        RDPC 
-          0           0           0           0           0           0           0 
-       IDHM 
-          0 </code></pre>
+<pre><code>[1] 27 83</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># o que importa aqui são os indicadores que ALIMENTAM o índice — não as dezenas de colunas</span></span>
+<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># da base. Reunimos os 8 num vetor: longevidade, escolaridade, os 4 de fluxo, renda e o</span></span>
+<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># IDHM oficial (este último para a reprodução na Etapa 9)</span></span>
+<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a>cols_calc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ESPVIDA"</span>, <span class="st">"T_FUND18M"</span>, cols_fluxo, <span class="st">"RDPC"</span>, <span class="st">"IDHM"</span>)</span>
+<span id="cb8-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># is.na() marca como TRUE cada célula vazia; colSums() soma esses TRUE coluna a coluna</span></span>
+<span id="cb8-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># (no R, TRUE conta como 1 e FALSE como 0), dando o nº de ausências por variável.</span></span>
+<span id="cb8-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ufs[, cols_calc] restringe a checagem a essas 8 colunas</span></span>
+<span id="cb8-9"><a aria-hidden="true" tabindex="-1"></a>na_por_coluna <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(ufs[, cols_calc]))</span>
+<span id="cb8-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a aria-hidden="true" tabindex="-1"></a><span class="co"># filtra o resultado para exibir apenas as colunas (dentre as do cálculo) com alguma ausência</span></span>
+<span id="cb8-12"><a aria-hidden="true" tabindex="-1"></a>na_por_coluna[na_por_coluna <span class="sc">&gt;</span> <span class="dv">0</span>]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>named numeric(0)</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>Tudo <strong>zero</strong>: o Radar já vem consolidado. A imputação é dispensada — mas a <em>decisão</em> de tratamento permanece.</p>
+<p>Resultado <strong>vazio</strong>: o Radar já vem consolidado, sem ausências a imputar <em>neste</em> recorte. A imputação é dispensada — mas a <em>decisão</em> de tratamento permanece.</p>
 </div>
 </section>
-<section id="rode-regras-de-consistência" class="slide level2 smaller">
+<section id="crítica-e-consistência" class="slide level2 smaller">
+<h2>Crítica e consistência</h2>
+<p><em>O que faz:</em> aplica <strong>regras estruturadas</strong> que confrontam cada valor com limites plausíveis e com a trajetória histórica. <em>Responde:</em> há valores impossíveis ou saltos inverossímeis na base? Torna a crítica de dados <strong>reprodutível e auditável</strong>, em vez de inspeção manual.</p>
+</section>
+<section id="rode-regras-de-consistência" class="slide level2 scrollable">
 <h2>Rode: regras de consistência</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a>regras <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">renda_positiva    =</span> ufs<span class="sc">$</span>RDPC <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">espvida_plausivel =</span> ufs<span class="sc">$</span>ESPVIDA <span class="sc">&gt;=</span> <span class="dv">50</span> <span class="sc">&amp;</span> ufs<span class="sc">$</span>ESPVIDA <span class="sc">&lt;=</span> <span class="dv">90</span>,</span>
-<span id="cb9-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">escol_percentual  =</span> ufs<span class="sc">$</span>T_FUND18M <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> ufs<span class="sc">$</span>T_FUND18M <span class="sc">&lt;=</span> <span class="dv">100</span>,</span>
-<span id="cb9-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">fluxo_percentual  =</span> <span class="fu">apply</span>(ufs[, cols_fluxo] <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> ufs[, cols_fluxo] <span class="sc">&lt;=</span> <span class="dv">100</span>, <span class="dv">1</span>, all)</span>
-<span id="cb9-6"><a aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(regras, <span class="cf">function</span>(ok) <span class="fu">sum</span>(<span class="sc">!</span>ok))   <span class="co"># quantas UFs FALHAM em cada regra</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># cada regra é um vetor lógico (TRUE onde a UF satisfaz a condição, FALSE onde falha).</span></span>
+<span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># o &amp; combina condições (E lógico); &gt;= e &lt;= testam os limites</span></span>
+<span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a>regras <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb10-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">renda_positiva    =</span> ufs<span class="sc">$</span>RDPC <span class="sc">&gt;</span> <span class="dv">0</span>,                              <span class="co"># renda &gt; 0: exigência do log (Etapa 5)</span></span>
+<span id="cb10-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">espvida_plausivel =</span> ufs<span class="sc">$</span>ESPVIDA <span class="sc">&gt;=</span> <span class="dv">50</span> <span class="sc">&amp;</span> ufs<span class="sc">$</span>ESPVIDA <span class="sc">&lt;=</span> <span class="dv">90</span>,     <span class="co"># esperança de vida em faixa plausível</span></span>
+<span id="cb10-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">escol_percentual  =</span> ufs<span class="sc">$</span>T_FUND18M <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> ufs<span class="sc">$</span>T_FUND18M <span class="sc">&lt;=</span> <span class="dv">100</span>, <span class="co"># escolaridade (%) dentro de [0,100]</span></span>
+<span id="cb10-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply(..., 1, all) verifica, linha a linha (margem 1 = UFs), se TODOS os 4 indicadores</span></span>
+<span id="cb10-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># de fluxo caem em [0,100]; all() exige que a condição valha para os quatro de uma vez</span></span>
+<span id="cb10-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">fluxo_percentual  =</span> <span class="fu">apply</span>(ufs[, cols_fluxo] <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> ufs[, cols_fluxo] <span class="sc">&lt;=</span> <span class="dv">100</span>, <span class="dv">1</span>, all)</span>
+<span id="cb10-10"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-11"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a aria-hidden="true" tabindex="-1"></a><span class="co"># sapply percorre as regras e conta, em cada uma, quantas UFs FALHAM: !ok inverte o lógico</span></span>
+<span id="cb10-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># (TRUE vira FALSE e vice-versa) e sum() soma os TRUE. Zero em todas = base consistente</span></span>
+<span id="cb10-14"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(regras, <span class="cf">function</span>(ok) <span class="fu">sum</span>(<span class="sc">!</span>ok))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   renda_positiva espvida_plausivel  escol_percentual  fluxo_percentual 
                 0                 0                 0                 0 </code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>Zero falhas. O valor do método aparece em dados brutos: a mesma estrutura flagraria automaticamente um % acima de 100 ou uma renda nula. (Pacotes <code>validate</code>, <code>pointblank</code> formalizam isso.)</p>
+<p>Zero falhas. Em dados brutos, a mesma estrutura flagraria automaticamente um % acima de 100 ou a renda nula que inviabilizaria o log. (Pacotes <code>validate</code>, <code>pointblank</code> formalizam isso.)</p>
 </div>
 </section>
-<section id="rode-outliers-regra-do-boxplot" class="slide level2 smaller">
+<section id="outliers" class="slide level2 smaller">
+<h2>Outliers</h2>
+<p><em>O que faz:</em> sinaliza valores muito afastados do conjunto — pela cerca do boxplot <span class="math inline">\([\,Q_1 - 1{,}5\cdot\text{IQR},\; Q_3 + 1{,}5\cdot\text{IQR}\,]\)</span>. <em>Responde:</em> há um extremo capaz de distorcer a escala? Importa porque, sob min–max <strong>amostral</strong>, um único outlier define o máximo e comprime todo o resto.</p>
+</section>
+<section id="rode-outliers-regra-do-boxplot" class="slide level2 scrollable">
 <h2>Rode: outliers (regra do boxplot)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a>eh_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb11-2"><a aria-hidden="true" tabindex="-1"></a>  q <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="fu">c</span>(.<span class="dv">25</span>, .<span class="dv">75</span>)); iqr <span class="ot">&lt;-</span> q[<span class="dv">2</span>] <span class="sc">-</span> q[<span class="dv">1</span>]</span>
-<span id="cb11-3"><a aria-hidden="true" tabindex="-1"></a>  x <span class="sc">&lt;</span> q[<span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr <span class="sc">|</span> x <span class="sc">&gt;</span> q[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr</span>
-<span id="cb11-4"><a aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-5"><a aria-hidden="true" tabindex="-1"></a>indic <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">longev =</span> ufs<span class="sc">$</span>ESPVIDA, <span class="at">escol =</span> ufs<span class="sc">$</span>T_FUND18M,</span>
-<span id="cb11-6"><a aria-hidden="true" tabindex="-1"></a>                     <span class="at">fluxo =</span> <span class="fu">rowMeans</span>(ufs[, cols_fluxo]), <span class="at">renda =</span> ufs<span class="sc">$</span>RDPC)</span>
-<span id="cb11-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(indic, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">eh_outlier</span>(x)))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># função que devolve TRUE para os valores fora da cerca do boxplot</span></span>
+<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>eh_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>  q <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="fu">c</span>(.<span class="dv">25</span>, .<span class="dv">75</span>))     <span class="co"># 1º e 3º quartis (Q1 e Q3)</span></span>
+<span id="cb12-4"><a aria-hidden="true" tabindex="-1"></a>  iqr <span class="ot">&lt;-</span> q[<span class="dv">2</span>] <span class="sc">-</span> q[<span class="dv">1</span>]                <span class="co"># amplitude interquartílica</span></span>
+<span id="cb12-5"><a aria-hidden="true" tabindex="-1"></a>  x <span class="sc">&lt;</span> q[<span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr <span class="sc">|</span> x <span class="sc">&gt;</span> q[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr</span>
+<span id="cb12-6"><a aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># aplica a regra a cada indicador do cálculo e conta quantas UFs caem fora da cerca</span></span>
+<span id="cb12-9"><a aria-hidden="true" tabindex="-1"></a>indic <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">longevidade  =</span> ufs<span class="sc">$</span>ESPVIDA,</span>
+<span id="cb12-10"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">escolaridade =</span> ufs<span class="sc">$</span>T_FUND18M,</span>
+<span id="cb12-11"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">fluxo        =</span> <span class="fu">rowMeans</span>(ufs[, cols_fluxo]),</span>
+<span id="cb12-12"><a aria-hidden="true" tabindex="-1"></a>                    <span class="at">renda        =</span> ufs<span class="sc">$</span>RDPC)</span>
+<span id="cb12-13"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(indic, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">eh_outlier</span>(x)))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>longev  escol  fluxo  renda 
-     1      0      0      0 </code></pre>
+<pre><code> longevidade escolaridade        fluxo        renda 
+           1            0            0            0 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>NOME[<span class="fu">eh_outlier</span>(ufs<span class="sc">$</span>ESPVIDA)]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># qual UF é o único caso atípico (em longevidade)?</span></span>
+<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>NOME[<span class="fu">eh_outlier</span>(ufs<span class="sc">$</span>ESPVIDA)]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Distrito Federal"</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>Só a longevidade acusa um caso: o <strong>Distrito Federal</strong>. Sob min–max <em>amostral</em>, essa única UF definiria o teto e comprimiria todas as demais — por isso o IDHM usa balizas <strong>fixas</strong> (25–85). E <em>extremo</em> ≠ <em>outlier</em>: o DF, recordista de renda, nem é flagrado nela.</p>
+<p>Só a longevidade acusa um caso: o <strong>Distrito Federal</strong>. Sob min–max <em>amostral</em>, essa única UF definiria o teto e comprimiria todas as demais — um problema que a <strong>normalização (Etapa 5)</strong> vai ter de enfrentar. E note: <em>extremo</em> ≠ <em>outlier</em> — o DF, recordista de renda, nem é flagrado nela.</p>
 </div>
 </section></section>
 <section>
@@ -485,21 +518,36 @@ $ IDHM        &lt;dbl&gt; 0.786, 0.754, 0.767, 0.780, 0.758, 0.759, 0.797, 0.745
 </section>
 <section id="examinar-a-estrutura" class="slide level2 smaller">
 <h2>Examinar a estrutura</h2>
-<p>Antes de combinar: há <strong>redundância</strong> entre indicadores? A estrutura empírica respalda o agrupamento teórico? Que <strong>perfis</strong> de UF se formam?</p>
-<div class="fragment">
+<p>A pergunta central: <strong>há redundância</strong> entre os indicadores? Indicadores fortemente correlacionados carregam informação repetida, e pesá-los igualmente <strong>superpondera</strong> a dimensão que compartilham — a <em>dupla contagem</em>.</p>
 <blockquote>
 <p>Contra-alerta: certa correlação entre medidas de um mesmo agregado é esperada. Quem decide se duas medidas são “a mesma coisa” é a <strong>teoria</strong>, não o coeficiente.</p>
 </blockquote>
-</div>
 </section>
-<section id="rode-matriz-de-correlação" class="slide level2 smaller">
+<section id="matriz-de-correlação" class="slide level2 smaller">
+<h2>Matriz de correlação</h2>
+<p><em>O que faz:</em> calcula a correlação entre cada par de indicadores (de −1 a 1). <em>Responde:</em> quais indicadores andam juntos — isto é, são candidatos a redundância?</p>
+</section>
+<section id="rode-matriz-de-correlação" class="slide level2 scrollable">
 <h2>Rode: matriz de correlação</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a>indicadores <span class="ot">&lt;-</span> ufs <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">longevidade =</span> ESPVIDA, <span class="at">escolaridade =</span> T_FUND18M,</span>
-<span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">fluxo_5a6 =</span> T_FREQ5A6, <span class="at">fluxo_11a13 =</span> T_FUND11A13,</span>
-<span id="cb15-4"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">fluxo_15a17 =</span> T_FUND15A17, <span class="at">fluxo_18a20 =</span> T_MED18A20, <span class="at">renda =</span> RDPC)</span>
-<span id="cb15-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(indicadores), <span class="dv">2</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># A análise multivariada examina os indicadores SEPARADOS — inclusive os 4 de fluxo, que só</span></span>
+<span id="cb16-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># serão combinados na Etapa 6. Tomar a média do fluxo já aqui esconderia a redundância entre eles.</span></span>
+<span id="cb16-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># O operador |&gt; ("pipe") passa ufs como 1º argumento de transmute(), que monta uma tabela em que</span></span>
+<span id="cb16-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># cada coluna é um indicador bruto (à esquerda do '=', o nome; à direita, a coluna da base):</span></span>
+<span id="cb16-5"><a aria-hidden="true" tabindex="-1"></a>indicadores <span class="ot">&lt;-</span> ufs <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb16-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">longevidade  =</span> ESPVIDA,</span>
+<span id="cb16-8"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">escolaridade =</span> T_FUND18M,</span>
+<span id="cb16-9"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">fluxo_5a6    =</span> T_FREQ5A6,</span>
+<span id="cb16-10"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">fluxo_11a13  =</span> T_FUND11A13,</span>
+<span id="cb16-11"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">fluxo_15a17  =</span> T_FUND15A17,</span>
+<span id="cb16-12"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">fluxo_18a20  =</span> T_MED18A20,</span>
+<span id="cb16-13"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">renda        =</span> RDPC</span>
+<span id="cb16-14"><a aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-15"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a aria-hidden="true" tabindex="-1"></a><span class="co"># cor() calcula a matriz de correlação entre as colunas; round(..., 2) arredonda para 2 casas.</span></span>
+<span id="cb16-17"><a aria-hidden="true" tabindex="-1"></a><span class="co"># use = "complete.obs" manda ignorar eventuais ausências no cálculo</span></span>
+<span id="cb16-18"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(indicadores, <span class="at">use =</span> <span class="st">"complete.obs"</span>), <span class="dv">2</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             longevidade escolaridade fluxo_5a6 fluxo_11a13 fluxo_15a17 fluxo_18a20 renda
 longevidade         1.00         0.14      0.40        0.57        0.44        0.32  0.56
@@ -515,34 +563,48 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p>Os <strong>fluxos</strong> do fundamental/médio se correlacionam forte (respalda combiná-los); o de <strong>5–6 anos</strong> destoa (saturado). E o alerta central: <strong>renda × escolaridade = 0,72</strong> — dupla contagem potencial ao pesá-las igualmente.</p>
 </div>
 </section>
-<section id="rode-α-de-cronbach" class="slide level2 smaller">
+<section id="alpha-de-cronbach" class="slide level2 smaller">
+<h2>Alpha de Cronbach</h2>
+<p><em>O que faz:</em> a partir das variâncias dos itens, mede a <strong>consistência interna</strong> de um conjunto — o quanto seus itens “andam juntos”, como se fossem medidas ruidosas de uma mesma coisa. Varia de 0 a 1. <em>Responde:</em> esses indicadores formam, de fato, <strong>uma</strong> dimensão coesa? Só faz sentido <strong>dentro</strong> de uma dimensão (aqui, educação), não no conjunto multidimensional. Não é “quanto maior, melhor”: é um diagnóstico de coesão.</p>
+</section>
+<section id="rode-α-de-cronbach" class="slide level2 scrollable">
 <h2>Rode: α de Cronbach</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="cf">function</span>(itens) {</span>
-<span id="cb17-2"><a aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">ncol</span>(itens)</span>
-<span id="cb17-3"><a aria-hidden="true" tabindex="-1"></a>  (k <span class="sc">/</span> (k <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">apply</span>(itens, <span class="dv">2</span>, var)) <span class="sc">/</span> <span class="fu">var</span>(<span class="fu">rowSums</span>(itens)))</span>
-<span id="cb17-4"><a aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">com_5a6 =</span> <span class="fu">alpha</span>(ufs[, <span class="fu">c</span>(<span class="st">"T_FUND18M"</span>, cols_fluxo)]),</span>
-<span id="cb17-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">sem_5a6 =</span> <span class="fu">alpha</span>(ufs[, <span class="fu">c</span>(<span class="st">"T_FUND18M"</span>,<span class="st">"T_FUND11A13"</span>,<span class="st">"T_FUND15A17"</span>,<span class="st">"T_MED18A20"</span>)])) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># alpha de Cronbach: k/(k-1) * (1 - soma das variâncias dos itens / variância da soma dos itens)</span></span>
+<span id="cb18-2"><a aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="cf">function</span>(itens) {</span>
+<span id="cb18-3"><a aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">ncol</span>(itens)</span>
+<span id="cb18-4"><a aria-hidden="true" tabindex="-1"></a>  (k <span class="sc">/</span> (k <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">apply</span>(itens, <span class="dv">2</span>, var)) <span class="sc">/</span> <span class="fu">var</span>(<span class="fu">rowSums</span>(itens)))</span>
+<span id="cb18-5"><a aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a aria-hidden="true" tabindex="-1"></a><span class="co"># dimensão educação (estoque + 4 fluxo, todos em %), com e sem o fluxo saturado de 5–6 anos</span></span>
+<span id="cb18-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">com_5a6 =</span> <span class="fu">alpha</span>(ufs[, <span class="fu">c</span>(<span class="st">"T_FUND18M"</span>, cols_fluxo)]),</span>
+<span id="cb18-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">sem_5a6 =</span> <span class="fu">alpha</span>(ufs[, <span class="fu">c</span>(<span class="st">"T_FUND18M"</span>, <span class="st">"T_FUND11A13"</span>, <span class="st">"T_FUND15A17"</span>, <span class="st">"T_MED18A20"</span>)])) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>com_5a6 sem_5a6 
   0.690   0.744 </code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>O α sobe de <strong>0,69 para 0,74</strong> ao remover o fluxo de 5–6 anos — o mesmo item saturado. O alpha é diagnóstico de coesão, não um “quanto mais alto, melhor”.</p>
+<p>O α sobe de <strong>0,69 para 0,74</strong> ao remover o fluxo de 5–6 anos — o mesmo item saturado da matriz. Confirma que os indicadores de educação medem algo comum, e que o item quase invariante pouco acrescenta.</p>
 </div>
 </section>
-<section id="rode-componentes-principais-pca" class="slide level2 smaller">
-<h2>Rode: componentes principais (PCA)</h2>
+<section id="componentes-principais-pca" class="slide level2 smaller">
+<h2>Componentes principais (PCA)</h2>
+<p><em>O que faz:</em> resume muitos indicadores em poucos <strong>eixos</strong> (componentes) que concentram o máximo de variância; as <strong>cargas</strong> dizem o quanto cada indicador pesa em cada eixo. <em>Responde:</em> existe um eixo geral por trás dos indicadores? Que pesos os <em>dados</em> sugeririam? (Pesos que refletem <strong>variância</strong>, não importância normativa.)</p>
+</section>
+<section id="rode-pca" class="slide level2 scrollable">
+<h2>Rode: PCA</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(indicadores, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb19-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">summary</span>(pca)<span class="sc">$</span>importance[<span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="dv">3</span>)   <span class="co"># variância de PC1, PC2, PC3</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># prcomp() faz a ACP; scale.=TRUE padroniza os indicadores antes (senão a renda, de maior escala,</span></span>
+<span id="cb20-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># dominaria). Reaproveita o objeto 'indicadores' (as 7 colunas da matriz de correlação)</span></span>
+<span id="cb20-3"><a aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(indicadores, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">summary</span>(pca)<span class="sc">$</span>importance[<span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="dv">3</span>)   <span class="co"># proporção da variância resumida por PC1, PC2, PC3</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  PC1   PC2   PC3 
 0.508 0.228 0.110 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(pca<span class="sc">$</span>rotation[, <span class="dv">1</span>], <span class="dv">2</span>)                 <span class="co"># cargas no 1º componente</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(pca<span class="sc">$</span>rotation[, <span class="dv">1</span>], <span class="dv">2</span>)                  <span class="co"># cargas (pesos) dos indicadores no 1º componente</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> longevidade escolaridade    fluxo_5a6  fluxo_11a13  fluxo_15a17  fluxo_18a20 
         0.36         0.28         0.17         0.42         0.43         0.46 
@@ -554,16 +616,22 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p>O 1º componente resume <strong>metade</strong> da variância (≈0,51): um eixo geral de desenvolvimento. Mas esses pesos maximizam <strong>variância estatística</strong>, não juízo de importância — por isso o IDHM não os adota.</p>
 </div>
 </section>
-<section id="rode-agrupamento-dendrograma" class="slide level2 smaller">
-<h2>Rode: agrupamento (dendrograma)</h2>
+<section id="análise-de-agrupamento-cluster" class="slide level2 smaller">
+<h2>Análise de agrupamento (cluster)</h2>
+<p><em>O que faz:</em> muda de eixo — em vez de comparar <strong>indicadores</strong>, agrupa <strong>unidades</strong> (as UFs) por similaridade de perfil. <em>Responde:</em> que <strong>tipos</strong> de UF existem? E qual a contribuição aqui? Mostrar que duas UFs com IDHM parecido podem cair em <strong>ramos distintos</strong> — têm perfis dimensionais diferentes. É a primeira pista da heterogeneidade que a Etapa 8 vai expor.</p>
+</section>
+<section id="rode-dendrograma" class="slide level2 scrollable">
+<h2>Rode: dendrograma</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-hidden="true" tabindex="-1"></a>d  <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">scale</span>(indicadores))</span>
-<span id="cb23-2"><a aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method =</span> <span class="st">"ward.D2"</span>)</span>
-<span id="cb23-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hc, <span class="at">labels =</span> ufs<span class="sc">$</span>NOME, <span class="at">main =</span> <span class="cn">NULL</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"Distância"</span>, <span class="at">sub =</span> <span class="st">""</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># scale() padroniza; dist() calcula as distâncias entre as UFs; hclust() as agrupa de forma</span></span>
+<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># hierárquica. No dendrograma, quanto mais baixa a junção, mais parecidas são as UFs</span></span>
+<span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a>d  <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">scale</span>(indicadores))</span>
+<span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method =</span> <span class="st">"ward.D2"</span>)</span>
+<span id="cb24-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hc, <span class="at">labels =</span> ufs<span class="sc">$</span>NOME, <span class="at">main =</span> <span class="cn">NULL</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"Distância"</span>, <span class="at">sub =</span> <span class="st">""</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><div class="fragment">
-<p>Separa, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs com IDHM parecido podem cair em ramos distintos — perfis diferentes (a Etapa 8 desmonta isso).</p>
+<p>Separa, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs de IDHM parecido podem estar em ramos distintos — exatamente o que a Etapa 8 explora ao desmontar o índice.</p>
 </div>
 </section></section>
 <section>
@@ -573,20 +641,27 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 </section>
 <section id="fixa-ou-amostral" class="slide level2 smaller">
 <h2>Fixa ou amostral?</h2>
-<p><strong>Pergunta:</strong> o “0” e o “1” da escala devem vir de <strong>referências fixas</strong> (balizas externas) ou dos <strong>mín/máx observados</strong> na amostra?</p>
+<p>Os indicadores têm unidades distintas (anos, %, R$): é preciso pô-los numa <strong>escala comum</strong>.</p>
+<p><strong>Pergunta:</strong> o “0” e o “1” devem vir de <strong>referências fixas</strong> (balizas externas) ou dos <strong>mín/máx observados</strong> na amostra?</p>
 <div class="fragment">
 <p><strong>IDHM → balizas fixas.</strong> É o que torna 2024 comparável a 2012. Com referência amostral, a melhor UF vira 1 <em>por definição</em>, e incluir/excluir uma UF muda o escore de todas.</p>
 <p><span class="math display">\[\text{min-max:}\; I = \frac{x - x_{\min}}{x_{\max} - x_{\min}} \qquad \text{z-score:}\; z = \frac{x - \bar{x}}{s}\]</span></p>
 </div>
 </section>
-<section id="rode-três-normalizações" class="slide level2 smaller">
+<section id="rode-três-normalizações" class="slide level2 scrollable">
 <h2>Rode: três normalizações</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a>ev <span class="ot">&lt;-</span> ufs<span class="sc">$</span>ESPVIDA</span>
-<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a>fixo     <span class="ot">&lt;-</span> (ev <span class="sc">-</span> <span class="dv">25</span>) <span class="sc">/</span> (<span class="dv">85</span> <span class="sc">-</span> <span class="dv">25</span>)                 <span class="co"># min-max fixo (balizas do IDHM)</span></span>
-<span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a>amostral <span class="ot">&lt;-</span> (ev <span class="sc">-</span> <span class="fu">min</span>(ev)) <span class="sc">/</span> (<span class="fu">max</span>(ev) <span class="sc">-</span> <span class="fu">min</span>(ev))  <span class="co"># min-max amostral</span></span>
-<span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a>zscore   <span class="ot">&lt;-</span> (ev <span class="sc">-</span> <span class="fu">mean</span>(ev)) <span class="sc">/</span> <span class="fu">sd</span>(ev)              <span class="co"># z-score</span></span>
-<span id="cb24-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">data.frame</span>(fixo, amostral, zscore))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># o cifrão ($) acessa uma coluna da tabela pelo nome: ufs$ESPVIDA é o vetor de esperanças de vida</span></span>
+<span id="cb25-2"><a aria-hidden="true" tabindex="-1"></a>ev <span class="ot">&lt;-</span> ufs<span class="sc">$</span>ESPVIDA</span>
+<span id="cb25-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># as três contas abaixo operam sobre o vetor inteiro de uma vez (R é "vetorizado":</span></span>
+<span id="cb25-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># não é preciso laço/loop para aplicar a fórmula a cada UF)</span></span>
+<span id="cb25-6"><a aria-hidden="true" tabindex="-1"></a>fixo     <span class="ot">&lt;-</span> (ev <span class="sc">-</span> <span class="dv">25</span>) <span class="sc">/</span> (<span class="dv">85</span> <span class="sc">-</span> <span class="dv">25</span>)                 <span class="co"># min-max com referência fixa (balizas do IDHM)</span></span>
+<span id="cb25-7"><a aria-hidden="true" tabindex="-1"></a>amostral <span class="ot">&lt;-</span> (ev <span class="sc">-</span> <span class="fu">min</span>(ev)) <span class="sc">/</span> (<span class="fu">max</span>(ev) <span class="sc">-</span> <span class="fu">min</span>(ev))  <span class="co"># min-max com o mín/máx observados na amostra</span></span>
+<span id="cb25-8"><a aria-hidden="true" tabindex="-1"></a>zscore   <span class="ot">&lt;-</span> (ev <span class="sc">-</span> <span class="fu">mean</span>(ev)) <span class="sc">/</span> <span class="fu">sd</span>(ev)              <span class="co"># padronização z-score (mean = média, sd = desvio-padrão)</span></span>
+<span id="cb25-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># data.frame() junta os três vetores em colunas; summary() resume cada uma (mín, média, máx...)</span></span>
+<span id="cb25-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">data.frame</span>(fixo, amostral, zscore))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      fixo           amostral          zscore        
  Min.   :0.8220   Min.   :0.0000   Min.   :-1.69825  
@@ -601,14 +676,22 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p>Cada método responde a uma pergunta diferente. E há uma sutileza: o z-score iguala a <strong>dispersão</strong> (variância 1); o min–max iguala a <strong>amplitude</strong> ([0,1]), não a dispersão — o que muda a contribuição efetiva de cada indicador.</p>
 </div>
 </section>
-<section id="rode-as-normalizações-do-idhm" class="slide level2 smaller">
+<section id="rode-as-normalizações-do-idhm" class="slide level2 scrollable">
 <h2>Rode: as normalizações do IDHM</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>i.longev <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>ESPVIDA <span class="sc">-</span> <span class="dv">25</span>) <span class="sc">/</span> (<span class="dv">85</span> <span class="sc">-</span> <span class="dv">25</span>)              <span class="co"># min-max fixo 25–85</span></span>
-<span id="cb26-2"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>i.renda  <span class="ot">&lt;-</span> (<span class="fu">log</span>(ufs<span class="sc">$</span>RDPC) <span class="sc">-</span> <span class="fu">log</span>(<span class="dv">8</span>)) <span class="sc">/</span> (<span class="fu">log</span>(<span class="dv">4033</span>) <span class="sc">-</span> <span class="fu">log</span>(<span class="dv">8</span>))  <span class="co"># log + min-max 8–4033</span></span>
-<span id="cb26-3"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>si.escol <span class="ot">&lt;-</span> ufs<span class="sc">$</span>T_FUND18M <span class="sc">/</span> <span class="dv">100</span>                        <span class="co"># estoque (% → [0,1])</span></span>
-<span id="cb26-4"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>si.fluxo <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(ufs[, cols_fluxo]) <span class="sc">/</span> <span class="dv">100</span>          <span class="co"># fluxo (média dos 4, % → [0,1])</span></span>
-<span id="cb26-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ufs[, <span class="fu">c</span>(<span class="st">"i.longev"</span>, <span class="st">"i.renda"</span>, <span class="st">"si.escol"</span>, <span class="st">"si.fluxo"</span>)])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># min-max com referência fixa: baliza inferior 25, superior 85 anos</span></span>
+<span id="cb27-2"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>i.longev <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>ESPVIDA <span class="sc">-</span> <span class="dv">25</span>) <span class="sc">/</span> (<span class="dv">85</span> <span class="sc">-</span> <span class="dv">25</span>)</span>
+<span id="cb27-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># mesma ideia, mas em escala logarítmica: log() é o logaritmo natural (ln).</span></span>
+<span id="cb27-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># referências (já em log) R$ 8 e R$ 4.033, em reais constantes</span></span>
+<span id="cb27-6"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>i.renda <span class="ot">&lt;-</span> (<span class="fu">log</span>(ufs<span class="sc">$</span>RDPC) <span class="sc">-</span> <span class="fu">log</span>(<span class="dv">8</span>)) <span class="sc">/</span> (<span class="fu">log</span>(<span class="dv">4033</span>) <span class="sc">-</span> <span class="fu">log</span>(<span class="dv">8</span>))</span>
+<span id="cb27-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># cada subindicador já está em percentual (0 a 100), então dividir por 100 o põe em [0,1]</span></span>
+<span id="cb27-9"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>si.escol <span class="ot">&lt;-</span> ufs<span class="sc">$</span>T_FUND18M <span class="sc">/</span> <span class="dv">100</span>                  <span class="co"># estoque: escolaridade da população adulta</span></span>
+<span id="cb27-10"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>si.fluxo <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(ufs[, cols_fluxo]) <span class="sc">/</span> <span class="dv">100</span>    <span class="co"># fluxo: média das 4 colunas de frequência</span></span>
+<span id="cb27-11"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a aria-hidden="true" tabindex="-1"></a><span class="co"># summary() dos quatro subíndices já normalizados, para conferir que ficaram todos em [0,1]</span></span>
+<span id="cb27-13"><a aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ufs[, <span class="fu">c</span>(<span class="st">"i.longev"</span>, <span class="st">"i.renda"</span>, <span class="st">"si.escol"</span>, <span class="st">"si.fluxo"</span>)])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    i.longev         i.renda          si.escol         si.fluxo     
  Min.   :0.8220   Min.   :0.6584   Min.   :0.5914   Min.   :0.7414  
@@ -620,7 +703,7 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 </div>
 </div>
 <div class="fragment">
-<p>Os quatro subíndices ficam em [0,1], prontos para a Etapa 6 — em patamares distintos (fluxo mais alto, escolaridade mais baixa).</p>
+<p>Os quatro subíndices ficam em [0,1], prontos para a Etapa 6 — em patamares distintos (fluxo mais alto, escolaridade mais baixa). <em>(O log é hipótese normativa: a renda tem contribuição marginal decrescente.)</em></p>
 </div>
 </section></section>
 <section>
@@ -646,13 +729,25 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p><strong>Pergunta:</strong> estoque e fluxo devem pesar igual? Qual importa mais para o <em>desenvolvimento futuro</em>?</p>
 <div class="fragment">
 <p><strong>IDHM → fluxo peso 2, estoque peso 1</strong>, por média geométrica: <span class="math inline">\(\left(I_{\text{escol}}^{1}\cdot I_{\text{fluxo}}^{2}\right)^{1/3}\)</span></p>
+</div>
+</section>
+<section id="rode-agregar-a-educação" class="slide level2 scrollable">
+<h2>Rode: agregar a educação</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>i.educ <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>si.escol<span class="sc">^</span><span class="dv">1</span> <span class="sc">*</span> ufs<span class="sc">$</span>si.fluxo<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb28-2"><a aria-hidden="true" tabindex="-1"></a>educ_iguais <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>si.escol<span class="sc">^</span><span class="dv">1</span> <span class="sc">*</span> ufs<span class="sc">$</span>si.fluxo<span class="sc">^</span><span class="dv">1</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb28-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">uf =</span> ufs<span class="sc">$</span>NOME, <span class="at">educ_idhm =</span> <span class="fu">round</span>(ufs<span class="sc">$</span>i.educ, <span class="dv">3</span>),</span>
-<span id="cb28-4"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">educ_iguais =</span> <span class="fu">round</span>(educ_iguais, <span class="dv">3</span>),</span>
-<span id="cb28-5"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">dif =</span> <span class="fu">round</span>(ufs<span class="sc">$</span>i.educ <span class="sc">-</span> educ_iguais, <span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb28-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(dif))) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># o acento circunflexo (^) é a potência. Média geométrica ponderada = produto dos termos</span></span>
+<span id="cb29-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># elevados aos pesos, com o expoente final 1/(soma dos pesos): aqui pesos 1 e 2, logo raiz cúbica</span></span>
+<span id="cb29-3"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>i.educ <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>si.escol<span class="sc">^</span><span class="dv">1</span> <span class="sc">*</span> ufs<span class="sc">$</span>si.fluxo<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb29-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># para comparar, a mesma média geométrica mas com pesos iguais (1 e 1 → raiz quadrada)</span></span>
+<span id="cb29-6"><a aria-hidden="true" tabindex="-1"></a>educ_iguais <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>si.escol<span class="sc">^</span><span class="dv">1</span> <span class="sc">*</span> ufs<span class="sc">$</span>si.fluxo<span class="sc">^</span><span class="dv">1</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb29-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># monta uma tabela com as duas versões e a diferença entre elas...</span></span>
+<span id="cb29-9"><a aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">uf =</span> ufs<span class="sc">$</span>NOME,</span>
+<span id="cb29-10"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">educ_idhm =</span> <span class="fu">round</span>(ufs<span class="sc">$</span>i.educ, <span class="dv">3</span>),</span>
+<span id="cb29-11"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">educ_iguais =</span> <span class="fu">round</span>(educ_iguais, <span class="dv">3</span>),</span>
+<span id="cb29-12"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">dif =</span> <span class="fu">round</span>(ufs<span class="sc">$</span>i.educ <span class="sc">-</span> educ_iguais, <span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb29-13"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># ...ordena pela diferença em valor absoluto (abs), do maior p/ o menor (desc), e mostra o topo 8.</span></span>
+<span id="cb29-14"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(dif))) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top">
@@ -701,9 +796,20 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <td style="text-align: right;">0.731</td>
 <td style="text-align: right;">0.033</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">Sergipe</td>
+<td style="text-align: right;">0.731</td>
+<td style="text-align: right;">0.699</td>
+<td style="text-align: right;">0.032</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Minas Gerais</td>
+<td style="text-align: right;">0.803</td>
+<td style="text-align: right;">0.770</td>
+<td style="text-align: right;">0.032</td>
+</tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -713,28 +819,54 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p><strong>Pergunta:</strong> as três dimensões pesam igual? Uma renda alta pode <strong>compensar</strong> uma educação baixa?</p>
 <div class="fragment">
 <p><strong>IDHM → pesos iguais + média geométrica</strong> (limita a compensação). A função parametriza ambas as escolhas:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-hidden="true" tabindex="-1"></a>construir_indice <span class="ot">&lt;-</span> <span class="cf">function</span>(dados, <span class="at">agregacao =</span> <span class="st">"geometrica"</span>, <span class="at">pesos =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) {</span>
-<span id="cb29-2"><a aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> dados<span class="sc">$</span>i.longev; E <span class="ot">&lt;-</span> dados<span class="sc">$</span>i.educ; R <span class="ot">&lt;-</span> dados<span class="sc">$</span>i.renda</span>
-<span id="cb29-3"><a aria-hidden="true" tabindex="-1"></a>  w <span class="ot">&lt;-</span> pesos <span class="sc">/</span> <span class="fu">sum</span>(pesos)</span>
-<span id="cb29-4"><a aria-hidden="true" tabindex="-1"></a>  indice <span class="ot">&lt;-</span> <span class="cf">if</span> (agregacao <span class="sc">==</span> <span class="st">"geometrica"</span>) L<span class="sc">^</span>w[<span class="dv">1</span>] <span class="sc">*</span> E<span class="sc">^</span>w[<span class="dv">2</span>] <span class="sc">*</span> R<span class="sc">^</span>w[<span class="dv">3</span>]</span>
-<span id="cb29-5"><a aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>                            w[<span class="dv">1</span>]<span class="sc">*</span>L <span class="sc">+</span> w[<span class="dv">2</span>]<span class="sc">*</span>E <span class="sc">+</span> w[<span class="dv">3</span>]<span class="sc">*</span>R</span>
-<span id="cb29-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">uf =</span> dados<span class="sc">$</span>NOME, <span class="at">indice =</span> <span class="fu">round</span>(indice, <span class="dv">4</span>),</span>
-<span id="cb29-7"><a aria-hidden="true" tabindex="-1"></a>             <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>indice, <span class="at">ties.method =</span> <span class="st">"min"</span>))</span>
-<span id="cb29-8"><a aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb29-9"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>idhm <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs)<span class="sc">$</span>indice</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 </div>
 </section>
-<section id="rode-geométrica-aritmética" class="slide level2 smaller">
+<section id="rode-a-função-do-índice" class="slide level2 scrollable">
+<h2>Rode: a função do índice</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos NOSSA própria função. function(...) lista os argumentos de entrada; os que têm</span></span>
+<span id="cb30-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># '=' já trazem um valor padrão, usado quando não os informamos na chamada. Assim, variar</span></span>
+<span id="cb30-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># normalização, agregação e pesos vira só trocar argumentos.</span></span>
+<span id="cb30-4"><a aria-hidden="true" tabindex="-1"></a>construir_indice <span class="ot">&lt;-</span> <span class="cf">function</span>(dados,</span>
+<span id="cb30-5"><a aria-hidden="true" tabindex="-1"></a>                             <span class="at">agregacao =</span> <span class="st">"geometrica"</span>,  <span class="co"># "geometrica" ou "aritmetica"</span></span>
+<span id="cb30-6"><a aria-hidden="true" tabindex="-1"></a>                             <span class="at">pesos =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)) {       <span class="co"># pesos de longevidade, educação, renda</span></span>
+<span id="cb30-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># apelidos curtos para os três subíndices (L, E, R), só para a fórmula ficar legível</span></span>
+<span id="cb30-8"><a aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> dados<span class="sc">$</span>i.longev; E <span class="ot">&lt;-</span> dados<span class="sc">$</span>i.educ; R <span class="ot">&lt;-</span> dados<span class="sc">$</span>i.renda</span>
+<span id="cb30-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># normaliza os pesos para que somem 1 (w[1] é o 1º elemento do vetor w, w[2] o 2º, etc.)</span></span>
+<span id="cb30-11"><a aria-hidden="true" tabindex="-1"></a>  w <span class="ot">&lt;-</span> pesos <span class="sc">/</span> <span class="fu">sum</span>(pesos)</span>
+<span id="cb30-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># if/else escolhe a regra: produto de potências (geométrica) ou soma ponderada (aritmética)</span></span>
+<span id="cb30-14"><a aria-hidden="true" tabindex="-1"></a>  indice <span class="ot">&lt;-</span> <span class="cf">if</span> (agregacao <span class="sc">==</span> <span class="st">"geometrica"</span>) L<span class="sc">^</span>w[<span class="dv">1</span>] <span class="sc">*</span> E<span class="sc">^</span>w[<span class="dv">2</span>] <span class="sc">*</span> R<span class="sc">^</span>w[<span class="dv">3</span>]</span>
+<span id="cb30-15"><a aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>                            w[<span class="dv">1</span>]<span class="sc">*</span>L <span class="sc">+</span> w[<span class="dv">2</span>]<span class="sc">*</span>E <span class="sc">+</span> w[<span class="dv">3</span>]<span class="sc">*</span>R</span>
+<span id="cb30-16"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># a função devolve uma tabela com UF, índice e posição no ranking.</span></span>
+<span id="cb30-18"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># rank(-indice) ordena de forma decrescente (o '-' inverte: maior índice = 1º lugar);</span></span>
+<span id="cb30-19"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># ties.method = "min" dá a mesma posição (a menor) a empates</span></span>
+<span id="cb30-20"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">uf =</span> dados<span class="sc">$</span>NOME,</span>
+<span id="cb30-21"><a aria-hidden="true" tabindex="-1"></a>             <span class="at">indice =</span> <span class="fu">round</span>(indice, <span class="dv">4</span>),</span>
+<span id="cb30-22"><a aria-hidden="true" tabindex="-1"></a>             <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>indice, <span class="at">ties.method =</span> <span class="st">"min"</span>))</span>
+<span id="cb30-23"><a aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-24"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-25"><a aria-hidden="true" tabindex="-1"></a><span class="co"># chamada com os padrões (geométrica, pesos iguais) = o IDHM oficial; guardamos só a coluna 'indice'</span></span>
+<span id="cb30-26"><a aria-hidden="true" tabindex="-1"></a>ufs<span class="sc">$</span>idhm <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs)<span class="sc">$</span>indice</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="rode-geométrica-aritmética" class="slide level2 scrollable">
 <h2>Rode: geométrica × aritmética</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-hidden="true" tabindex="-1"></a>geo <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs, <span class="at">agregacao =</span> <span class="st">"geometrica"</span>)</span>
-<span id="cb30-2"><a aria-hidden="true" tabindex="-1"></a>ari <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs, <span class="at">agregacao =</span> <span class="st">"aritmetica"</span>)</span>
-<span id="cb30-3"><a aria-hidden="true" tabindex="-1"></a>comparar <span class="ot">&lt;-</span> geo <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">rank_geo =</span> rank, <span class="at">idx_geo =</span> indice) <span class="sc">|&gt;</span></span>
-<span id="cb30-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ari <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">rank_ari =</span> rank, <span class="at">idx_ari =</span> indice), <span class="at">by =</span> <span class="st">"uf"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb30-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mudanca =</span> rank_geo <span class="sc">-</span> rank_ari)</span>
-<span id="cb30-6"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(comparar, <span class="fu">desc</span>(<span class="fu">abs</span>(mudanca)))[, <span class="fu">c</span>(<span class="st">"uf"</span>, <span class="st">"rank_geo"</span>, <span class="st">"rank_ari"</span>, <span class="st">"mudanca"</span>)] <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># calcula o índice nas duas regras de agregação, mudando só o argumento 'agregacao'</span></span>
+<span id="cb31-2"><a aria-hidden="true" tabindex="-1"></a>geo <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs, <span class="at">agregacao =</span> <span class="st">"geometrica"</span>)</span>
+<span id="cb31-3"><a aria-hidden="true" tabindex="-1"></a>ari <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs, <span class="at">agregacao =</span> <span class="st">"aritmetica"</span>)</span>
+<span id="cb31-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a aria-hidden="true" tabindex="-1"></a>comparar <span class="ot">&lt;-</span> geo <span class="sc">|&gt;</span></span>
+<span id="cb31-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">rank_geo =</span> rank, <span class="at">idx_geo =</span> indice) <span class="sc">|&gt;</span>          <span class="co"># renomeia as colunas para distinguir as versões</span></span>
+<span id="cb31-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># left_join() cola as duas tabelas lado a lado, casando as linhas pela coluna "uf" (by = "uf")</span></span>
+<span id="cb31-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ari <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">rank_ari =</span> rank, <span class="at">idx_ari =</span> indice), <span class="at">by =</span> <span class="st">"uf"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb31-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mudanca =</span> rank_geo <span class="sc">-</span> rank_ari)  <span class="co"># mutate() acrescenta uma coluna; positivo = sobe ao virar aritmética</span></span>
+<span id="cb31-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ordena pela mudança absoluta (maior primeiro) e, com [, c(...)], seleciona as colunas a exibir</span></span>
+<span id="cb31-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(comparar, <span class="fu">desc</span>(<span class="fu">abs</span>(mudanca)))[, <span class="fu">c</span>(<span class="st">"uf"</span>, <span class="st">"rank_geo"</span>, <span class="st">"rank_ari"</span>, <span class="st">"mudanca"</span>)]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top">
@@ -795,6 +927,120 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <td style="text-align: right;">13</td>
 <td style="text-align: right;">0</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">Acre</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Roraima</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tocantins</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Piauí</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ceará</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rio Grande do Norte</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Paraíba</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sergipe</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Minas Gerais</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Espírito Santo</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rio de Janeiro</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">São Paulo</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Paraná</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Santa Catarina</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rio Grande do Sul</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mato Grosso do Sul</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mato Grosso</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Goiás</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Distrito Federal</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -804,18 +1050,29 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p>As UFs que mais <strong>sobem</strong> ao virar aritmética são as de perfil mais <strong>desigual</strong>: a aritmética compensa o desequilíbrio que a geométrica recusa.</p>
 </div>
 </section>
-<section id="rode-pesos-derivados-dos-dados-pca" class="slide level2 smaller">
-<h2>Rode: pesos derivados dos dados (PCA)</h2>
+<section id="pesos-derivados-dos-dados-pca" class="slide level2 smaller">
+<h2>Pesos derivados dos dados (PCA)</h2>
+<p><em>O que faz:</em> aplica a PCA aos três subíndices de dimensão e usa as cargas do 1º componente como <strong>pesos gerados pelos dados</strong>. <em>Responde:</em> que pesos os dados “sugerem” — e como o ranking muda em relação aos pesos iguais do IDHM?</p>
+</section>
+<section id="rode-pesos-da-pca" class="slide level2 scrollable">
+<h2>Rode: pesos da PCA</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-hidden="true" tabindex="-1"></a>pca_dim <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(ufs[, <span class="fu">c</span>(<span class="st">"i.longev"</span>, <span class="st">"i.educ"</span>, <span class="st">"i.renda"</span>)], <span class="at">scale. =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb31-2"><a aria-hidden="true" tabindex="-1"></a>pesos_pca <span class="ot">&lt;-</span> <span class="fu">abs</span>(pca_dim<span class="sc">$</span>rotation[, <span class="dv">1</span>]); pesos_pca <span class="ot">&lt;-</span> pesos_pca <span class="sc">/</span> <span class="fu">sum</span>(pesos_pca)</span>
-<span id="cb31-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(pesos_pca, <span class="dv">3</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># PCA sobre os 3 subíndices das dimensões. Eles JÁ estão normalizados em [0,1] (Etapa 5), por</span></span>
+<span id="cb32-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># isso NÃO os repadronizamos: scale. = FALSE preserva a dispersão que o min-max deixou.</span></span>
+<span id="cb32-3"><a aria-hidden="true" tabindex="-1"></a>pca_dim <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(ufs[, <span class="fu">c</span>(<span class="st">"i.longev"</span>, <span class="st">"i.educ"</span>, <span class="st">"i.renda"</span>)], <span class="at">scale. =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb32-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># usa as cargas (em módulo) do 1º componente como pesos, normalizados para somar 1</span></span>
+<span id="cb32-6"><a aria-hidden="true" tabindex="-1"></a>pesos_pca <span class="ot">&lt;-</span> <span class="fu">abs</span>(pca_dim<span class="sc">$</span>rotation[, <span class="dv">1</span>])</span>
+<span id="cb32-7"><a aria-hidden="true" tabindex="-1"></a>pesos_pca <span class="ot">&lt;-</span> pesos_pca <span class="sc">/</span> <span class="fu">sum</span>(pesos_pca)</span>
+<span id="cb32-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(pesos_pca, <span class="dv">3</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>i.longev   i.educ  i.renda 
    0.119    0.378    0.503 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">construir_indice</span>(ufs)<span class="sc">$</span>indice,</span>
-<span id="cb33-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="fu">construir_indice</span>(ufs, <span class="at">pesos =</span> pesos_pca)<span class="sc">$</span>indice, <span class="at">method =</span> <span class="st">"spearman"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># compara o ranking com pesos data-driven ao do IDHM (pesos iguais), via construir_indice()</span></span>
+<span id="cb34-2"><a aria-hidden="true" tabindex="-1"></a>iguais <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs)</span>
+<span id="cb34-3"><a aria-hidden="true" tabindex="-1"></a>datad  <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs, <span class="at">pesos =</span> pesos_pca)</span>
+<span id="cb34-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(iguais<span class="sc">$</span>indice, datad<span class="sc">$</span>indice, <span class="at">method =</span> <span class="st">"spearman"</span>)   <span class="co"># ≈ 1 = ordenamento quase idêntico</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9871795</code></pre>
 </div>
@@ -837,18 +1094,32 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 </ul>
 <p>O Handbook recomenda usá-las juntas.</p>
 </section>
-<section id="rode-sensibilidade-spearman" class="slide level2 smaller">
+<section id="sensibilidade-por-correlação-de-rankings" class="slide level2 smaller">
+<h2>Sensibilidade por correlação de rankings</h2>
+<p><em>O que faz:</em> recalcula o índice em cenários alternativos e mede, pela <strong>correlação de Spearman</strong>, o quanto o ranking se mantém (1 = idêntico; perto de 0 = irreconhecível). <em>Responde:</em> o ordenamento resiste às escolhas, ou depende delas?</p>
+</section>
+<section id="rode-sensibilidade-spearman" class="slide level2 scrollable">
 <h2>Rode: sensibilidade (Spearman)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-hidden="true" tabindex="-1"></a>idx_padrao <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs)<span class="sc">$</span>indice</span>
-<span id="cb35-2"><a aria-hidden="true" tabindex="-1"></a>cenarios <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb35-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"renda dobrada"</span>            <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"geometrica"</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)),</span>
-<span id="cb35-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"educação dobrada"</span>         <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"geometrica"</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)),</span>
-<span id="cb35-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"índice social (s/ renda)"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"geometrica"</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)),</span>
-<span id="cb35-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"aritmética (iguais)"</span>      <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"aritmetica"</span>,  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)))</span>
-<span id="cb35-7"><a aria-hidden="true" tabindex="-1"></a>spearman <span class="ot">&lt;-</span> <span class="fu">sapply</span>(cenarios, <span class="cf">function</span>(cen)</span>
-<span id="cb35-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">cor</span>(idx_padrao, <span class="fu">construir_indice</span>(ufs, cen[[<span class="dv">1</span>]], cen[[<span class="dv">2</span>]])<span class="sc">$</span>indice, <span class="at">method =</span> <span class="st">"spearman"</span>), <span class="dv">3</span>))</span>
-<span id="cb35-9"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(spearman, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># índice de referência (o IDHM padrão), contra o qual compararemos cada cenário</span></span>
+<span id="cb36-2"><a aria-hidden="true" tabindex="-1"></a>idx_padrao <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs)<span class="sc">$</span>indice</span>
+<span id="cb36-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># list() guarda cenários de natureza mista; cada item é, ele próprio, uma lista com</span></span>
+<span id="cb36-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># [regra de agregação, vetor de pesos]. Os nomes à esquerda do '=' rotulam cada cenário</span></span>
+<span id="cb36-6"><a aria-hidden="true" tabindex="-1"></a>cenarios <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb36-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"renda dobrada"</span>            <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"geometrica"</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)),</span>
+<span id="cb36-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"educação dobrada"</span>         <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"geometrica"</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)),</span>
+<span id="cb36-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"índice social (s/ renda)"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"geometrica"</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)),</span>
+<span id="cb36-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"aritmética (iguais)"</span>      <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"aritmetica"</span>,  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb36-11"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># sapply() aplica a mesma função a cada cenário da lista e junta os resultados num vetor.</span></span>
+<span id="cb36-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Dentro da função, cen[[1]] é a regra e cen[[2]] o vetor de pesos daquele cenário</span></span>
+<span id="cb36-15"><a aria-hidden="true" tabindex="-1"></a>spearman <span class="ot">&lt;-</span> <span class="fu">sapply</span>(cenarios, <span class="cf">function</span>(cen) {</span>
+<span id="cb36-16"><a aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">&lt;-</span> <span class="fu">construir_indice</span>(ufs, <span class="at">agregacao =</span> cen[[<span class="dv">1</span>]], <span class="at">pesos =</span> cen[[<span class="dv">2</span>]])<span class="sc">$</span>indice</span>
+<span id="cb36-17"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">cor</span>(idx_padrao, idx, <span class="at">method =</span> <span class="st">"spearman"</span>), <span class="dv">3</span>)</span>
+<span id="cb36-18"><a aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb36-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(spearman, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)   <span class="co"># ordena do mais estável (≈1) ao menos estável</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     aritmética (iguais)            renda dobrada         educação dobrada 
                    0.997                    0.989                    0.988 
@@ -860,19 +1131,35 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p>Spearman perto de 1 = ranking resiste. Valores baixos não tornam o índice “errado”: indicam que o ranking é <strong>contingente</strong> às escolhas — que passam a exigir justificativa.</p>
 </div>
 </section>
-<section id="rode-incerteza-por-monte-carlo" class="slide level2 smaller">
-<h2>Rode: incerteza por Monte Carlo</h2>
+<section id="incerteza-por-monte-carlo" class="slide level2 smaller">
+<h2>Incerteza por Monte Carlo</h2>
+<p><em>O que faz:</em> em vez de um cenário por vez, <strong>sorteia ao acaso</strong> mil combinações de pesos e de regra de agregação, e registra a posição de cada UF em cada uma. <em>Responde:</em> dada a incerteza sobre as escolhas, quão <strong>estável</strong> é a posição de cada UF? O boxplot mostra a distribuição das 1.000 posições.</p>
+</section>
+<section id="rode-monte-carlo" class="slide level2 scrollable">
+<h2>Rode: Monte Carlo</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
-<span id="cb37-2"><a aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, {</span>
-<span id="cb37-3"><a aria-hidden="true" tabindex="-1"></a>  w <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>, <span class="fl">0.5</span>, <span class="dv">2</span>); agr <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"geometrica"</span>, <span class="st">"aritmetica"</span>), <span class="dv">1</span>)</span>
-<span id="cb37-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">construir_indice</span>(ufs, <span class="at">agregacao =</span> agr, <span class="at">pesos =</span> w)<span class="sc">$</span>rank</span>
-<span id="cb37-5"><a aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb37-6"><a aria-hidden="true" tabindex="-1"></a>mc <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sim) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">uf =</span> ufs<span class="sc">$</span>NOME) <span class="sc">|&gt;</span></span>
-<span id="cb37-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>uf, <span class="at">values_to =</span> <span class="st">"rank"</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">uf =</span> <span class="fu">reorder</span>(uf, rank, median))</span>
-<span id="cb37-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mc, <span class="fu">aes</span>(rank, uf)) <span class="sc">+</span></span>
-<span id="cb37-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.size =</span> <span class="fl">0.4</span>, <span class="at">fill =</span> <span class="st">"#d6e4f0"</span>, <span class="at">color =</span> <span class="st">"#2980b9"</span>) <span class="sc">+</span></span>
-<span id="cb37-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posição no ranking (1 = melhor)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># fixa a semente do gerador aleatório: garante que os "sorteios" saiam iguais a cada execução</span></span>
+<span id="cb38-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb38-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># replicate(1000, {...}) repete o bloco 1.000 vezes e empilha os resultados em colunas —</span></span>
+<span id="cb38-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># cada coluna é o ranking das 27 UFs em uma simulação</span></span>
+<span id="cb38-6"><a aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, {</span>
+<span id="cb38-7"><a aria-hidden="true" tabindex="-1"></a>  w   <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>, <span class="fl">0.5</span>, <span class="dv">2</span>)                            <span class="co"># 3 pesos sorteados ao acaso entre 0,5 e 2</span></span>
+<span id="cb38-8"><a aria-hidden="true" tabindex="-1"></a>  agr <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"geometrica"</span>, <span class="st">"aritmetica"</span>), <span class="dv">1</span>)    <span class="co"># sorteia 1 das 2 regras de agregação</span></span>
+<span id="cb38-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">construir_indice</span>(ufs, <span class="at">agregacao =</span> agr, <span class="at">pesos =</span> w)<span class="sc">$</span>rank</span>
+<span id="cb38-10"><a aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb38-11"><a aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(sim) <span class="ot">&lt;-</span> ufs<span class="sc">$</span>NOME</span>
+<span id="cb38-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># transforma a matriz (UFs × 1.000 simulações) em formato "longo" (uma linha por par UF–simulação)</span></span>
+<span id="cb38-14"><a aria-hidden="true" tabindex="-1"></a>mc <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sim) <span class="sc">|&gt;</span></span>
+<span id="cb38-15"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">uf =</span> ufs<span class="sc">$</span>NOME) <span class="sc">|&gt;</span></span>
+<span id="cb38-16"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>uf, <span class="at">values_to =</span> <span class="st">"rank"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb38-17"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">uf =</span> <span class="fu">reorder</span>(uf, rank, median))   <span class="co"># ordena as UFs pela posição mediana</span></span>
+<span id="cb38-18"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mc, <span class="fu">aes</span>(rank, uf)) <span class="sc">+</span></span>
+<span id="cb38-20"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.size =</span> <span class="fl">0.4</span>, <span class="at">fill =</span> <span class="st">"#d6e4f0"</span>, <span class="at">color =</span> <span class="st">"#2980b9"</span>) <span class="sc">+</span></span>
+<span id="cb38-21"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posição no ranking (1 = melhor)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb38-22"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><aside class="notes">
@@ -889,16 +1176,20 @@ renda               0.56         0.72      0.09        0.47        0.47        0
           display:block!important;
       }</style></aside>
 </section>
-<section id="rode-o-efeito-do-log" class="slide level2 smaller">
+<section id="rode-o-efeito-do-log" class="slide level2 scrollable">
 <h2>Rode: o efeito do log</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-hidden="true" tabindex="-1"></a>renda_sem_log <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>RDPC <span class="sc">-</span> <span class="dv">8</span>) <span class="sc">/</span> (<span class="dv">4033</span> <span class="sc">-</span> <span class="dv">8</span>)</span>
-<span id="cb38-2"><a aria-hidden="true" tabindex="-1"></a>i_sem_log <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>i.longev <span class="sc">*</span> ufs<span class="sc">$</span>i.educ <span class="sc">*</span> renda_sem_log)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb38-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">uf =</span> ufs<span class="sc">$</span>NOME,</span>
-<span id="cb38-4"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">rank_com_log =</span> <span class="fu">rank</span>(<span class="sc">-</span>ufs<span class="sc">$</span>idhm, <span class="at">ties.method =</span> <span class="st">"min"</span>),</span>
-<span id="cb38-5"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">rank_sem_log =</span> <span class="fu">rank</span>(<span class="sc">-</span>i_sem_log, <span class="at">ties.method =</span> <span class="st">"min"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb38-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mudanca =</span> rank_com_log <span class="sc">-</span> rank_sem_log) <span class="sc">|&gt;</span></span>
-<span id="cb38-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mudanca)) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># refaz a normalização da renda SEM o logaritmo (min-max linear), para isolar o efeito do log</span></span>
+<span id="cb39-2"><a aria-hidden="true" tabindex="-1"></a>renda_sem_log <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>RDPC <span class="sc">-</span> <span class="dv">8</span>) <span class="sc">/</span> (<span class="dv">4033</span> <span class="sc">-</span> <span class="dv">8</span>)</span>
+<span id="cb39-3"><a aria-hidden="true" tabindex="-1"></a><span class="co"># recompõe o índice com essa renda alternativa, mantendo longevidade e educação</span></span>
+<span id="cb39-4"><a aria-hidden="true" tabindex="-1"></a>i_sem_log <span class="ot">&lt;-</span> (ufs<span class="sc">$</span>i.longev <span class="sc">*</span> ufs<span class="sc">$</span>i.educ <span class="sc">*</span> renda_sem_log)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb39-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># compara as posições com e sem log lado a lado</span></span>
+<span id="cb39-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">uf =</span> ufs<span class="sc">$</span>NOME,</span>
+<span id="cb39-8"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">rank_com_log =</span> <span class="fu">rank</span>(<span class="sc">-</span>ufs<span class="sc">$</span>idhm, <span class="at">ties.method =</span> <span class="st">"min"</span>),</span>
+<span id="cb39-9"><a aria-hidden="true" tabindex="-1"></a>           <span class="at">rank_sem_log =</span> <span class="fu">rank</span>(<span class="sc">-</span>i_sem_log, <span class="at">ties.method =</span> <span class="st">"min"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb39-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mudanca =</span> rank_com_log <span class="sc">-</span> rank_sem_log) <span class="sc">|&gt;</span>   <span class="co"># quantas posições cada UF se desloca</span></span>
+<span id="cb39-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mudanca)) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)                 <span class="co"># as 10 que mais sobem ao retirar o log</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top">
@@ -959,6 +1250,18 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <td style="text-align: right;">20</td>
 <td style="text-align: right;">1</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">Alagoas</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Espírito Santo</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -975,55 +1278,85 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 </section>
 <section id="desmontar-o-agregado" class="slide level2 smaller">
 <h2>Desmontar o agregado</h2>
-<p>A média <strong>oculta</strong> heterogeneidade: duas UFs com o mesmo IDHM podem ter perfis opostos. Voltar às dimensões arma o leitor contra a crítica do encerramento.</p>
+<p>A média <strong>oculta</strong> heterogeneidade: duas UFs com o mesmo IDHM podem ter perfis opostos.</p>
+<div class="fragment">
+<p>Por que isto “arma o leitor contra a crítica do encerramento”? Porque a crítica mais séria ao IDHM (o <em>paradoxo da elegibilidade</em>) é usá-lo como <strong>critério único</strong> — tratando como iguais unidades de mesmo índice mas necessidades distintas. <strong>Voltar às dimensões</strong> mostra, em números, essas diferenças escondidas — é o antídoto contra confundir o número com a realidade.</p>
+</div>
 </section>
-<section id="rode-qual-dimensão-mais-diferencia" class="slide level2 smaller">
-<h2>Rode: qual dimensão mais diferencia?</h2>
+<section id="qual-dimensão-mais-diferencia" class="slide level2 smaller">
+<h2>Qual dimensão mais diferencia?</h2>
+<p><em>O que faz:</em> para cada dimensão, um gráfico do subíndice contra o IDHM, com a reta de regressão. <em>Responde:</em> qual dimensão mais <strong>separa</strong> as UFs?</p>
+</section>
+<section id="rode-contribuição-das-dimensões" class="slide level2 scrollable">
+<h2>Rode: contribuição das dimensões</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-hidden="true" tabindex="-1"></a>ufs <span class="sc">|&gt;</span> <span class="fu">select</span>(idhm, i.longev, i.educ, i.renda) <span class="sc">|&gt;</span></span>
-<span id="cb39-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(i.longev, i.educ, i.renda), <span class="at">names_to =</span> <span class="st">"dimensao"</span>, <span class="at">values_to =</span> <span class="st">"valor"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb39-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dimensao =</span> <span class="fu">recode</span>(dimensao, <span class="at">i.longev =</span> <span class="st">"Longevidade"</span>, <span class="at">i.educ =</span> <span class="st">"Educação"</span>, <span class="at">i.renda =</span> <span class="st">"Renda"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb39-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(valor, idhm)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#2980b9"</span>) <span class="sc">+</span></span>
-<span id="cb39-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"#c0392b"</span>) <span class="sc">+</span></span>
-<span id="cb39-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>dimensao) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Valor da dimensão"</span>, <span class="at">y =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-hidden="true" tabindex="-1"></a>ufs <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(idhm, i.longev, i.educ, i.renda) <span class="sc">|&gt;</span>          <span class="co"># mantém só o índice e os três subíndices</span></span>
+<span id="cb40-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(i.longev, i.educ, i.renda), <span class="at">names_to =</span> <span class="st">"dimensao"</span>, <span class="at">values_to =</span> <span class="st">"valor"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb40-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dimensao =</span> <span class="fu">recode</span>(dimensao,</span>
+<span id="cb40-5"><a aria-hidden="true" tabindex="-1"></a>                           <span class="at">i.longev =</span> <span class="st">"Longevidade"</span>, <span class="at">i.educ =</span> <span class="st">"Educação"</span>, <span class="at">i.renda =</span> <span class="st">"Renda"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb40-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(valor, idhm)) <span class="sc">+</span></span>
+<span id="cb40-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#2980b9"</span>) <span class="sc">+</span></span>
+<span id="cb40-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"#c0392b"</span>) <span class="sc">+</span>  <span class="co"># reta de regressão (lm)</span></span>
+<span id="cb40-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>dimensao) <span class="sc">+</span></span>
+<span id="cb40-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Valor da dimensão"</span>, <span class="at">y =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span></span>
+<span id="cb40-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"><div class="fragment">
-<p>Reta mais inclinada = mais diferencia (≠ maior peso, que é 1/3 igual). Sob pesos iguais, a dimensão de <strong>maior dispersão</strong> governa o ordenamento.</p>
+<p><strong>Como ler:</strong> a reta mais <strong>inclinada</strong> marca a dimensão que mais acompanha o índice — logo, a que mais <strong>diferencia</strong> as UFs. Isso <strong>não</strong> é o mesmo que ter peso maior: os três pesos são iguais (1/3). A razão é sutil: uma dimensão em que <strong>todas as UFs são parecidas</strong> (pouca dispersão) quase não as separa, <em>mesmo</em> com peso igual; já a de <strong>maior dispersão</strong> acaba governando o ordenamento. Ou seja, sob pesos iguais, quem manda no ranking é a dimensão que mais <strong>varia</strong> entre as UFs.</p>
 </div>
 </section>
-<section id="rode-mesmo-idhm-perfis-distintos" class="slide level2 smaller">
-<h2>Rode: mesmo IDHM, perfis distintos</h2>
+<section id="mesmo-índice-perfis-distintos" class="slide level2 smaller">
+<h2>Mesmo índice, perfis distintos</h2>
+<p><em>O que faz:</em> compara, dimensão a dimensão, duas UFs de IDHM quase igual. <em>Responde:</em> elas chegaram lá pelo mesmo caminho?</p>
+</section>
+<section id="rode-dois-perfis" class="slide level2 scrollable">
+<h2>Rode: dois perfis</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-hidden="true" tabindex="-1"></a>perfil <span class="ot">&lt;-</span> ufs <span class="sc">|&gt;</span> <span class="fu">filter</span>(NOME <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Rio Grande do Norte"</span>, <span class="st">"Roraima"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb40-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NOME, i.longev, i.educ, i.renda) <span class="sc">|&gt;</span></span>
-<span id="cb40-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>NOME, <span class="at">names_to =</span> <span class="st">"dimensao"</span>, <span class="at">values_to =</span> <span class="st">"valor"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb40-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dimensao =</span> <span class="fu">recode</span>(dimensao, <span class="at">i.longev =</span> <span class="st">"Longevidade"</span>, <span class="at">i.educ =</span> <span class="st">"Educação"</span>, <span class="at">i.renda =</span> <span class="st">"Renda"</span>))</span>
-<span id="cb40-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(perfil, <span class="fu">aes</span>(dimensao, valor, <span class="at">fill =</span> NOME)) <span class="sc">+</span> <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb40-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Subíndice (0–1)"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># seleciona as duas UFs e empilha seus três subíndices para o gráfico</span></span>
+<span id="cb41-2"><a aria-hidden="true" tabindex="-1"></a>perfil <span class="ot">&lt;-</span> ufs <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NOME <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Rio Grande do Norte"</span>, <span class="st">"Roraima"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NOME, i.longev, i.educ, i.renda) <span class="sc">|&gt;</span></span>
+<span id="cb41-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>NOME, <span class="at">names_to =</span> <span class="st">"dimensao"</span>, <span class="at">values_to =</span> <span class="st">"valor"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dimensao =</span> <span class="fu">recode</span>(dimensao,</span>
+<span id="cb41-7"><a aria-hidden="true" tabindex="-1"></a>                           <span class="at">i.longev =</span> <span class="st">"Longevidade"</span>, <span class="at">i.educ =</span> <span class="st">"Educação"</span>, <span class="at">i.renda =</span> <span class="st">"Renda"</span>))</span>
+<span id="cb41-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># barras agrupadas (position = "dodge") comparam, dimensão a dimensão, as duas UFs</span></span>
+<span id="cb41-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(perfil, <span class="fu">aes</span>(dimensao, valor, <span class="at">fill =</span> NOME)) <span class="sc">+</span></span>
+<span id="cb41-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb41-12"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Subíndice (0–1)"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb41-13"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"><div class="fragment">
 <p>Mesmo IDHM (≈0,78): o <strong>RN</strong> se sustenta na longevidade, <strong>Roraima</strong> na educação. Uma política guiada só pelo índice trataria as duas como idênticas — o erro que a crítica da elegibilidade denuncia.</p>
 </div>
 </section>
-<section id="rode-o-que-mudou-no-tempo" class="slide level2 smaller">
+<section id="rode-o-que-mudou-no-tempo" class="slide level2 scrollable">
 <h2>Rode: o que mudou no tempo?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> radar <span class="sc">|&gt;</span></span>
-<span id="cb41-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>, ANO <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2024</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb41-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NOME, ANO, IDHM_L, IDHM_E, IDHM_R) <span class="sc">|&gt;</span></span>
-<span id="cb41-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> ANO, <span class="at">values_from =</span> <span class="fu">c</span>(IDHM_L, IDHM_E, IDHM_R)) <span class="sc">|&gt;</span></span>
-<span id="cb41-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">uf =</span> NOME, <span class="at">d_long =</span> IDHM_L_2024 <span class="sc">-</span> IDHM_L_2012,</span>
-<span id="cb41-6"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">d_educ =</span> IDHM_E_2024 <span class="sc">-</span> IDHM_E_2012, <span class="at">d_renda =</span> IDHM_R_2024 <span class="sc">-</span> IDHM_R_2012)</span>
-<span id="cb41-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">colMeans</span>(delta[, <span class="fu">c</span>(<span class="st">"d_long"</span>, <span class="st">"d_educ"</span>, <span class="st">"d_renda"</span>)]), <span class="dv">4</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># volta à base completa 'radar' para comparar dois anos</span></span>
+<span id="cb42-2"><a aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> radar <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>, ANO <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2024</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NOME, ANO, IDHM_L, IDHM_E, IDHM_R) <span class="sc">|&gt;</span></span>
+<span id="cb42-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># pivot_wider "alarga" a tabela, criando colunas por ano (IDHM_L_2012, IDHM_L_2024, ...),</span></span>
+<span id="cb42-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="co"># o que permite subtrair um ano do outro na mesma linha</span></span>
+<span id="cb42-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> ANO, <span class="at">values_from =</span> <span class="fu">c</span>(IDHM_L, IDHM_E, IDHM_R)) <span class="sc">|&gt;</span></span>
+<span id="cb42-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">uf      =</span> NOME,</span>
+<span id="cb42-9"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">d_long  =</span> IDHM_L_2024 <span class="sc">-</span> IDHM_L_2012,   <span class="co"># variação 2012→2024 de cada dimensão</span></span>
+<span id="cb42-10"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">d_educ  =</span> IDHM_E_2024 <span class="sc">-</span> IDHM_E_2012,</span>
+<span id="cb42-11"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">d_renda =</span> IDHM_R_2024 <span class="sc">-</span> IDHM_R_2012)</span>
+<span id="cb42-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a aria-hidden="true" tabindex="-1"></a><span class="co"># colMeans() tira a média de cada coluna — a variação média entre as 27 UFs por dimensão</span></span>
+<span id="cb42-14"><a aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">colMeans</span>(delta[, <span class="fu">c</span>(<span class="st">"d_long"</span>, <span class="st">"d_educ"</span>, <span class="st">"d_renda"</span>)]), <span class="dv">4</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> d_long  d_educ d_renda 
  0.0294  0.1257  0.0331 </code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>A <strong>educação</strong> avança ~4× mais que as outras: é ela que puxa a subida do IDHM entre 2012 e 2024. A decomposição troca “o país melhorou” por <em>qual</em> dimensão melhorou, e quanto.</p>
+<p>A <strong>educação</strong> avança ~4× mais que as outras: é ela que puxa a subida do IDHM entre 2012 e 2024.</p>
 </div>
 </section></section>
 <section>
@@ -1035,34 +1368,44 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <h2>Reproduzir e validar</h2>
 <ul>
 <li><strong>Reprodução</strong>: nosso cálculo bate com o oficial? (verifica o pipeline)</li>
-<li><strong>Validação externa</strong>: o índice se correlaciona com medidas <em>distintas mas relacionadas</em> (pobreza, mortalidade)? — validade convergente e discriminante.</li>
+<li><strong>Validação externa</strong>: o índice se correlaciona com medidas <em>distintas mas relacionadas</em> (pobreza, mortalidade)? — <strong>validade convergente</strong>; e, no reverso, <strong>discriminante</strong> (se batesse perfeito com um indicador já existente, nada acrescentaria).</li>
 </ul>
 </section>
-<section id="rode-reprodução-do-oficial" class="slide level2 smaller">
+<section id="rode-reprodução-do-oficial" class="slide level2 scrollable">
 <h2>Rode: reprodução do oficial</h2>
-<p>Bater ao último dígito exige replicar duas convenções: arredondar cada subíndice a <strong>3 casas</strong> e usar arredondamento <strong>comercial</strong> (metade para cima).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-hidden="true" tabindex="-1"></a>arred <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">floor</span>(x <span class="sc">*</span> <span class="dv">1000</span> <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> <span class="dv">1000</span></span>
-<span id="cb43-2"><a aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="fu">arred</span>(ufs<span class="sc">$</span>i.longev); R <span class="ot">&lt;-</span> <span class="fu">arred</span>(ufs<span class="sc">$</span>i.renda)</span>
-<span id="cb43-3"><a aria-hidden="true" tabindex="-1"></a>E <span class="ot">&lt;-</span> <span class="fu">arred</span>((<span class="fu">arred</span>(ufs<span class="sc">$</span>si.escol)<span class="sc">^</span><span class="dv">1</span> <span class="sc">*</span> <span class="fu">arred</span>(ufs<span class="sc">$</span>si.fluxo)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>))</span>
-<span id="cb43-4"><a aria-hidden="true" tabindex="-1"></a>idhm_repro <span class="ot">&lt;-</span> <span class="fu">arred</span>((L <span class="sc">*</span> E <span class="sc">*</span> R)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>))</span>
-<span id="cb43-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">correlacao        =</span> <span class="fu">cor</span>(ufs<span class="sc">$</span>IDHM, idhm_repro),</span>
-<span id="cb43-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">maior_dif         =</span> <span class="fu">max</span>(<span class="fu">abs</span>(ufs<span class="sc">$</span>IDHM <span class="sc">-</span> idhm_repro)),</span>
-<span id="cb43-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">iguais_ao_oficial =</span> <span class="fu">sum</span>(idhm_repro <span class="sc">==</span> ufs<span class="sc">$</span>IDHM)) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># arredondamento comercial (metade para cima), em vez do padrão do R (metade para o par)</span></span>
+<span id="cb44-2"><a aria-hidden="true" tabindex="-1"></a>arred <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">floor</span>(x <span class="sc">*</span> <span class="dv">1000</span> <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb44-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># replica a convenção do Atlas: cada subíndice arredondado a 3 casas antes de combinar;</span></span>
+<span id="cb44-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># na educação, os subcomponentes (estoque e fluxo) também são arredondados</span></span>
+<span id="cb44-6"><a aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="fu">arred</span>(ufs<span class="sc">$</span>i.longev)</span>
+<span id="cb44-7"><a aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">arred</span>(ufs<span class="sc">$</span>i.renda)</span>
+<span id="cb44-8"><a aria-hidden="true" tabindex="-1"></a>E <span class="ot">&lt;-</span> <span class="fu">arred</span>((<span class="fu">arred</span>(ufs<span class="sc">$</span>si.escol)<span class="sc">^</span><span class="dv">1</span> <span class="sc">*</span> <span class="fu">arred</span>(ufs<span class="sc">$</span>si.fluxo)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>))</span>
+<span id="cb44-9"><a aria-hidden="true" tabindex="-1"></a>idhm_repro <span class="ot">&lt;-</span> <span class="fu">arred</span>((L <span class="sc">*</span> E <span class="sc">*</span> R)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>))</span>
+<span id="cb44-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-11"><a aria-hidden="true" tabindex="-1"></a><span class="co"># concordância: correlação, maior diferença e quantas UFs batem exato (de 27)</span></span>
+<span id="cb44-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">correlacao        =</span> <span class="fu">cor</span>(ufs<span class="sc">$</span>IDHM, idhm_repro),</span>
+<span id="cb44-13"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">maior_dif         =</span> <span class="fu">max</span>(<span class="fu">abs</span>(ufs<span class="sc">$</span>IDHM <span class="sc">-</span> idhm_repro)),</span>
+<span id="cb44-14"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">iguais_ao_oficial =</span> <span class="fu">sum</span>(idhm_repro <span class="sc">==</span> ufs<span class="sc">$</span>IDHM)) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       correlacao         maior_dif iguais_ao_oficial 
                 1                 0                27 </code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>Correlação <strong>1</strong>, diferença <strong>0</strong>, <strong>27/27</strong> idênticas. A lição: reproduzir exige replicar não só as fórmulas, mas as <strong>convenções numéricas</strong> que quase nunca constam da metodologia.</p>
+<p>Correlação <strong>1</strong>, diferença <strong>0</strong>, <strong>27/27</strong> idênticas. A lição: reproduzir exige replicar não só as fórmulas, mas as <strong>convenções numéricas</strong> (ordem de arredondamento, regra de desempate) que quase nunca constam da metodologia.</p>
 </div>
 </section>
-<section id="rode-validação-externa" class="slide level2 smaller">
+<section id="rode-validação-externa" class="slide level2 scrollable">
 <h2>Rode: validação externa</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-hidden="true" tabindex="-1"></a>externos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">pobreza =</span> <span class="st">"PMPOB"</span>, <span class="at">mort_infantil =</span> <span class="st">"MORT1"</span>, <span class="at">gini =</span> <span class="st">"GINI"</span>)</span>
-<span id="cb45-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(externos, <span class="cf">function</span>(col) <span class="fu">round</span>(<span class="fu">cor</span>(ufs<span class="sc">$</span>idhm, ufs[[col]], <span class="at">method =</span> <span class="st">"spearman"</span>), <span class="dv">3</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># indicadores EXTERNOS, relacionados mas NÃO usados no índice, vindos da própria base:</span></span>
+<span id="cb46-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># proporção de pobres (PMPOB), mortalidade infantil (MORT1) e índice de Gini (GINI)</span></span>
+<span id="cb46-3"><a aria-hidden="true" tabindex="-1"></a>externos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">pobreza =</span> <span class="st">"PMPOB"</span>, <span class="at">mort_infantil =</span> <span class="st">"MORT1"</span>, <span class="at">gini =</span> <span class="st">"GINI"</span>)</span>
+<span id="cb46-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># para cada coluna, correlaciona o nosso índice com ela. ufs[[col]] pega a coluna pelo nome</span></span>
+<span id="cb46-6"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(externos, <span class="cf">function</span>(col) <span class="fu">round</span>(<span class="fu">cor</span>(ufs<span class="sc">$</span>idhm, ufs[[col]], <span class="at">method =</span> <span class="st">"spearman"</span>), <span class="dv">3</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      pobreza mort_infantil          gini 
        -0.825        -0.751        -0.308 </code></pre>
@@ -1072,20 +1415,26 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p>Negativas, como a teoria prevê. Forte com <strong>pobreza</strong> (−0,83) e <strong>mortalidade</strong> (−0,75) — convergente, mas não redundante. Fraca com o <strong>Gini</strong> (−0,31): o <em>nível</em> diz pouco sobre a <em>desigualdade</em> — a dimensão que o IDHM deixa de fora.</p>
 </div>
 </section>
-<section id="rode-o-índice-irmão-idhmad" class="slide level2 smaller">
+<section id="rode-o-índice-irmão-idhmad" class="slide level2 scrollable">
 <h2>Rode: o índice irmão (IDHMAD)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a aria-hidden="true" tabindex="-1"></a>ad <span class="ot">&lt;-</span> ufs <span class="sc">|&gt;</span> <span class="fu">transmute</span>(<span class="at">uf =</span> NOME, <span class="at">idhm =</span> IDHM, <span class="at">idhmad =</span> IDHMAD, <span class="at">perda =</span> IDHMAD_PERDA,</span>
-<span id="cb47-2"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">rank_idhm   =</span> <span class="fu">rank</span>(<span class="sc">-</span>IDHM,   <span class="at">ties.method =</span> <span class="st">"min"</span>),</span>
-<span id="cb47-3"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">rank_idhmad =</span> <span class="fu">rank</span>(<span class="sc">-</span>IDHMAD, <span class="at">ties.method =</span> <span class="st">"min"</span>),</span>
-<span id="cb47-4"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">desloca     =</span> rank_idhm <span class="sc">-</span> rank_idhmad)</span>
-<span id="cb47-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">spearman =</span> <span class="fu">round</span>(<span class="fu">cor</span>(ad<span class="sc">$</span>idhm, ad<span class="sc">$</span>idhmad, <span class="at">method =</span> <span class="st">"spearman"</span>), <span class="dv">3</span>),</span>
-<span id="cb47-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">perda_media =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ad<span class="sc">$</span>perda), <span class="dv">1</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># tabela com IDHM, IDHMAD (ajustado à desigualdade), a perda (%) e a posição em cada ranking;</span></span>
+<span id="cb48-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># 'desloca' = quantas posições a UF muda ao passar de um ao outro</span></span>
+<span id="cb48-3"><a aria-hidden="true" tabindex="-1"></a>ad <span class="ot">&lt;-</span> ufs <span class="sc">|&gt;</span></span>
+<span id="cb48-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">uf =</span> NOME, <span class="at">idhm =</span> IDHM, <span class="at">idhmad =</span> IDHMAD, <span class="at">perda =</span> IDHMAD_PERDA,</span>
+<span id="cb48-5"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">rank_idhm   =</span> <span class="fu">rank</span>(<span class="sc">-</span>IDHM,   <span class="at">ties.method =</span> <span class="st">"min"</span>),</span>
+<span id="cb48-6"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">rank_idhmad =</span> <span class="fu">rank</span>(<span class="sc">-</span>IDHMAD, <span class="at">ties.method =</span> <span class="st">"min"</span>),</span>
+<span id="cb48-7"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">desloca     =</span> rank_idhm <span class="sc">-</span> rank_idhmad)</span>
+<span id="cb48-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># correlação entre os dois rankings e a perda média (mean) entre as UFs</span></span>
+<span id="cb48-10"><a aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">spearman    =</span> <span class="fu">round</span>(<span class="fu">cor</span>(ad<span class="sc">$</span>idhm, ad<span class="sc">$</span>idhmad, <span class="at">method =</span> <span class="st">"spearman"</span>), <span class="dv">3</span>),</span>
+<span id="cb48-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">perda_media =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ad<span class="sc">$</span>perda), <span class="dv">1</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   spearman perda_media 
       0.955      20.400 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(ad, <span class="fu">desc</span>(<span class="fu">abs</span>(desloca))) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># as 8 UFs que mais se deslocam ao ajustar pela desigualdade</span></span>
+<span id="cb50-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(ad, <span class="fu">desc</span>(<span class="fu">abs</span>(desloca))) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top">
@@ -1155,6 +1504,24 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <td style="text-align: right;">25</td>
 <td style="text-align: right;">2</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">Ceará</td>
+<td style="text-align: right;">0.773</td>
+<td style="text-align: right;">0.597</td>
+<td style="text-align: right;">22.8</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">-2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sergipe</td>
+<td style="text-align: right;">0.761</td>
+<td style="text-align: right;">0.589</td>
+<td style="text-align: right;">22.6</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">-2</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1172,54 +1539,78 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <section id="três-cuidados-num-mapa" class="slide level2 smaller">
 <h2>Três cuidados num mapa</h2>
 <ol type="1">
-<li><strong>Classificação</strong> — intervalos iguais, quantis, Jenks contam histórias diferentes; o defensável é usar as <strong>faixas oficiais</strong>.</li>
+<li><strong>Classificação</strong> — como cortar a escala em classes muda o mapa. <em>Intervalos iguais</em> fatiam em faixas de mesma largura; <em>quantis</em> põem o mesmo nº de UFs por classe; <strong>Jenks</strong> (“quebras naturais”) procura os <strong>cortes onde há lacunas</strong> nos dados (minimiza a variância dentro de cada grupo). Cada método conta uma história — o defensável aqui é usar as <strong>faixas oficiais</strong>.</li>
 <li><strong>Paleta</strong> — sequencial, perceptualmente uniforme e legível para daltônicos (<em>viridis</em>).</li>
 <li><strong>Viés de área</strong> — UFs grandes dominam o olhar; acompanhe de um ranking.</li>
 </ol>
 <p>E os obrigatórios: título, legenda, <strong>escala</strong>, <strong>norte</strong>, <strong>fonte</strong>.</p>
 </section>
-<section id="rode-mapa-do-idhm" class="slide level2 smaller">
+<section id="rode-mapa-do-idhm" class="slide level2 scrollable">
 <h2>Rode: mapa do IDHM</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-hidden="true" tabindex="-1"></a>uf_geo <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/uf_brasil.geojson"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">5880</span>)</span>
-<span id="cb50-2"><a aria-hidden="true" tabindex="-1"></a>uf_geo<span class="sc">$</span>CODIGO <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(uf_geo<span class="sc">$</span>codigo_ibg)</span>
-<span id="cb50-3"><a aria-hidden="true" tabindex="-1"></a>mapa <span class="ot">&lt;-</span> <span class="fu">left_join</span>(uf_geo, <span class="fu">mutate</span>(ufs, <span class="at">CODIGO =</span> <span class="fu">as.integer</span>(CODIGO)), <span class="at">by =</span> <span class="st">"CODIGO"</span>)</span>
-<span id="cb50-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
-<span id="cb50-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> idhm), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb50-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">name =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span></span>
-<span id="cb50-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>, <span class="at">style =</span> <span class="st">"ticks"</span>) <span class="sc">+</span></span>
-<span id="cb50-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_north_arrow</span>(<span class="at">location =</span> <span class="st">"tr"</span>, <span class="at">style =</span> <span class="fu">north_arrow_minimal</span>(),</span>
-<span id="cb50-9"><a aria-hidden="true" tabindex="-1"></a>                         <span class="at">height =</span> <span class="fu">unit</span>(<span class="fl">0.7</span>, <span class="st">"cm"</span>), <span class="at">width =</span> <span class="fu">unit</span>(<span class="fl">0.7</span>, <span class="st">"cm"</span>)) <span class="sc">+</span></span>
-<span id="cb50-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"IDHM — UFs, 2024"</span>) <span class="sc">+</span> <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># st_read() (pacote sf) lê o arquivo geográfico com os contornos das UFs</span></span>
+<span id="cb51-2"><a aria-hidden="true" tabindex="-1"></a>uf_geo <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/uf_brasil.geojson"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># projeta para SIRGAS 2000 / Polyconic (EPSG:5880), o sistema oficial p/ mapas do Brasil em metros:</span></span>
+<span id="cb51-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># torna a barra de escala correta (em lat/long a escala variaria com a latitude)</span></span>
+<span id="cb51-6"><a aria-hidden="true" tabindex="-1"></a>uf_geo <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(uf_geo, <span class="dv">5880</span>)</span>
+<span id="cb51-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a aria-hidden="true" tabindex="-1"></a><span class="co"># as.integer() converte o código do IBGE em inteiro, para casar com a base por valor numérico</span></span>
+<span id="cb51-9"><a aria-hidden="true" tabindex="-1"></a>uf_geo<span class="sc">$</span>CODIGO <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(uf_geo<span class="sc">$</span>codigo_ibg)</span>
+<span id="cb51-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># left_join() cola os dados do IDHM ao mapa, casando pela coluna CODIGO</span></span>
+<span id="cb51-11"><a aria-hidden="true" tabindex="-1"></a>mapa <span class="ot">&lt;-</span> <span class="fu">left_join</span>(uf_geo, <span class="fu">mutate</span>(ufs, <span class="at">CODIGO =</span> <span class="fu">as.integer</span>(CODIGO)), <span class="at">by =</span> <span class="st">"CODIGO"</span>)</span>
+<span id="cb51-12"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-13"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mapa) <span class="sc">+</span></span>
+<span id="cb51-14"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> idhm), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span>     <span class="co"># polígonos das UFs</span></span>
+<span id="cb51-15"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">name =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span>  <span class="co"># paleta legível</span></span>
+<span id="cb51-16"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>, <span class="at">style =</span> <span class="st">"ticks"</span>) <span class="sc">+</span>              <span class="co"># escala</span></span>
+<span id="cb51-17"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_north_arrow</span>(<span class="at">location =</span> <span class="st">"tr"</span>, <span class="at">style =</span> <span class="fu">north_arrow_minimal</span>(),    <span class="co"># norte</span></span>
+<span id="cb51-18"><a aria-hidden="true" tabindex="-1"></a>                         <span class="at">height =</span> <span class="fu">unit</span>(<span class="fl">0.8</span>, <span class="st">"cm"</span>), <span class="at">width =</span> <span class="fu">unit</span>(<span class="fl">0.8</span>, <span class="st">"cm"</span>)) <span class="sc">+</span></span>
+<span id="cb51-19"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"IDHM — Unidades da Federação, 2024"</span>,</span>
+<span id="cb51-20"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fonte: Atlas do Desenvolvimento Humano / Radar IDHM (PNUD, FJP, IBGE)."</span>) <span class="sc">+</span></span>
+<span id="cb51-21"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
-<section id="rode-faixas-oficiais-2012-2024" class="slide level2 smaller">
+<section id="rode-faixas-oficiais-2012-2024" class="slide level2 scrollable">
 <h2>Rode: faixas oficiais, 2012 × 2024</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a aria-hidden="true" tabindex="-1"></a>cores_idhm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Muito Baixo"</span> <span class="ot">=</span> <span class="st">"#C0392B"</span>, <span class="st">"Baixo"</span> <span class="ot">=</span> <span class="st">"#E67E22"</span>, <span class="st">"Médio"</span> <span class="ot">=</span> <span class="st">"#F1C40F"</span>,</span>
-<span id="cb51-2"><a aria-hidden="true" tabindex="-1"></a>                <span class="st">"Alto"</span> <span class="ot">=</span> <span class="st">"#1E8449"</span>, <span class="st">"Muito Alto"</span> <span class="ot">=</span> <span class="st">"#5DADE2"</span>)</span>
-<span id="cb51-3"><a aria-hidden="true" tabindex="-1"></a>faixas_anos <span class="ot">&lt;-</span> radar <span class="sc">|&gt;</span></span>
-<span id="cb51-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>, ANO <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2024</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb51-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">CODIGO =</span> <span class="fu">as.integer</span>(CODIGO), ANO,</span>
-<span id="cb51-6"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">faixa =</span> <span class="fu">cut</span>(IDHM, <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, .<span class="dv">5</span>, .<span class="dv">6</span>, .<span class="dv">7</span>, .<span class="dv">8</span>, <span class="cn">Inf</span>), <span class="at">right =</span> <span class="cn">FALSE</span>, <span class="at">labels =</span> <span class="fu">names</span>(cores_idhm)))</span>
-<span id="cb51-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">left_join</span>(uf_geo, faixas_anos, <span class="at">by =</span> <span class="st">"CODIGO"</span>)) <span class="sc">+</span></span>
-<span id="cb51-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> faixa), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>ANO) <span class="sc">+</span></span>
-<span id="cb51-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cores_idhm, <span class="at">drop =</span> <span class="cn">FALSE</span>, <span class="at">name =</span> <span class="st">"Faixa IDHM"</span>) <span class="sc">+</span> <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># paleta oficial do Atlas/PNUD: vermelho → laranja → amarelo → verde → azul</span></span>
+<span id="cb52-2"><a aria-hidden="true" tabindex="-1"></a>cores_idhm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Muito Baixo"</span> <span class="ot">=</span> <span class="st">"#C0392B"</span>, <span class="st">"Baixo"</span> <span class="ot">=</span> <span class="st">"#E67E22"</span>, <span class="st">"Médio"</span> <span class="ot">=</span> <span class="st">"#F1C40F"</span>,</span>
+<span id="cb52-3"><a aria-hidden="true" tabindex="-1"></a>                <span class="st">"Alto"</span>        <span class="ot">=</span> <span class="st">"#1E8449"</span>, <span class="st">"Muito Alto"</span> <span class="ot">=</span> <span class="st">"#5DADE2"</span>)</span>
+<span id="cb52-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a aria-hidden="true" tabindex="-1"></a><span class="co"># IDHM oficial das UFs em 2012 e 2024, discretizado nas 5 faixas com cut()</span></span>
+<span id="cb52-6"><a aria-hidden="true" tabindex="-1"></a>faixas_anos <span class="ot">&lt;-</span> radar <span class="sc">|&gt;</span></span>
+<span id="cb52-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>, ANO <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2024</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb52-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">CODIGO =</span> <span class="fu">as.integer</span>(CODIGO), ANO,</span>
+<span id="cb52-9"><a aria-hidden="true" tabindex="-1"></a>            <span class="at">faixa =</span> <span class="fu">cut</span>(IDHM, <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, .<span class="dv">5</span>, .<span class="dv">6</span>, .<span class="dv">7</span>, .<span class="dv">8</span>, <span class="cn">Inf</span>), <span class="at">right =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb52-10"><a aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">names</span>(cores_idhm)))</span>
+<span id="cb52-11"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">left_join</span>(uf_geo, faixas_anos, <span class="at">by =</span> <span class="st">"CODIGO"</span>)) <span class="sc">+</span></span>
+<span id="cb52-13"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> faixa), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb52-14"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>ANO) <span class="sc">+</span>                                          <span class="co"># um mapa por ano, lado a lado</span></span>
+<span id="cb52-15"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cores_idhm, <span class="at">drop =</span> <span class="cn">FALSE</span>, <span class="at">name =</span> <span class="st">"Faixa IDHM"</span>) <span class="sc">+</span></span>
+<span id="cb52-16"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-28-1.png" width="960" class="r-stretch"><div class="fragment">
 <p>Entre 2012 e 2024, o “Médio” (amarelo) desaparece e surge o “Muito Alto” (azul). Gradiente sugere precisão que o índice não tem; faixas comunicam a ordem de grandeza que importa.</p>
 </div>
 </section>
-<section id="rode-trajetória-slope-chart" class="slide level2 smaller">
+<section id="rode-trajetória-slope-chart" class="slide level2 scrollable">
 <h2>Rode: trajetória (slope chart)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-hidden="true" tabindex="-1"></a>evol <span class="ot">&lt;-</span> radar <span class="sc">|&gt;</span> <span class="fu">filter</span>(AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>, ANO <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2024</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb52-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ANO =</span> <span class="fu">factor</span>(ANO))</span>
-<span id="cb52-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(evol, <span class="fu">aes</span>(ANO, IDHM, <span class="at">group =</span> NOME)) <span class="sc">+</span></span>
-<span id="cb52-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"#2980b9"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#2980b9"</span>, <span class="at">size =</span> <span class="fl">1.6</span>) <span class="sc">+</span></span>
-<span id="cb52-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># painel com os dois anos; ANO como fator vira eixo categórico (dois pontos no x)</span></span>
+<span id="cb53-2"><a aria-hidden="true" tabindex="-1"></a>evol <span class="ot">&lt;-</span> radar <span class="sc">|&gt;</span></span>
+<span id="cb53-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AGREGACAO <span class="sc">==</span> <span class="st">"Unidade da Federação"</span>, ANO <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2024</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb53-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ANO =</span> <span class="fu">factor</span>(ANO))</span>
+<span id="cb53-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a aria-hidden="true" tabindex="-1"></a><span class="co"># group = NOME liga os dois anos de cada UF por uma linha — a "inclinação" de cada trajetória</span></span>
+<span id="cb53-7"><a aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(evol, <span class="fu">aes</span>(ANO, IDHM, <span class="at">group =</span> NOME)) <span class="sc">+</span></span>
+<span id="cb53-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"#2980b9"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb53-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#2980b9"</span>, <span class="at">size =</span> <span class="fl">1.6</span>) <span class="sc">+</span></span>
+<span id="cb53-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span></span>
+<span id="cb53-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"><div class="fragment">
@@ -1237,10 +1628,12 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <li>Escolha um cenário — outros pesos, agregação aritmética, ou sem renda (<code>pesos = c(1, 1, 0)</code>).</li>
 <li>Calcule com <code>construir_indice()</code> e gere ranking e mapa (com escala, norte, fonte).</li>
 <li>Quais UFs mais sobem/descem vs.&nbsp;o IDHM oficial? Por quê?</li>
-<li>A mudança é <strong>substantiva</strong> ou <strong>artefato</strong> da regra/pesos? (peso é taxa de troca, não importância.)</li>
+<li>A mudança é <strong>substantiva</strong> ou um <strong>artefato</strong>?</li>
 </ol>
 <div class="fragment">
-<p><strong>Para ir além:</strong> rode o Monte Carlo (robustez), correlacione com um indicador externo (validade), compare com os pesos da PCA, ou desenhe o perfil das UFs que mais se deslocam.</p>
+<blockquote>
+<p><strong>Artefato</strong> = resultado que vem da <strong>regra e dos pesos</strong> que <em>você</em> escolheu, não da realidade medida. Se ao trocar a agregação uma UF sobe 10 posições, isso diz mais sobre a sua escolha do que sobre o desenvolvimento daquela UF. (Lembre: em agregação compensatória, o peso é uma <strong>taxa de troca</strong>, não um “coeficiente de importância”.)</p>
+</blockquote>
 </div>
 </section></section>
 <section>
@@ -1248,23 +1641,23 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <h1>Encerramento</h1>
 
 </section>
-<section id="as-críticas-ao-idhm" class="slide level2 smaller">
+<section id="as-críticas-ao-idhm" class="slide level2 smaller scrollable">
 <h2>As críticas ao IDHM</h2>
 <ul>
-<li><strong>Paradoxo da elegibilidade</strong> (Guimarães &amp; Jannuzzi, 2005) — como critério <em>único</em>, exclui quem é grave numa dimensão específica. (Vimos: RN × Roraima.)</li>
-<li><strong>Dimensões ausentes</strong> — desigualdade, ambiente, liberdade política, segurança.</li>
-<li><strong>Balizas e log são convenções</strong>, não fatos.</li>
-<li><strong>Efeito-teto</strong> — indicadores quase universais perdem poder de diferenciar.</li>
-<li><strong>Falácia ecológica e reificação</strong> — o valor da UF não descreve ninguém; o número vira um fim em si.</li>
+<li><strong>Paradoxo da elegibilidade</strong> (Guimarães &amp; Jannuzzi, 2005) — como <strong>critério único</strong> de seleção, exclui quem está grave numa dimensão específica (saneamento, nutrição) por ter um IDHM agregado “razoável”. Vimos o princípio: RN e Roraima, mesmo IDHM por caminhos opostos.</li>
+<li><strong>Dimensões ausentes</strong> — o recorte em longevidade, educação e renda deixa de fora <strong>desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia</strong>. O próprio PNUD admite isso com índices irmãos (IDHMAD para a desigualdade).</li>
+<li><strong>Balizas e transformações são convenções</strong> — os limites fixos (25–85 anos; R$ 8–4.033) e o <strong>log</strong> da renda são decisões normativas, não fatos: mudá-los desloca os valores (vimos no efeito do log).</li>
+<li><strong>Efeito-teto</strong> — indicadores que se aproximam do limite (frequência de 5–6 anos, quase universal; longevidade cada vez mais homogênea) <strong>perdem poder de diferenciar</strong> as unidades.</li>
+<li><strong>Falácia ecológica e reificação</strong> — o valor de uma UF não descreve nenhum habitante; e o número agregado, repetido, vira um fim em si (o “fetichismo do indicador”) — contra o que a volta às dimensões (Etapa 8) é o antídoto.</li>
 </ul>
 </section>
 <section id="como-ler-qualquer-índice" class="slide level2 smaller">
 <h2>Como ler <em>qualquer</em> índice</h2>
 <ol type="1">
-<li><strong>Que dimensões</strong> inclui — e o que ficou de fora?</li>
-<li><strong>Que indicadores</strong> o operacionalizam — censo, amostra ou registro?</li>
-<li><strong>Como normaliza</strong> — referência fixa ou amostral; e a polaridade?</li>
-<li><strong>Como pondera e agrega</strong> — pesos (iguais? explícitos? dos dados?) e regra (compensatória ou não)?</li>
+<li><strong>Que dimensões</strong> inclui — e o que ficou de fora, por imposição teórica ou de dados?</li>
+<li><strong>Que indicadores</strong> o operacionalizam — censo, pesquisa amostral ou registro administrativo?</li>
+<li><strong>Como normaliza</strong> — referência fixa ou amostral, e como trata a polaridade?</li>
+<li><strong>Como pondera e agrega</strong> — que pesos (iguais? explícitos? dos dados?) e que regra (compensatória ou não)?</li>
 </ol>
 </section>
 <section id="mensagem-final" class="slide level2 smaller">
