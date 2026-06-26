@@ -22,10 +22,6 @@ execute:
 
 ```{r}
 #| include: false
-suppressPackageStartupMessages({
-  library(readxl); library(dplyr); library(tidyr)
-  library(ggplot2); library(sf); library(ggspatial)
-})
 options(width = 90)
 ```
 
@@ -106,21 +102,16 @@ A passagem top-down conceito→dimensão→indicador. O paradoxo aproximar/dista
 
 # Etapa 1 · Marco teórico e conceitual
 
-## O que é desenvolvimento humano?
+## O conceito de desenvolvimento humano {.smaller}
 
-**Para vocês:** o que é "desenvolvimento humano"? Que dimensões ele teria?
-
-. . .
-
-Na formulação de **Mahbub ul Haq**, apoiada em **Amartya Sen**: a **ampliação das liberdades e capacidades** das pessoas — em contraposição ao desenvolvimento como mero crescimento da renda.
+Na formulação de **Mahbub ul Haq**, apoiada na abordagem das **capacitações** de **Amartya Sen**, o desenvolvimento humano é a **ampliação das liberdades e capacidades das pessoas** — a possibilidade real de levarem a vida que têm razão para valorizar —, em contraposição à identificação do desenvolvimento com o mero crescimento da renda (PNUD, 1990; Sen, 2000).
 
 . . .
 
-O IDHM o operacionaliza em três dimensões — **longevidade · educação · renda**.
-E o que ficou *de fora*? — desigualdade, liberdade política, sustentabilidade ambiental.
+O IDHM operacionaliza essa concepção em três dimensões — **longevidade, educação e renda** —, deixando deliberadamente de fora aspectos como **desigualdade, liberdade política e sustentabilidade ambiental**.
 
 ::: {.notes}
-Deixar a sala propor dimensões antes de revelar. O "de fora" prepara a crítica do encerramento.
+Renda é meio, não fim: importa o que as pessoas conseguem ser e fazer (as capacitações). As três dimensões são uma convenção operacional; o "de fora" prepara a crítica do encerramento.
 :::
 
 # Etapa 2 · Seleção de dados
@@ -135,27 +126,41 @@ Deixar a sala propor dimensões antes de revelar. O "de fora" prepara a crítica
 - **Renda** → **renda domiciliar *per capita*** (entra em **log** na Etapa 5), não a Renda Nacional Bruta global.
 - **Educação** → **estoque** (adultos com fundamental) + **fluxo** (jovens na idade certa) — combinados só na Etapa 6.
 
-::: {.notes}
-e0 sintetiza nível e estrutura da mortalidade, todas as causas. Renda domiciliar mais perto do padrão de vida vivido. Educação: duas naturezas.
-:::
-
-## Rode: pacotes e dados
+## Rode: carregar os pacotes {.scrollable}
 
 ```{r}
-radar <- read_excel("data/adh_radar_base_2012_2024.xlsx", sheet = "Total")
+# c() cria um vetor com os nomes dos pacotes que vamos usar:
+# readxl (ler Excel), dplyr/tidyr (manipular tabelas), ggplot2 (gráficos), sf (mapas),
+# ggspatial (escala e rosa-dos-ventos nos mapas, Etapa 10)
+pacotes <- c("readxl", "dplyr", "tidyr", "ggplot2", "sf", "ggspatial")
 
-# as 27 UFs no ano de 2024
-ufs <- filter(radar, ANO == 2024, AGREGACAO == "Unidade da Federação")
+# setdiff() devolve os pacotes da lista que ainda NÃO estão instalados...
+faltando <- setdiff(pacotes, rownames(installed.packages()))
+# ...e, se houver algum faltando, instala-o automaticamente
+if (length(faltando) > 0) install.packages(faltando)
 
-# os 4 indicadores de fluxo escolar
-cols_fluxo <- c("T_FREQ5A6", "T_FUND11A13", "T_FUND15A17", "T_MED18A20")
-
-dim(ufs)
+# carrega (library) cada pacote da lista; invisible() apenas suprime a saída no console
+invisible(lapply(pacotes, library, character.only = TRUE))
 ```
 
-## O que temos {.smaller}
+## Rode: ler os dados {.scrollable}
 
 ```{r}
+# read_excel() lê a planilha; sheet = "Total" escolhe a aba. O resultado é guardado
+# (com a seta <-, o operador de atribuição do R) no objeto 'radar': uma tabela (data frame)
+# com o painel 2012–2024 e vários recortes geográficos
+radar <- read_excel("data/adh_radar_base_2012_2024.xlsx", sheet = "Total")
+
+# filter() mantém apenas as linhas que satisfazem as condições (ano = 2024 E recorte = UF);
+# '==' testa igualdade (note os dois sinais de igual). Sobram as 27 UFs de 2024
+ufs <- filter(radar, ANO == 2024, AGREGACAO == "Unidade da Federação")
+
+# vetor com os códigos das 4 colunas de FLUXO escolar, que reutilizaremos adiante
+cols_fluxo <- c("T_FREQ5A6", "T_FUND11A13", "T_FUND15A17", "T_MED18A20")
+
+# glimpse() mostra um resumo das colunas escolhidas. Dentro de ufs[, c(...)], a vírgula
+# separa [linhas, colunas]: deixando o lado das linhas vazio, pedimos TODAS as linhas e só
+# as colunas listadas
 glimpse(ufs[, c("NOME", "ESPVIDA", "T_FUND18M", cols_fluxo, "RDPC", "IDHM")])
 ```
 
@@ -167,109 +172,178 @@ glimpse(ufs[, c("NOME", "ESPVIDA", "T_FUND18M", cols_fluxo, "RDPC", "IDHM")])
 
 ## Os dados estão prontos? {.smaller}
 
-Mais que "imputar ausentes": é onde o dado bruto se torna apto à análise — **crítica de consistência, outliers, ausentes, suavização** — e onde se fixam as referências e a polaridade que a normalização usará.
+Mais que "imputar ausentes": é onde o dado bruto se torna apto à análise — **crítica de consistência, outliers, ausentes, suavização** — e onde se fixam as referências e a polaridade que a normalização usará. Nem toda ausência aparece como `NA`: valores sentinela (0, −1, 99) podem mascarar dados faltantes.
 
-. . .
-
-Começamos checando ausências nos indicadores do cálculo:
+## Rode: checar ausências {.scrollable}
 
 ```{r}
+# dim() devolve as dimensões da tabela: número de linhas (UFs) e de colunas (variáveis)
+dim(ufs)
+
+# o que importa aqui são os indicadores que ALIMENTAM o índice — não as dezenas de colunas
+# da base. Reunimos os 8 num vetor: longevidade, escolaridade, os 4 de fluxo, renda e o
+# IDHM oficial (este último para a reprodução na Etapa 9)
 cols_calc <- c("ESPVIDA", "T_FUND18M", cols_fluxo, "RDPC", "IDHM")
-colSums(is.na(ufs[, cols_calc]))   # nº de ausências por indicador
+
+# is.na() marca como TRUE cada célula vazia; colSums() soma esses TRUE coluna a coluna
+# (no R, TRUE conta como 1 e FALSE como 0), dando o nº de ausências por variável.
+# ufs[, cols_calc] restringe a checagem a essas 8 colunas
+na_por_coluna <- colSums(is.na(ufs[, cols_calc]))
+
+# filtra o resultado para exibir apenas as colunas (dentre as do cálculo) com alguma ausência
+na_por_coluna[na_por_coluna > 0]
 ```
 
 . . .
 
-Tudo **zero**: o Radar já vem consolidado. A imputação é dispensada — mas a *decisão* de tratamento permanece.
+Resultado **vazio**: o Radar já vem consolidado, sem ausências a imputar *neste* recorte. A imputação é dispensada — mas a *decisão* de tratamento permanece.
 
-## Rode: regras de consistência {.smaller}
+## Crítica e consistência {.smaller}
+
+*O que faz:* aplica **regras estruturadas** que confrontam cada valor com limites plausíveis e com a trajetória histórica. *Responde:* há valores impossíveis ou saltos inverossímeis na base? Torna a crítica de dados **reprodutível e auditável**, em vez de inspeção manual.
+
+## Rode: regras de consistência {.scrollable}
 
 ```{r}
+# cada regra é um vetor lógico (TRUE onde a UF satisfaz a condição, FALSE onde falha).
+# o & combina condições (E lógico); >= e <= testam os limites
 regras <- list(
-  renda_positiva    = ufs$RDPC > 0,
-  espvida_plausivel = ufs$ESPVIDA >= 50 & ufs$ESPVIDA <= 90,
-  escol_percentual  = ufs$T_FUND18M >= 0 & ufs$T_FUND18M <= 100,
+  renda_positiva    = ufs$RDPC > 0,                              # renda > 0: exigência do log (Etapa 5)
+  espvida_plausivel = ufs$ESPVIDA >= 50 & ufs$ESPVIDA <= 90,     # esperança de vida em faixa plausível
+  escol_percentual  = ufs$T_FUND18M >= 0 & ufs$T_FUND18M <= 100, # escolaridade (%) dentro de [0,100]
+  # apply(..., 1, all) verifica, linha a linha (margem 1 = UFs), se TODOS os 4 indicadores
+  # de fluxo caem em [0,100]; all() exige que a condição valha para os quatro de uma vez
   fluxo_percentual  = apply(ufs[, cols_fluxo] >= 0 & ufs[, cols_fluxo] <= 100, 1, all)
 )
-sapply(regras, function(ok) sum(!ok))   # quantas UFs FALHAM em cada regra
+
+# sapply percorre as regras e conta, em cada uma, quantas UFs FALHAM: !ok inverte o lógico
+# (TRUE vira FALSE e vice-versa) e sum() soma os TRUE. Zero em todas = base consistente
+sapply(regras, function(ok) sum(!ok))
 ```
 
 . . .
 
-Zero falhas. O valor do método aparece em dados brutos: a mesma estrutura flagraria automaticamente um % acima de 100 ou uma renda nula. (Pacotes `validate`, `pointblank` formalizam isso.)
+Zero falhas. Em dados brutos, a mesma estrutura flagraria automaticamente um % acima de 100 ou a renda nula que inviabilizaria o log. (Pacotes `validate`, `pointblank` formalizam isso.)
 
-## Rode: outliers (regra do boxplot) {.smaller}
+## Outliers {.smaller}
+
+*O que faz:* sinaliza valores muito afastados do conjunto — pela cerca do boxplot $[\,Q_1 - 1{,}5\cdot\text{IQR},\; Q_3 + 1{,}5\cdot\text{IQR}\,]$. *Responde:* há um extremo capaz de distorcer a escala? Importa porque, sob min–max **amostral**, um único outlier define o máximo e comprime todo o resto.
+
+## Rode: outliers (regra do boxplot) {.scrollable}
 
 ```{r}
+# função que devolve TRUE para os valores fora da cerca do boxplot
 eh_outlier <- function(x) {
-  q <- quantile(x, c(.25, .75)); iqr <- q[2] - q[1]
+  q <- quantile(x, c(.25, .75))     # 1º e 3º quartis (Q1 e Q3)
+  iqr <- q[2] - q[1]                # amplitude interquartílica
   x < q[1] - 1.5 * iqr | x > q[2] + 1.5 * iqr
 }
-indic <- data.frame(longev = ufs$ESPVIDA, escol = ufs$T_FUND18M,
-                     fluxo = rowMeans(ufs[, cols_fluxo]), renda = ufs$RDPC)
+
+# aplica a regra a cada indicador do cálculo e conta quantas UFs caem fora da cerca
+indic <- data.frame(longevidade  = ufs$ESPVIDA,
+                    escolaridade = ufs$T_FUND18M,
+                    fluxo        = rowMeans(ufs[, cols_fluxo]),
+                    renda        = ufs$RDPC)
 sapply(indic, function(x) sum(eh_outlier(x)))
+
+# qual UF é o único caso atípico (em longevidade)?
 ufs$NOME[eh_outlier(ufs$ESPVIDA)]
 ```
 
 . . .
 
-Só a longevidade acusa um caso: o **Distrito Federal**. Sob min–max *amostral*, essa única UF definiria o teto e comprimiria todas as demais — por isso o IDHM usa balizas **fixas** (25–85). E *extremo* ≠ *outlier*: o DF, recordista de renda, nem é flagrado nela.
+Só a longevidade acusa um caso: o **Distrito Federal**. Sob min–max *amostral*, essa única UF definiria o teto e comprimiria todas as demais — um problema que a **normalização (Etapa 5)** vai ter de enfrentar. E note: *extremo* ≠ *outlier* — o DF, recordista de renda, nem é flagrado nela.
 
 # Etapa 4 · Análise multivariada
 
 ## Examinar a estrutura {.smaller}
 
-Antes de combinar: há **redundância** entre indicadores? A estrutura empírica respalda o agrupamento teórico? Que **perfis** de UF se formam?
-
-. . .
+A pergunta central: **há redundância** entre os indicadores? Indicadores fortemente correlacionados carregam informação repetida, e pesá-los igualmente **superpondera** a dimensão que compartilham — a *dupla contagem*.
 
 > Contra-alerta: certa correlação entre medidas de um mesmo agregado é esperada. Quem decide se duas medidas são "a mesma coisa" é a **teoria**, não o coeficiente.
 
-## Rode: matriz de correlação {.smaller}
+## Matriz de correlação {.smaller}
+
+*O que faz:* calcula a correlação entre cada par de indicadores (de −1 a 1). *Responde:* quais indicadores andam juntos — isto é, são candidatos a redundância?
+
+## Rode: matriz de correlação {.scrollable}
 
 ```{r}
+# A análise multivariada examina os indicadores SEPARADOS — inclusive os 4 de fluxo, que só
+# serão combinados na Etapa 6. Tomar a média do fluxo já aqui esconderia a redundância entre eles.
+# O operador |> ("pipe") passa ufs como 1º argumento de transmute(), que monta uma tabela em que
+# cada coluna é um indicador bruto (à esquerda do '=', o nome; à direita, a coluna da base):
 indicadores <- ufs |>
-  transmute(longevidade = ESPVIDA, escolaridade = T_FUND18M,
-            fluxo_5a6 = T_FREQ5A6, fluxo_11a13 = T_FUND11A13,
-            fluxo_15a17 = T_FUND15A17, fluxo_18a20 = T_MED18A20, renda = RDPC)
-round(cor(indicadores), 2)
+  transmute(
+    longevidade  = ESPVIDA,
+    escolaridade = T_FUND18M,
+    fluxo_5a6    = T_FREQ5A6,
+    fluxo_11a13  = T_FUND11A13,
+    fluxo_15a17  = T_FUND15A17,
+    fluxo_18a20  = T_MED18A20,
+    renda        = RDPC
+  )
+
+# cor() calcula a matriz de correlação entre as colunas; round(..., 2) arredonda para 2 casas.
+# use = "complete.obs" manda ignorar eventuais ausências no cálculo
+round(cor(indicadores, use = "complete.obs"), 2)
 ```
 
 . . .
 
 Os **fluxos** do fundamental/médio se correlacionam forte (respalda combiná-los); o de **5–6 anos** destoa (saturado). E o alerta central: **renda × escolaridade = 0,72** — dupla contagem potencial ao pesá-las igualmente.
 
-## Rode: α de Cronbach {.smaller}
+## Alpha de Cronbach {.smaller}
+
+*O que faz:* a partir das variâncias dos itens, mede a **consistência interna** de um conjunto — o quanto seus itens "andam juntos", como se fossem medidas ruidosas de uma mesma coisa. Varia de 0 a 1. *Responde:* esses indicadores formam, de fato, **uma** dimensão coesa? Só faz sentido **dentro** de uma dimensão (aqui, educação), não no conjunto multidimensional. Não é "quanto maior, melhor": é um diagnóstico de coesão.
+
+## Rode: α de Cronbach {.scrollable}
 
 ```{r}
+# alpha de Cronbach: k/(k-1) * (1 - soma das variâncias dos itens / variância da soma dos itens)
 alpha <- function(itens) {
   k <- ncol(itens)
   (k / (k - 1)) * (1 - sum(apply(itens, 2, var)) / var(rowSums(itens)))
 }
+
+# dimensão educação (estoque + 4 fluxo, todos em %), com e sem o fluxo saturado de 5–6 anos
 c(com_5a6 = alpha(ufs[, c("T_FUND18M", cols_fluxo)]),
-  sem_5a6 = alpha(ufs[, c("T_FUND18M","T_FUND11A13","T_FUND15A17","T_MED18A20")])) |> round(3)
+  sem_5a6 = alpha(ufs[, c("T_FUND18M", "T_FUND11A13", "T_FUND15A17", "T_MED18A20")])) |> round(3)
 ```
 
 . . .
 
-O α sobe de **0,69 para 0,74** ao remover o fluxo de 5–6 anos — o mesmo item saturado. O alpha é diagnóstico de coesão, não um "quanto mais alto, melhor".
+O α sobe de **0,69 para 0,74** ao remover o fluxo de 5–6 anos — o mesmo item saturado da matriz. Confirma que os indicadores de educação medem algo comum, e que o item quase invariante pouco acrescenta.
 
-## Rode: componentes principais (PCA) {.smaller}
+## Componentes principais (PCA) {.smaller}
+
+*O que faz:* resume muitos indicadores em poucos **eixos** (componentes) que concentram o máximo de variância; as **cargas** dizem o quanto cada indicador pesa em cada eixo. *Responde:* existe um eixo geral por trás dos indicadores? Que pesos os *dados* sugeririam? (Pesos que refletem **variância**, não importância normativa.)
+
+## Rode: PCA {.scrollable}
 
 ```{r}
+# prcomp() faz a ACP; scale.=TRUE padroniza os indicadores antes (senão a renda, de maior escala,
+# dominaria). Reaproveita o objeto 'indicadores' (as 7 colunas da matriz de correlação)
 pca <- prcomp(indicadores, scale. = TRUE)
-round(summary(pca)$importance[2, 1:3], 3)   # variância de PC1, PC2, PC3
-round(pca$rotation[, 1], 2)                 # cargas no 1º componente
+
+round(summary(pca)$importance[2, 1:3], 3)   # proporção da variância resumida por PC1, PC2, PC3
+round(pca$rotation[, 1], 2)                  # cargas (pesos) dos indicadores no 1º componente
 ```
 
 . . .
 
 O 1º componente resume **metade** da variância (≈0,51): um eixo geral de desenvolvimento. Mas esses pesos maximizam **variância estatística**, não juízo de importância — por isso o IDHM não os adota.
 
-## Rode: agrupamento (dendrograma) {.smaller}
+## Análise de agrupamento (cluster) {.smaller}
+
+*O que faz:* muda de eixo — em vez de comparar **indicadores**, agrupa **unidades** (as UFs) por similaridade de perfil. *Responde:* que **tipos** de UF existem? E qual a contribuição aqui? Mostrar que duas UFs com IDHM parecido podem cair em **ramos distintos** — têm perfis dimensionais diferentes. É a primeira pista da heterogeneidade que a Etapa 8 vai expor.
+
+## Rode: dendrograma {.scrollable}
 
 ```{r}
 #| fig-height: 4
+# scale() padroniza; dist() calcula as distâncias entre as UFs; hclust() as agrupa de forma
+# hierárquica. No dendrograma, quanto mais baixa a junção, mais parecidas são as UFs
 d  <- dist(scale(indicadores))
 hc <- hclust(d, method = "ward.D2")
 plot(hc, labels = ufs$NOME, main = NULL, xlab = "", ylab = "Distância", sub = "", cex = 0.7)
@@ -277,13 +351,15 @@ plot(hc, labels = ufs$NOME, main = NULL, xlab = "", ylab = "Distância", sub = "
 
 . . .
 
-Separa, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs com IDHM parecido podem cair em ramos distintos — perfis diferentes (a Etapa 8 desmonta isso).
+Separa, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs de IDHM parecido podem estar em ramos distintos — exatamente o que a Etapa 8 explora ao desmontar o índice.
 
 # Etapa 5 · Normalização
 
 ## Fixa ou amostral? {.smaller}
 
-**Pergunta:** o "0" e o "1" da escala devem vir de **referências fixas** (balizas externas) ou dos **mín/máx observados** na amostra?
+Os indicadores têm unidades distintas (anos, %, R\$): é preciso pô-los numa **escala comum**.
+
+**Pergunta:** o "0" e o "1" devem vir de **referências fixas** (balizas externas) ou dos **mín/máx observados** na amostra?
 
 . . .
 
@@ -291,13 +367,19 @@ Separa, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs com IDHM 
 
 $$\text{min-max:}\; I = \frac{x - x_{\min}}{x_{\max} - x_{\min}} \qquad \text{z-score:}\; z = \frac{x - \bar{x}}{s}$$
 
-## Rode: três normalizações {.smaller}
+## Rode: três normalizações {.scrollable}
 
 ```{r}
+# o cifrão ($) acessa uma coluna da tabela pelo nome: ufs$ESPVIDA é o vetor de esperanças de vida
 ev <- ufs$ESPVIDA
-fixo     <- (ev - 25) / (85 - 25)                 # min-max fixo (balizas do IDHM)
-amostral <- (ev - min(ev)) / (max(ev) - min(ev))  # min-max amostral
-zscore   <- (ev - mean(ev)) / sd(ev)              # z-score
+
+# as três contas abaixo operam sobre o vetor inteiro de uma vez (R é "vetorizado":
+# não é preciso laço/loop para aplicar a fórmula a cada UF)
+fixo     <- (ev - 25) / (85 - 25)                 # min-max com referência fixa (balizas do IDHM)
+amostral <- (ev - min(ev)) / (max(ev) - min(ev))  # min-max com o mín/máx observados na amostra
+zscore   <- (ev - mean(ev)) / sd(ev)              # padronização z-score (mean = média, sd = desvio-padrão)
+
+# data.frame() junta os três vetores em colunas; summary() resume cada uma (mín, média, máx...)
 summary(data.frame(fixo, amostral, zscore))
 ```
 
@@ -305,19 +387,27 @@ summary(data.frame(fixo, amostral, zscore))
 
 Cada método responde a uma pergunta diferente. E há uma sutileza: o z-score iguala a **dispersão** (variância 1); o min–max iguala a **amplitude** ([0,1]), não a dispersão — o que muda a contribuição efetiva de cada indicador.
 
-## Rode: as normalizações do IDHM {.smaller}
+## Rode: as normalizações do IDHM {.scrollable}
 
 ```{r}
-ufs$i.longev <- (ufs$ESPVIDA - 25) / (85 - 25)              # min-max fixo 25–85
-ufs$i.renda  <- (log(ufs$RDPC) - log(8)) / (log(4033) - log(8))  # log + min-max 8–4033
-ufs$si.escol <- ufs$T_FUND18M / 100                        # estoque (% → [0,1])
-ufs$si.fluxo <- rowMeans(ufs[, cols_fluxo]) / 100          # fluxo (média dos 4, % → [0,1])
+# min-max com referência fixa: baliza inferior 25, superior 85 anos
+ufs$i.longev <- (ufs$ESPVIDA - 25) / (85 - 25)
+
+# mesma ideia, mas em escala logarítmica: log() é o logaritmo natural (ln).
+# referências (já em log) R$ 8 e R$ 4.033, em reais constantes
+ufs$i.renda <- (log(ufs$RDPC) - log(8)) / (log(4033) - log(8))
+
+# cada subindicador já está em percentual (0 a 100), então dividir por 100 o põe em [0,1]
+ufs$si.escol <- ufs$T_FUND18M / 100                  # estoque: escolaridade da população adulta
+ufs$si.fluxo <- rowMeans(ufs[, cols_fluxo]) / 100    # fluxo: média das 4 colunas de frequência
+
+# summary() dos quatro subíndices já normalizados, para conferir que ficaram todos em [0,1]
 summary(ufs[, c("i.longev", "i.renda", "si.escol", "si.fluxo")])
 ```
 
 . . .
 
-Os quatro subíndices ficam em [0,1], prontos para a Etapa 6 — em patamares distintos (fluxo mais alto, escolaridade mais baixa).
+Os quatro subíndices ficam em [0,1], prontos para a Etapa 6 — em patamares distintos (fluxo mais alto, escolaridade mais baixa). *(O log é hipótese normativa: a renda tem contribuição marginal decrescente.)*
 
 # Etapa 6 · Ponderação e agregação
 
@@ -340,13 +430,23 @@ Duas decisões distintas (e independentes):
 
 **IDHM → fluxo peso 2, estoque peso 1**, por média geométrica: $\left(I_{\text{escol}}^{1}\cdot I_{\text{fluxo}}^{2}\right)^{1/3}$
 
+## Rode: agregar a educação {.scrollable}
+
 ```{r}
+# o acento circunflexo (^) é a potência. Média geométrica ponderada = produto dos termos
+# elevados aos pesos, com o expoente final 1/(soma dos pesos): aqui pesos 1 e 2, logo raiz cúbica
 ufs$i.educ <- (ufs$si.escol^1 * ufs$si.fluxo^2)^(1/3)
+
+# para comparar, a mesma média geométrica mas com pesos iguais (1 e 1 → raiz quadrada)
 educ_iguais <- (ufs$si.escol^1 * ufs$si.fluxo^1)^(1/2)
-data.frame(uf = ufs$NOME, educ_idhm = round(ufs$i.educ, 3),
+
+# monta uma tabela com as duas versões e a diferença entre elas...
+data.frame(uf = ufs$NOME,
+           educ_idhm = round(ufs$i.educ, 3),
            educ_iguais = round(educ_iguais, 3),
            dif = round(ufs$i.educ - educ_iguais, 3)) |>
-  arrange(desc(abs(dif))) |> head(6)
+  # ...ordena pela diferença em valor absoluto (abs), do maior p/ o menor (desc), e mostra o topo 8.
+  arrange(desc(abs(dif))) |> head(8)
 ```
 
 ## Três dimensões: pesos e compensação? {.smaller}
@@ -357,41 +457,78 @@ data.frame(uf = ufs$NOME, educ_idhm = round(ufs$i.educ, 3),
 
 **IDHM → pesos iguais + média geométrica** (limita a compensação). A função parametriza ambas as escolhas:
 
+## Rode: a função do índice {.scrollable}
+
 ```{r}
-construir_indice <- function(dados, agregacao = "geometrica", pesos = c(1, 1, 1)) {
+# Definimos NOSSA própria função. function(...) lista os argumentos de entrada; os que têm
+# '=' já trazem um valor padrão, usado quando não os informamos na chamada. Assim, variar
+# normalização, agregação e pesos vira só trocar argumentos.
+construir_indice <- function(dados,
+                             agregacao = "geometrica",  # "geometrica" ou "aritmetica"
+                             pesos = c(1, 1, 1)) {       # pesos de longevidade, educação, renda
+  # apelidos curtos para os três subíndices (L, E, R), só para a fórmula ficar legível
   L <- dados$i.longev; E <- dados$i.educ; R <- dados$i.renda
+
+  # normaliza os pesos para que somem 1 (w[1] é o 1º elemento do vetor w, w[2] o 2º, etc.)
   w <- pesos / sum(pesos)
+
+  # if/else escolhe a regra: produto de potências (geométrica) ou soma ponderada (aritmética)
   indice <- if (agregacao == "geometrica") L^w[1] * E^w[2] * R^w[3]
             else                            w[1]*L + w[2]*E + w[3]*R
-  data.frame(uf = dados$NOME, indice = round(indice, 4),
+
+  # a função devolve uma tabela com UF, índice e posição no ranking.
+  # rank(-indice) ordena de forma decrescente (o '-' inverte: maior índice = 1º lugar);
+  # ties.method = "min" dá a mesma posição (a menor) a empates
+  data.frame(uf = dados$NOME,
+             indice = round(indice, 4),
              rank = rank(-indice, ties.method = "min"))
 }
+
+# chamada com os padrões (geométrica, pesos iguais) = o IDHM oficial; guardamos só a coluna 'indice'
 ufs$idhm <- construir_indice(ufs)$indice
 ```
 
-## Rode: geométrica × aritmética {.smaller}
+## Rode: geométrica × aritmética {.scrollable}
 
 ```{r}
+# calcula o índice nas duas regras de agregação, mudando só o argumento 'agregacao'
 geo <- construir_indice(ufs, agregacao = "geometrica")
 ari <- construir_indice(ufs, agregacao = "aritmetica")
-comparar <- geo |> rename(rank_geo = rank, idx_geo = indice) |>
+
+comparar <- geo |>
+  rename(rank_geo = rank, idx_geo = indice) |>          # renomeia as colunas para distinguir as versões
+  # left_join() cola as duas tabelas lado a lado, casando as linhas pela coluna "uf" (by = "uf")
   left_join(ari |> rename(rank_ari = rank, idx_ari = indice), by = "uf") |>
-  mutate(mudanca = rank_geo - rank_ari)
-arrange(comparar, desc(abs(mudanca)))[, c("uf", "rank_geo", "rank_ari", "mudanca")] |> head(8)
+  mutate(mudanca = rank_geo - rank_ari)  # mutate() acrescenta uma coluna; positivo = sobe ao virar aritmética
+
+# ordena pela mudança absoluta (maior primeiro) e, com [, c(...)], seleciona as colunas a exibir
+arrange(comparar, desc(abs(mudanca)))[, c("uf", "rank_geo", "rank_ari", "mudanca")]
 ```
 
 . . .
 
 As UFs que mais **sobem** ao virar aritmética são as de perfil mais **desigual**: a aritmética compensa o desequilíbrio que a geométrica recusa.
 
-## Rode: pesos derivados dos dados (PCA) {.smaller}
+## Pesos derivados dos dados (PCA) {.smaller}
+
+*O que faz:* aplica a PCA aos três subíndices de dimensão e usa as cargas do 1º componente como **pesos gerados pelos dados**. *Responde:* que pesos os dados "sugerem" — e como o ranking muda em relação aos pesos iguais do IDHM?
+
+## Rode: pesos da PCA {.scrollable}
 
 ```{r}
+# PCA sobre os 3 subíndices das dimensões. Eles JÁ estão normalizados em [0,1] (Etapa 5), por
+# isso NÃO os repadronizamos: scale. = FALSE preserva a dispersão que o min-max deixou.
 pca_dim <- prcomp(ufs[, c("i.longev", "i.educ", "i.renda")], scale. = FALSE)
-pesos_pca <- abs(pca_dim$rotation[, 1]); pesos_pca <- pesos_pca / sum(pesos_pca)
+
+# usa as cargas (em módulo) do 1º componente como pesos, normalizados para somar 1
+pesos_pca <- abs(pca_dim$rotation[, 1])
+pesos_pca <- pesos_pca / sum(pesos_pca)
 round(pesos_pca, 3)
-cor(construir_indice(ufs)$indice,
-    construir_indice(ufs, pesos = pesos_pca)$indice, method = "spearman")
+
+# compara o ranking com pesos data-driven ao do IDHM (pesos iguais), via construir_indice()
+iguais <- construir_indice(ufs)
+datad  <- construir_indice(ufs, pesos = pesos_pca)
+cor(iguais$indice, datad$indice, method = "spearman")   # ≈ 1 = ordenamento quase idêntico
 ```
 
 . . .
@@ -407,54 +544,88 @@ A renda leva ~metade do peso — **não por ser "mais importante", mas por varia
 
 O Handbook recomenda usá-las juntas.
 
-## Rode: sensibilidade (Spearman) {.smaller}
+## Sensibilidade por correlação de rankings {.smaller}
+
+*O que faz:* recalcula o índice em cenários alternativos e mede, pela **correlação de Spearman**, o quanto o ranking se mantém (1 = idêntico; perto de 0 = irreconhecível). *Responde:* o ordenamento resiste às escolhas, ou depende delas?
+
+## Rode: sensibilidade (Spearman) {.scrollable}
 
 ```{r}
+# índice de referência (o IDHM padrão), contra o qual compararemos cada cenário
 idx_padrao <- construir_indice(ufs)$indice
+
+# list() guarda cenários de natureza mista; cada item é, ele próprio, uma lista com
+# [regra de agregação, vetor de pesos]. Os nomes à esquerda do '=' rotulam cada cenário
 cenarios <- list(
   "renda dobrada"            = list("geometrica", c(1, 1, 2)),
   "educação dobrada"         = list("geometrica", c(1, 2, 1)),
   "índice social (s/ renda)" = list("geometrica", c(1, 1, 0)),
-  "aritmética (iguais)"      = list("aritmetica",  c(1, 1, 1)))
-spearman <- sapply(cenarios, function(cen)
-  round(cor(idx_padrao, construir_indice(ufs, cen[[1]], cen[[2]])$indice, method = "spearman"), 3))
-sort(spearman, decreasing = TRUE)
+  "aritmética (iguais)"      = list("aritmetica",  c(1, 1, 1))
+)
+
+# sapply() aplica a mesma função a cada cenário da lista e junta os resultados num vetor.
+# Dentro da função, cen[[1]] é a regra e cen[[2]] o vetor de pesos daquele cenário
+spearman <- sapply(cenarios, function(cen) {
+  idx <- construir_indice(ufs, agregacao = cen[[1]], pesos = cen[[2]])$indice
+  round(cor(idx_padrao, idx, method = "spearman"), 3)
+})
+sort(spearman, decreasing = TRUE)   # ordena do mais estável (≈1) ao menos estável
 ```
 
 . . .
 
 Spearman perto de 1 = ranking resiste. Valores baixos não tornam o índice "errado": indicam que o ranking é **contingente** às escolhas — que passam a exigir justificativa.
 
-## Rode: incerteza por Monte Carlo {.smaller}
+## Incerteza por Monte Carlo {.smaller}
+
+*O que faz:* em vez de um cenário por vez, **sorteia ao acaso** mil combinações de pesos e de regra de agregação, e registra a posição de cada UF em cada uma. *Responde:* dada a incerteza sobre as escolhas, quão **estável** é a posição de cada UF? O boxplot mostra a distribuição das 1.000 posições.
+
+## Rode: Monte Carlo {.scrollable}
 
 ```{r}
 #| fig-height: 4.2
+# fixa a semente do gerador aleatório: garante que os "sorteios" saiam iguais a cada execução
 set.seed(2026)
+
+# replicate(1000, {...}) repete o bloco 1.000 vezes e empilha os resultados em colunas —
+# cada coluna é o ranking das 27 UFs em uma simulação
 sim <- replicate(1000, {
-  w <- runif(3, 0.5, 2); agr <- sample(c("geometrica", "aritmetica"), 1)
+  w   <- runif(3, 0.5, 2)                            # 3 pesos sorteados ao acaso entre 0,5 e 2
+  agr <- sample(c("geometrica", "aritmetica"), 1)    # sorteia 1 das 2 regras de agregação
   construir_indice(ufs, agregacao = agr, pesos = w)$rank
 })
-mc <- as.data.frame(sim) |> mutate(uf = ufs$NOME) |>
-  pivot_longer(-uf, values_to = "rank") |> mutate(uf = reorder(uf, rank, median))
+rownames(sim) <- ufs$NOME
+
+# transforma a matriz (UFs × 1.000 simulações) em formato "longo" (uma linha por par UF–simulação)
+mc <- as.data.frame(sim) |>
+  mutate(uf = ufs$NOME) |>
+  pivot_longer(-uf, values_to = "rank") |>
+  mutate(uf = reorder(uf, rank, median))   # ordena as UFs pela posição mediana
+
 ggplot(mc, aes(rank, uf)) +
   geom_boxplot(outlier.size = 0.4, fill = "#d6e4f0", color = "#2980b9") +
-  labs(x = "Posição no ranking (1 = melhor)", y = NULL) + theme_minimal()
+  labs(x = "Posição no ranking (1 = melhor)", y = NULL) +
+  theme_minimal()
 ```
 
 ::: {.notes}
 Caixas estreitas (DF, SP, SC no topo; MA, AL na base) = posições robustas; caixas largas no miolo (AM, AP) = posição é artefato da regra. A largura é uma medida honesta de confiança no ranking.
 :::
 
-## Rode: o efeito do log {.smaller}
+## Rode: o efeito do log {.scrollable}
 
 ```{r}
+# refaz a normalização da renda SEM o logaritmo (min-max linear), para isolar o efeito do log
 renda_sem_log <- (ufs$RDPC - 8) / (4033 - 8)
+# recompõe o índice com essa renda alternativa, mantendo longevidade e educação
 i_sem_log <- (ufs$i.longev * ufs$i.educ * renda_sem_log)^(1/3)
+
+# compara as posições com e sem log lado a lado
 data.frame(uf = ufs$NOME,
            rank_com_log = rank(-ufs$idhm, ties.method = "min"),
            rank_sem_log = rank(-i_sem_log, ties.method = "min")) |>
-  mutate(mudanca = rank_com_log - rank_sem_log) |>
-  arrange(desc(mudanca)) |> head(8)
+  mutate(mudanca = rank_com_log - rank_sem_log) |>   # quantas posições cada UF se desloca
+  arrange(desc(mudanca)) |> head(10)                 # as 10 que mais sobem ao retirar o log
 ```
 
 . . .
@@ -465,72 +636,109 @@ Sem o log, as UFs de **maior renda** dominam o topo. O log é uma escolha **de v
 
 ## Desmontar o agregado {.smaller}
 
-A média **oculta** heterogeneidade: duas UFs com o mesmo IDHM podem ter perfis opostos. Voltar às dimensões arma o leitor contra a crítica do encerramento.
+A média **oculta** heterogeneidade: duas UFs com o mesmo IDHM podem ter perfis opostos.
 
-## Rode: qual dimensão mais diferencia? {.smaller}
+. . .
+
+Por que isto "arma o leitor contra a crítica do encerramento"? Porque a crítica mais séria ao IDHM (o *paradoxo da elegibilidade*) é usá-lo como **critério único** — tratando como iguais unidades de mesmo índice mas necessidades distintas. **Voltar às dimensões** mostra, em números, essas diferenças escondidas — é o antídoto contra confundir o número com a realidade.
+
+## Qual dimensão mais diferencia? {.smaller}
+
+*O que faz:* para cada dimensão, um gráfico do subíndice contra o IDHM, com a reta de regressão. *Responde:* qual dimensão mais **separa** as UFs?
+
+## Rode: contribuição das dimensões {.scrollable}
 
 ```{r}
 #| fig-height: 3.6
-ufs |> select(idhm, i.longev, i.educ, i.renda) |>
+ufs |>
+  select(idhm, i.longev, i.educ, i.renda) |>          # mantém só o índice e os três subíndices
   pivot_longer(c(i.longev, i.educ, i.renda), names_to = "dimensao", values_to = "valor") |>
-  mutate(dimensao = recode(dimensao, i.longev = "Longevidade", i.educ = "Educação", i.renda = "Renda")) |>
-  ggplot(aes(valor, idhm)) + geom_point(color = "#2980b9") +
-  geom_smooth(method = "lm", se = FALSE, color = "#c0392b") +
-  facet_wrap(~dimensao) + labs(x = "Valor da dimensão", y = "IDHM") + theme_minimal()
+  mutate(dimensao = recode(dimensao,
+                           i.longev = "Longevidade", i.educ = "Educação", i.renda = "Renda")) |>
+  ggplot(aes(valor, idhm)) +
+  geom_point(color = "#2980b9") +
+  geom_smooth(method = "lm", se = FALSE, color = "#c0392b") +  # reta de regressão (lm)
+  facet_wrap(~dimensao) +
+  labs(x = "Valor da dimensão", y = "IDHM") +
+  theme_minimal()
 ```
 
 . . .
 
-Reta mais inclinada = mais diferencia (≠ maior peso, que é 1/3 igual). Sob pesos iguais, a dimensão de **maior dispersão** governa o ordenamento.
+**Como ler:** a reta mais **inclinada** marca a dimensão que mais acompanha o índice — logo, a que mais **diferencia** as UFs. Isso **não** é o mesmo que ter peso maior: os três pesos são iguais (1/3). A razão é sutil: uma dimensão em que **todas as UFs são parecidas** (pouca dispersão) quase não as separa, *mesmo* com peso igual; já a de **maior dispersão** acaba governando o ordenamento. Ou seja, sob pesos iguais, quem manda no ranking é a dimensão que mais **varia** entre as UFs.
 
-## Rode: mesmo IDHM, perfis distintos {.smaller}
+## Mesmo índice, perfis distintos {.smaller}
+
+*O que faz:* compara, dimensão a dimensão, duas UFs de IDHM quase igual. *Responde:* elas chegaram lá pelo mesmo caminho?
+
+## Rode: dois perfis {.scrollable}
 
 ```{r}
 #| fig-height: 3.6
-perfil <- ufs |> filter(NOME %in% c("Rio Grande do Norte", "Roraima")) |>
+# seleciona as duas UFs e empilha seus três subíndices para o gráfico
+perfil <- ufs |>
+  filter(NOME %in% c("Rio Grande do Norte", "Roraima")) |>
   select(NOME, i.longev, i.educ, i.renda) |>
   pivot_longer(-NOME, names_to = "dimensao", values_to = "valor") |>
-  mutate(dimensao = recode(dimensao, i.longev = "Longevidade", i.educ = "Educação", i.renda = "Renda"))
-ggplot(perfil, aes(dimensao, valor, fill = NOME)) + geom_col(position = "dodge") +
-  labs(x = NULL, y = "Subíndice (0–1)", fill = NULL) + theme_minimal()
+  mutate(dimensao = recode(dimensao,
+                           i.longev = "Longevidade", i.educ = "Educação", i.renda = "Renda"))
+
+# barras agrupadas (position = "dodge") comparam, dimensão a dimensão, as duas UFs
+ggplot(perfil, aes(dimensao, valor, fill = NOME)) +
+  geom_col(position = "dodge") +
+  labs(x = NULL, y = "Subíndice (0–1)", fill = NULL) +
+  theme_minimal()
 ```
 
 . . .
 
 Mesmo IDHM (≈0,78): o **RN** se sustenta na longevidade, **Roraima** na educação. Uma política guiada só pelo índice trataria as duas como idênticas — o erro que a crítica da elegibilidade denuncia.
 
-## Rode: o que mudou no tempo? {.smaller}
+## Rode: o que mudou no tempo? {.scrollable}
 
 ```{r}
+# volta à base completa 'radar' para comparar dois anos
 delta <- radar |>
   filter(AGREGACAO == "Unidade da Federação", ANO %in% c(2012, 2024)) |>
   select(NOME, ANO, IDHM_L, IDHM_E, IDHM_R) |>
+  # pivot_wider "alarga" a tabela, criando colunas por ano (IDHM_L_2012, IDHM_L_2024, ...),
+  # o que permite subtrair um ano do outro na mesma linha
   pivot_wider(names_from = ANO, values_from = c(IDHM_L, IDHM_E, IDHM_R)) |>
-  transmute(uf = NOME, d_long = IDHM_L_2024 - IDHM_L_2012,
-            d_educ = IDHM_E_2024 - IDHM_E_2012, d_renda = IDHM_R_2024 - IDHM_R_2012)
+  transmute(uf      = NOME,
+            d_long  = IDHM_L_2024 - IDHM_L_2012,   # variação 2012→2024 de cada dimensão
+            d_educ  = IDHM_E_2024 - IDHM_E_2012,
+            d_renda = IDHM_R_2024 - IDHM_R_2012)
+
+# colMeans() tira a média de cada coluna — a variação média entre as 27 UFs por dimensão
 round(colMeans(delta[, c("d_long", "d_educ", "d_renda")]), 4)
 ```
 
 . . .
 
-A **educação** avança ~4× mais que as outras: é ela que puxa a subida do IDHM entre 2012 e 2024. A decomposição troca "o país melhorou" por *qual* dimensão melhorou, e quanto.
+A **educação** avança ~4× mais que as outras: é ela que puxa a subida do IDHM entre 2012 e 2024.
 
 # Etapa 9 · Validação externa
 
 ## Reproduzir e validar {.smaller}
 
 - **Reprodução**: nosso cálculo bate com o oficial? (verifica o pipeline)
-- **Validação externa**: o índice se correlaciona com medidas *distintas mas relacionadas* (pobreza, mortalidade)? — validade convergente e discriminante.
+- **Validação externa**: o índice se correlaciona com medidas *distintas mas relacionadas* (pobreza, mortalidade)? — **validade convergente**; e, no reverso, **discriminante** (se batesse perfeito com um indicador já existente, nada acrescentaria).
 
-## Rode: reprodução do oficial {.smaller}
-
-Bater ao último dígito exige replicar duas convenções: arredondar cada subíndice a **3 casas** e usar arredondamento **comercial** (metade para cima).
+## Rode: reprodução do oficial {.scrollable}
 
 ```{r}
+#| fig-height: 3.2
+# arredondamento comercial (metade para cima), em vez do padrão do R (metade para o par)
 arred <- function(x) floor(x * 1000 + 0.5) / 1000
-L <- arred(ufs$i.longev); R <- arred(ufs$i.renda)
+
+# replica a convenção do Atlas: cada subíndice arredondado a 3 casas antes de combinar;
+# na educação, os subcomponentes (estoque e fluxo) também são arredondados
+L <- arred(ufs$i.longev)
+R <- arred(ufs$i.renda)
 E <- arred((arred(ufs$si.escol)^1 * arred(ufs$si.fluxo)^2)^(1/3))
 idhm_repro <- arred((L * E * R)^(1/3))
+
+# concordância: correlação, maior diferença e quantas UFs batem exato (de 27)
 c(correlacao        = cor(ufs$IDHM, idhm_repro),
   maior_dif         = max(abs(ufs$IDHM - idhm_repro)),
   iguais_ao_oficial = sum(idhm_repro == ufs$IDHM)) |> round(4)
@@ -538,12 +746,16 @@ c(correlacao        = cor(ufs$IDHM, idhm_repro),
 
 . . .
 
-Correlação **1**, diferença **0**, **27/27** idênticas. A lição: reproduzir exige replicar não só as fórmulas, mas as **convenções numéricas** que quase nunca constam da metodologia.
+Correlação **1**, diferença **0**, **27/27** idênticas. A lição: reproduzir exige replicar não só as fórmulas, mas as **convenções numéricas** (ordem de arredondamento, regra de desempate) que quase nunca constam da metodologia.
 
-## Rode: validação externa {.smaller}
+## Rode: validação externa {.scrollable}
 
 ```{r}
+# indicadores EXTERNOS, relacionados mas NÃO usados no índice, vindos da própria base:
+# proporção de pobres (PMPOB), mortalidade infantil (MORT1) e índice de Gini (GINI)
 externos <- c(pobreza = "PMPOB", mort_infantil = "MORT1", gini = "GINI")
+
+# para cada coluna, correlaciona o nosso índice com ela. ufs[[col]] pega a coluna pelo nome
 sapply(externos, function(col) round(cor(ufs$idhm, ufs[[col]], method = "spearman"), 3))
 ```
 
@@ -551,16 +763,23 @@ sapply(externos, function(col) round(cor(ufs$idhm, ufs[[col]], method = "spearma
 
 Negativas, como a teoria prevê. Forte com **pobreza** (−0,83) e **mortalidade** (−0,75) — convergente, mas não redundante. Fraca com o **Gini** (−0,31): o *nível* diz pouco sobre a *desigualdade* — a dimensão que o IDHM deixa de fora.
 
-## Rode: o índice irmão (IDHMAD) {.smaller}
+## Rode: o índice irmão (IDHMAD) {.scrollable}
 
 ```{r}
-ad <- ufs |> transmute(uf = NOME, idhm = IDHM, idhmad = IDHMAD, perda = IDHMAD_PERDA,
+# tabela com IDHM, IDHMAD (ajustado à desigualdade), a perda (%) e a posição em cada ranking;
+# 'desloca' = quantas posições a UF muda ao passar de um ao outro
+ad <- ufs |>
+  transmute(uf = NOME, idhm = IDHM, idhmad = IDHMAD, perda = IDHMAD_PERDA,
             rank_idhm   = rank(-IDHM,   ties.method = "min"),
             rank_idhmad = rank(-IDHMAD, ties.method = "min"),
             desloca     = rank_idhm - rank_idhmad)
-c(spearman = round(cor(ad$idhm, ad$idhmad, method = "spearman"), 3),
+
+# correlação entre os dois rankings e a perda média (mean) entre as UFs
+c(spearman    = round(cor(ad$idhm, ad$idhmad, method = "spearman"), 3),
   perda_media = round(mean(ad$perda), 1))
-arrange(ad, desc(abs(desloca))) |> head(6)
+
+# as 8 UFs que mais se deslocam ao ajustar pela desigualdade
+arrange(ad, desc(abs(desloca))) |> head(8)
 ```
 
 . . .
@@ -571,56 +790,80 @@ A **perda média ~20%**: um quinto do desenvolvimento humano evapora ao consider
 
 ## Três cuidados num mapa {.smaller}
 
-1. **Classificação** — intervalos iguais, quantis, Jenks contam histórias diferentes; o defensável é usar as **faixas oficiais**.
+1. **Classificação** — como cortar a escala em classes muda o mapa. *Intervalos iguais* fatiam em faixas de mesma largura; *quantis* põem o mesmo nº de UFs por classe; **Jenks** ("quebras naturais") procura os **cortes onde há lacunas** nos dados (minimiza a variância dentro de cada grupo). Cada método conta uma história — o defensável aqui é usar as **faixas oficiais**.
 2. **Paleta** — sequencial, perceptualmente uniforme e legível para daltônicos (*viridis*).
 3. **Viés de área** — UFs grandes dominam o olhar; acompanhe de um ranking.
 
 E os obrigatórios: título, legenda, **escala**, **norte**, **fonte**.
 
-## Rode: mapa do IDHM {.smaller}
+## Rode: mapa do IDHM {.scrollable}
 
 ```{r}
 #| fig-height: 4.4
-uf_geo <- st_read("data/uf_brasil.geojson", quiet = TRUE) |> st_transform(5880)
+# st_read() (pacote sf) lê o arquivo geográfico com os contornos das UFs
+uf_geo <- st_read("data/uf_brasil.geojson", quiet = TRUE)
+
+# projeta para SIRGAS 2000 / Polyconic (EPSG:5880), o sistema oficial p/ mapas do Brasil em metros:
+# torna a barra de escala correta (em lat/long a escala variaria com a latitude)
+uf_geo <- st_transform(uf_geo, 5880)
+
+# as.integer() converte o código do IBGE em inteiro, para casar com a base por valor numérico
 uf_geo$CODIGO <- as.integer(uf_geo$codigo_ibg)
+# left_join() cola os dados do IDHM ao mapa, casando pela coluna CODIGO
 mapa <- left_join(uf_geo, mutate(ufs, CODIGO = as.integer(CODIGO)), by = "CODIGO")
+
 ggplot(mapa) +
-  geom_sf(aes(fill = idhm), color = "white", linewidth = 0.2) +
-  scale_fill_viridis_c(option = "plasma", direction = -1, name = "IDHM") +
-  annotation_scale(location = "bl", style = "ticks") +
-  annotation_north_arrow(location = "tr", style = north_arrow_minimal(),
-                         height = unit(0.7, "cm"), width = unit(0.7, "cm")) +
-  labs(title = "IDHM — UFs, 2024") + theme_void()
+  geom_sf(aes(fill = idhm), color = "white", linewidth = 0.2) +     # polígonos das UFs
+  scale_fill_viridis_c(option = "plasma", direction = -1, name = "IDHM") +  # paleta legível
+  annotation_scale(location = "bl", style = "ticks") +              # escala
+  annotation_north_arrow(location = "tr", style = north_arrow_minimal(),    # norte
+                         height = unit(0.8, "cm"), width = unit(0.8, "cm")) +
+  labs(title = "IDHM — Unidades da Federação, 2024",
+       caption = "Fonte: Atlas do Desenvolvimento Humano / Radar IDHM (PNUD, FJP, IBGE).") +
+  theme_void()
 ```
 
-## Rode: faixas oficiais, 2012 × 2024 {.smaller}
+## Rode: faixas oficiais, 2012 × 2024 {.scrollable}
 
 ```{r}
 #| fig-height: 4
+# paleta oficial do Atlas/PNUD: vermelho → laranja → amarelo → verde → azul
 cores_idhm <- c("Muito Baixo" = "#C0392B", "Baixo" = "#E67E22", "Médio" = "#F1C40F",
-                "Alto" = "#1E8449", "Muito Alto" = "#5DADE2")
+                "Alto"        = "#1E8449", "Muito Alto" = "#5DADE2")
+
+# IDHM oficial das UFs em 2012 e 2024, discretizado nas 5 faixas com cut()
 faixas_anos <- radar |>
   filter(AGREGACAO == "Unidade da Federação", ANO %in% c(2012, 2024)) |>
   transmute(CODIGO = as.integer(CODIGO), ANO,
-            faixa = cut(IDHM, c(-Inf, .5, .6, .7, .8, Inf), right = FALSE, labels = names(cores_idhm)))
+            faixa = cut(IDHM, c(-Inf, .5, .6, .7, .8, Inf), right = FALSE,
+                        labels = names(cores_idhm)))
+
 ggplot(left_join(uf_geo, faixas_anos, by = "CODIGO")) +
-  geom_sf(aes(fill = faixa), color = "white", linewidth = 0.2) + facet_wrap(~ANO) +
-  scale_fill_manual(values = cores_idhm, drop = FALSE, name = "Faixa IDHM") + theme_void()
+  geom_sf(aes(fill = faixa), color = "white", linewidth = 0.2) +
+  facet_wrap(~ANO) +                                          # um mapa por ano, lado a lado
+  scale_fill_manual(values = cores_idhm, drop = FALSE, name = "Faixa IDHM") +
+  theme_void()
 ```
 
 . . .
 
 Entre 2012 e 2024, o "Médio" (amarelo) desaparece e surge o "Muito Alto" (azul). Gradiente sugere precisão que o índice não tem; faixas comunicam a ordem de grandeza que importa.
 
-## Rode: trajetória (slope chart) {.smaller}
+## Rode: trajetória (slope chart) {.scrollable}
 
 ```{r}
 #| fig-height: 4
-evol <- radar |> filter(AGREGACAO == "Unidade da Federação", ANO %in% c(2012, 2024)) |>
+# painel com os dois anos; ANO como fator vira eixo categórico (dois pontos no x)
+evol <- radar |>
+  filter(AGREGACAO == "Unidade da Federação", ANO %in% c(2012, 2024)) |>
   mutate(ANO = factor(ANO))
+
+# group = NOME liga os dois anos de cada UF por uma linha — a "inclinação" de cada trajetória
 ggplot(evol, aes(ANO, IDHM, group = NOME)) +
-  geom_line(color = "#2980b9", alpha = 0.6) + geom_point(color = "#2980b9", size = 1.6) +
-  labs(x = NULL, y = "IDHM") + theme_minimal()
+  geom_line(color = "#2980b9", alpha = 0.6) +
+  geom_point(color = "#2980b9", size = 1.6) +
+  labs(x = NULL, y = "IDHM") +
+  theme_minimal()
 ```
 
 . . .
@@ -634,28 +877,28 @@ Todas as 27 sobem (≈ +0,065) e as retas convergem de leve: quem partia mais ba
 1. Escolha um cenário — outros pesos, agregação aritmética, ou sem renda (`pesos = c(1, 1, 0)`).
 2. Calcule com `construir_indice()` e gere ranking e mapa (com escala, norte, fonte).
 3. Quais UFs mais sobem/descem vs. o IDHM oficial? Por quê?
-4. A mudança é **substantiva** ou **artefato** da regra/pesos? (peso é taxa de troca, não importância.)
+4. A mudança é **substantiva** ou um **artefato**?
 
 . . .
 
-**Para ir além:** rode o Monte Carlo (robustez), correlacione com um indicador externo (validade), compare com os pesos da PCA, ou desenhe o perfil das UFs que mais se deslocam.
+> **Artefato** = resultado que vem da **regra e dos pesos** que *você* escolheu, não da realidade medida. Se ao trocar a agregação uma UF sobe 10 posições, isso diz mais sobre a sua escolha do que sobre o desenvolvimento daquela UF. (Lembre: em agregação compensatória, o peso é uma **taxa de troca**, não um "coeficiente de importância".)
 
 # Encerramento
 
-## As críticas ao IDHM {.smaller}
+## As críticas ao IDHM {.smaller .scrollable}
 
-- **Paradoxo da elegibilidade** (Guimarães & Jannuzzi, 2005) — como critério *único*, exclui quem é grave numa dimensão específica. (Vimos: RN × Roraima.)
-- **Dimensões ausentes** — desigualdade, ambiente, liberdade política, segurança.
-- **Balizas e log são convenções**, não fatos.
-- **Efeito-teto** — indicadores quase universais perdem poder de diferenciar.
-- **Falácia ecológica e reificação** — o valor da UF não descreve ninguém; o número vira um fim em si.
+- **Paradoxo da elegibilidade** (Guimarães & Jannuzzi, 2005) — como **critério único** de seleção, exclui quem está grave numa dimensão específica (saneamento, nutrição) por ter um IDHM agregado "razoável". Vimos o princípio: RN e Roraima, mesmo IDHM por caminhos opostos.
+- **Dimensões ausentes** — o recorte em longevidade, educação e renda deixa de fora **desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia**. O próprio PNUD admite isso com índices irmãos (IDHMAD para a desigualdade).
+- **Balizas e transformações são convenções** — os limites fixos (25–85 anos; R\$ 8–4.033) e o **log** da renda são decisões normativas, não fatos: mudá-los desloca os valores (vimos no efeito do log).
+- **Efeito-teto** — indicadores que se aproximam do limite (frequência de 5–6 anos, quase universal; longevidade cada vez mais homogênea) **perdem poder de diferenciar** as unidades.
+- **Falácia ecológica e reificação** — o valor de uma UF não descreve nenhum habitante; e o número agregado, repetido, vira um fim em si (o "fetichismo do indicador") — contra o que a volta às dimensões (Etapa 8) é o antídoto.
 
 ## Como ler *qualquer* índice {.smaller}
 
-1. **Que dimensões** inclui — e o que ficou de fora?
-2. **Que indicadores** o operacionalizam — censo, amostra ou registro?
-3. **Como normaliza** — referência fixa ou amostral; e a polaridade?
-4. **Como pondera e agrega** — pesos (iguais? explícitos? dos dados?) e regra (compensatória ou não)?
+1. **Que dimensões** inclui — e o que ficou de fora, por imposição teórica ou de dados?
+2. **Que indicadores** o operacionalizam — censo, pesquisa amostral ou registro administrativo?
+3. **Como normaliza** — referência fixa ou amostral, e como trata a polaridade?
+4. **Como pondera e agrega** — que pesos (iguais? explícitos? dos dados?) e que regra (compensatória ou não)?
 
 ## Mensagem final {.smaller}
 
