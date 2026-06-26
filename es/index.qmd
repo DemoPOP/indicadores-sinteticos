@@ -1,0 +1,50 @@
+---
+title: "Construcción de indicadores sintéticos"
+subtitle: "Taller · DEMOPOP 2026"
+author:
+  - name: Caio César Soares Gonçalves
+    orcid: 0000-0002-3366-7560
+    affiliation: "Departamento de Demografía / CEDEPLAR-UFMG"
+---
+
+Material del taller **Construcción de indicadores sintéticos** (DEMOPOP 2026), por **Caio César Soares Gonçalves** — Departamento de Demografía / CEDEPLAR-UFMG.
+
+El taller reconstruye el **Índice de Desarrollo Humano Municipal (IDHM)** — aquí para las 27 Unidades de la Federación (estados) de Brasil, con la base pública del **Radar IDHM** (2012–2024) — paso a paso, siguiendo las **10 etapas** del *Handbook on Constructing Composite Indicators* (OCDE, 2008). En cada etapa el IDHM es el caso ancla y se catalogan las técnicas disponibles, de modo que el método pueda aplicarse a cualquier concepto multidimensional.
+
+## Empieza aquí
+
+[**→ Abrir el tutorial**](tutorial.qmd)
+
+## Archivos para descargar
+
+- [**Script R completo** (`.R`)](tutorial.R) — versión ejecutable del tutorial, para correr línea por línea en RStudio
+- [Base del Atlas — Radar IDHM 2012–2024 (`.xlsx`)](../data/adh_radar_base_2012_2024.xlsx)
+- [Malla de las Unidades de la Federación (`.geojson`)](../data/uf_brasil.geojson)
+
+Para reproducir, descargue el **script R** y la **base**, manteniendo el `.xlsx` (y el `.geojson`) en una carpeta `data/` en el directorio de trabajo. El primer bloque del script instala automáticamente los paquetes necesarios (`readxl`, `dplyr`, `tidyr`, `ggplot2`, `sf`, `ggspatial`); luego basta con correr de arriba hacia abajo.
+
+## Autor
+
+**Caio César Soares Gonçalves** es profesor del Departamento de Demografía del Cedeplar/UFMG, donde trabaja en métodos estadísticos y computacionales y en ciencia de datos. Es doctor en Población, Territorio y Estadísticas Públicas (ENCE/IBGE), magíster en Economía (UFRGS), especialista en Ciencia de Datos y Big Data y economista (PUC Minas). Investiga métodos de producción de estadísticas demográficas, sociales y ambientales —combinando censos, encuestas por muestreo, registros administrativos y *big data*—, con énfasis en la estimación en áreas pequeñas y en la desagregación espacio-temporal de indicadores. Coordinó el área de indicadores sociales de la Fundación João Pinheiro (IDHM e IMRS) y colaboró con IBGE, Ipea, IPEDF (Codeplan) y la Office for National Statistics (Reino Unido). Recibió el Young Statistician Prize de la IAOS (2021) y fue premiado en el concurso de mejor tesis doctoral de la ABE (2024).
+
+[ORCID](https://orcid.org/0000-0002-3366-7560) · [Google Scholar](https://scholar.google.com/citations?user=_uOyB2AAAAAJ&hl=en) · [Lattes](http://lattes.cnpq.br/6829577347369187) · [ResearchGate](https://www.researchgate.net/profile/Caio-Cesar-Soares-Goncalves) · [LinkedIn](https://www.linkedin.com/in/caiocsg/)
+
+## Cómo citar
+
+> Gonçalves, C. C. S. (2026). *Construcción de indicadores sintéticos* [material de taller]. DEMOPOP — Departamento de Demografía / CEDEPLAR-UFMG. <https://doi.org/10.5281/zenodo.20905250>
+
+## Licencia
+
+Material distribuido bajo la licencia [Creative Commons Atribución 4.0 Internacional (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.es) — libre para compartir y adaptar, incluso con fines comerciales, siempre que se cite la autoría.
+
+## Dudas y correcciones
+
+¿Encontró un error o tiene una sugerencia? Abra un *issue* en el [repositorio del material](https://github.com/DemoPOP/indicadores-sinteticos) o escriba a caiocsg@cedeplar.ufmg.br.
+
+*Versión 1.0 · última actualización: junio de 2026.*
+
+<p style="text-align:center; margin-top:2.5rem;">
+  <img src="../assets/cedeplar-logo.png" height="46" style="margin:0 14px;">
+  <img src="../assets/log_face.png" height="46" style="margin:0 14px;">
+  <img src="../assets/Logo_UFMG.png" height="46" style="margin:0 14px;">
+</p>

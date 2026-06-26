@@ -82,6 +82,29 @@ $$\text{dado bruto} \to \text{estatística (total, } \%, \text{razão, taxa, mé
 Distinguir proporção (parte/todo), razão (grandezas distintas), taxa (eventos/exposição), média. "Demógrafos adoram taxas que não são taxas." O PIB escapa da 1ª decisão (pesos) porque o mercado já os dá.
 :::
 
+## As 10 etapas do Handbook (OCDE, 2008) {.smaller}
+
+Um **fluxo de trabalho** — não dez decisões. As quatro decisões de todo índice (dimensões, normalização, agregação, ponderação) concentram-se em **três etapas**, em **negrito**:
+
+1. **Marco teórico e conceitual**
+2. Seleção de dados
+3. Tratamento e preparação dos dados
+4. Análise multivariada
+5. **Normalização**
+6. **Ponderação e agregação**
+7. Análise de incerteza e sensibilidade
+8. Volta às dimensões
+9. Validação externa
+10. Visualização e comunicação
+
+Em cada etapa, o **IDHM** é o caso âncora — e catalogamos as técnicas disponíveis, inclusive as que ele não adota.
+
+::: {.notes}
+As dez etapas são o roteiro do workshop. Não confundir as duas contagens: as quatro decisões são dimensões (1), normalizar (5) e ponderar e agregar (6); as demais preparam os dados (2–4), testam a robustez e desmontam o índice (7–8), validam (9) e comunicam (10).
+:::
+
+# Etapa 1 · Marco teórico e conceitual
+
 ## A escada da abstração {.smaller}
 
 Para medir um conceito abstrato, descemos uma **escada**:
@@ -99,8 +122,6 @@ E cada delimitação embute **premissas** que, por definição, **não são test
 ::: {.notes}
 A passagem top-down conceito→dimensão→indicador. O paradoxo aproximar/distanciar. Premissas não testáveis: nunca se prova que o índice "mede" o desenvolvimento humano — só se mantém a convenção honesta.
 :::
-
-# Etapa 1 · Marco teórico e conceitual
 
 ## O conceito de desenvolvimento humano {.smaller}
 
@@ -125,6 +146,23 @@ Renda é meio, não fim: importa o que as pessoas conseguem ser e fazer (as capa
 - **Longevidade** → **esperança de vida ao nascer** ($e_0$), da tábua de vida (independe da estrutura etária).
 - **Renda** → **renda domiciliar *per capita*** (entra em **log** na Etapa 5), não a Renda Nacional Bruta global.
 - **Educação** → **estoque** (adultos com fundamental) + **fluxo** (jovens na idade certa) — combinados só na Etapa 6.
+
+## Critérios de seleção — o que faz um bom indicador {.smaller}
+
+O indicador *teoricamente ideal* nem sempre está disponível; escolhe-se à luz de critérios — que são também as **propriedades de um bom indicador**:
+
+- **Relevância e validade** — adere à dimensão e mede o que pretende (validade de construto)
+- **Cobertura** — alcança todas as unidades (as 27 UFs), sem lacunas sistemáticas
+- **Comparabilidade** — mesma definição e fonte no tempo e no espaço
+- **Periodicidade e tempestividade** — atualização regular e próxima do período
+- **Confiabilidade e fonte** — censo, amostra ou registro administrativo (cada um com seus *trade-offs*)
+- **Sensibilidade e especificidade** — capta a variação real sem reagir a ruído alheio
+- **Parcimônia** — disponível e não redundante (Etapa 4); proxies quando falta o ideal, documentando
+- **Polaridade** — maior = melhor ou pior? (decisão que reaparece na normalização)
+
+::: {.notes}
+O indicador é condicionado pelo desenho da fonte: censo (exaustivo, decenal), amostra como a PNAD Contínua (periódica, mas limitada na desagregação geográfica) e registros/projeções (anuais, cobertura desigual). Daí o Radar atualizar Brasil, UFs e RMs nos anos intercensitários, não os municípios.
+:::
 
 ## Rode: carregar os pacotes {.scrollable}
 
@@ -368,7 +406,7 @@ Separa, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs de IDHM p
 
 Os indicadores têm unidades distintas (anos, %, R\$): é preciso pô-los numa **escala comum**.
 
-**Pergunta:** o "0" e o "1" devem vir de **referências fixas** (balizas externas) ou dos **mín/máx observados** na amostra?
+**Pergunta:** o "0" e o "1" devem vir de **referências fixas** (balizas, ou *goalposts*) ou dos **mín/máx observados** na amostra?
 
 . . .
 
@@ -456,7 +494,7 @@ data.frame(uf = ufs$NOME,
 
 ## Três dimensões: pesos e compensação? {.smaller}
 
-**Pergunta:** as três dimensões pesam igual? Uma renda alta pode **compensar** uma educação baixa?
+**Pergunta:** as três dimensões pesam igual? Uma nota **alta** numa dimensão pode **compensar** uma **baixa** em outra?
 
 . . .
 
@@ -464,18 +502,22 @@ data.frame(uf = ufs$NOME,
 
 ## Compensação: um exemplo {.smaller}
 
-Dois países com a **mesma média aritmética** (0,70):
+Dois países, com pontuações (0 a 1) em **saúde, educação e renda**:
 
-| | Dim. A | Dim. B | Dim. C | Aritmética | Geométrica |
+| | Saúde | Educação | Renda | Aritmética | Geométrica |
 |---|:---:|:---:|:---:|:---:|:---:|
-| **País 1** | 0,70 | 0,70 | 0,70 | 0,70 | ? |
-| **País 2** | 0,90 | 0,70 | 0,50 | 0,70 | ? |
+| **País A** | 0,8 | 0,2 | 0,7 | **0,567** | ? |
+| **País B** | 0,6 | 0,6 | 0,6 | **0,600** | ? |
 
-**Pela média geométrica, qual fica maior?**
+Pela **aritmética**, quase empatam (0,567 vs 0,600) — mesmo o País A tendo educação baixíssima (0,2). **E pela geométrica?**
 
 . . .
 
-**País 1 = 0,70** · **País 2 ≈ 0,68.** O país **equilibrado** vence: a geométrica **penaliza o desequilíbrio** — uma nota alta não compensa plenamente uma baixa.
+**País A ≈ 0,482** · **País B = 0,600.** A geométrica **penaliza o desequilíbrio**: a nota alta em saúde **não compensa** plenamente a educação baixa do País A — a lacuna numa dimensão não pode ser ignorada.
+
+::: {.notes}
+Aritmética de A: (0,8 + 0,2 + 0,7)/3 = 0,567. Geométrica de A: (0,8 · 0,2 · 0,7)^(1/3) ≈ 0,482. O País B é equilibrado, então aritmética = geométrica = 0,600. A geométrica derruba A justamente por causa do 0,2 em educação — é o mecanismo que o IDH adota desde 2010.
+:::
 
 ## Rode: a função do índice {.scrollable}
 

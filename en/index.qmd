@@ -1,0 +1,50 @@
+---
+title: "Building composite indicators"
+subtitle: "Workshop · DEMOPOP 2026"
+author:
+  - name: Caio César Soares Gonçalves
+    orcid: 0000-0002-3366-7560
+    affiliation: "Department of Demography / CEDEPLAR-UFMG"
+---
+
+Materials for the workshop **Building composite indicators** (DEMOPOP 2026), by **Caio César Soares Gonçalves** — Department of Demography / CEDEPLAR-UFMG.
+
+The workshop rebuilds the **Municipal Human Development Index (MHDI)** — here for Brazil's 27 Federative Units (states), using the public **Radar IDHM** dataset (2012–2024) — step by step, following the **10 steps** of the *Handbook on Constructing Composite Indicators* (OECD, 2008). At each step the MHDI is the anchor case and the available techniques are catalogued, so that the method can be applied to any multidimensional concept.
+
+## Start here
+
+[**→ Open the tutorial**](tutorial.qmd)
+
+## Downloads
+
+- [**Full R script** (`.R`)](tutorial.R) — an executable version of the tutorial, to run line by line in RStudio
+- [Atlas dataset — Radar IDHM 2012–2024 (`.xlsx`)](../data/adh_radar_base_2012_2024.xlsx)
+- [Federative Units boundaries (`.geojson`)](../data/uf_brasil.geojson)
+
+To reproduce, download the **R script** and the **dataset**, keeping the `.xlsx` (and the `.geojson`) in a `data/` folder in your working directory. The first block of the script automatically installs the required packages (`readxl`, `dplyr`, `tidyr`, `ggplot2`, `sf`, `ggspatial`); then just run from top to bottom.
+
+## Author
+
+**Caio César Soares Gonçalves** is a professor at the Department of Demography of Cedeplar/UFMG, working on statistical and computational methods and on data science. He holds a PhD in Population, Territory and Public Statistics (ENCE/IBGE), a master's in Economics (UFRGS), a specialization in Data Science and Big Data, and a bachelor's in Economics (PUC Minas). His research focuses on methods for producing demographic, social and environmental statistics — combining censuses, sample surveys, administrative records and *big data*, with emphasis on small-area estimation and the spatio-temporal disaggregation of indicators. He coordinated the social indicators division of the João Pinheiro Foundation (MHDI and IMRS) and collaborated with IBGE, Ipea, IPEDF (Codeplan) and the Office for National Statistics (United Kingdom). He received the IAOS Young Statistician Prize (2021) and was awarded in the Brazilian Statistical Association's (ABE) best doctoral dissertation competition (2024).
+
+[ORCID](https://orcid.org/0000-0002-3366-7560) · [Google Scholar](https://scholar.google.com/citations?user=_uOyB2AAAAAJ&hl=en) · [Lattes](http://lattes.cnpq.br/6829577347369187) · [ResearchGate](https://www.researchgate.net/profile/Caio-Cesar-Soares-Goncalves) · [LinkedIn](https://www.linkedin.com/in/caiocsg/)
+
+## How to cite
+
+> Gonçalves, C. C. S. (2026). *Building composite indicators* [workshop materials]. DEMOPOP — Department of Demography / CEDEPLAR-UFMG. <https://doi.org/10.5281/zenodo.20905250>
+
+## License
+
+Distributed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) license — free to share and adapt, including for commercial purposes, as long as the author is credited.
+
+## Questions and corrections
+
+Found an error or have a suggestion? Open an *issue* in the [material's repository](https://github.com/DemoPOP/indicadores-sinteticos) or write to caiocsg@cedeplar.ufmg.br.
+
+*Version 1.0 · last updated: June 2026.*
+
+<p style="text-align:center; margin-top:2.5rem;">
+  <img src="../assets/cedeplar-logo.png" height="46" style="margin:0 14px;">
+  <img src="../assets/log_face.png" height="46" style="margin:0 14px;">
+  <img src="../assets/Logo_UFMG.png" height="46" style="margin:0 14px;">
+</p>
