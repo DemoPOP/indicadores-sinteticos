@@ -38,6 +38,12 @@ Para reproduzir, baixe o **script R** e a **base**, mantendo o arquivo `.xlsx` (
 
 Material distribuído sob a licença [Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.pt-br) — livre para compartilhar e adaptar, inclusive para fins comerciais, desde que citada a autoria.
 
+## Dúvidas e correções
+
+Encontrou um erro ou tem sugestão? Abra uma *issue* no [repositório do material](https://github.com/DemoPOP/indicadores-sinteticos) ou escreva para caiocsg@cedeplar.ufmg.br.
+
+*Versão 1.0 · última atualização: junho de 2026.*
+
 <p style="text-align:center; margin-top:2.5rem;">
   <img src="assets/cedeplar-logo.png" height="46" style="margin:0 14px;">
   <img src="assets/log_face.png" height="46" style="margin:0 14px;">

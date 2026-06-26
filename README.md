@@ -3,53 +3,30 @@
 [![Licença: CC BY 4.0](https://img.shields.io/badge/Licen%C3%A7a-CC%20BY%204.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/deed.pt-br)
 [![Site](https://img.shields.io/badge/site-GitHub%20Pages-1d6e56.svg)](https://demopop.github.io/indicadores-sinteticos/)
 
-Material do **Workshop de Métodos Demográficos — DEMOPOP 2026**, ministrado por **Caio César Soares Gonçalves** (Departamento de Demografia / CEDEPLAR-UFMG). O tutorial reconstrói o **Índice de Desenvolvimento Humano Municipal (IDHM)** para as 27 Unidades da Federação, a partir da base pública do **Radar IDHM (2012–2024)**, percorrendo as **10 etapas** do *Handbook on Constructing Composite Indicators* (OCDE, 2008). Em cada etapa, o IDHM é o caso âncora e catalogam-se as técnicas disponíveis — inclusive as que ele não adota —, de modo que o método possa ser transposto a qualquer conceito multidimensional.
-
 🔗 **Site:** <https://demopop.github.io/indicadores-sinteticos/>
 
-## O que você vai aprender
+Material do workshop **Produção de indicadores sintéticos** (DEMOPOP 2026), por **Caio César Soares Gonçalves** — Departamento de Demografia / CEDEPLAR-UFMG.
 
-1. A passagem **conceito → dimensões → indicadores** (a "escada da abstração").
-2. A **normalização** de indicadores medidos em escalas distintas.
-3. A **ponderação e a agregação** — e como a média aritmética e a geométrica alteram o ordenamento.
-4. A **análise de robustez** e a sensibilidade do índice às escolhas metodológicas.
-5. A **leitura crítica** de índices sintéticos e de seus limites.
+O workshop reconstrói o **Índice de Desenvolvimento Humano Municipal (IDHM)** — aqui para as 27 Unidades da Federação, com a base pública do **Radar IDHM (2012–2024)** — passo a passo, seguindo as **10 etapas** do *Handbook on Constructing Composite Indicators* (OCDE, 2008). Em cada etapa, o IDHM é o caso âncora e catalogam-se as técnicas existentes, de modo que o método possa ser aplicado a qualquer conceito multidimensional.
 
-## Conteúdo
+## Comece aqui
 
-- **[Tutorial](https://demopop.github.io/indicadores-sinteticos/tutorial.html)** — reconstrução do IDHM nas 10 etapas da OCDE:
-  1. Marco teórico e conceitual
-  2. Seleção de dados
-  3. Tratamento e preparação dos dados
-  4. Análise multivariada
-  5. Normalização
-  6. Ponderação e agregação
-  7. Análise de incerteza e sensibilidade
-  8. Volta às dimensões
-  9. Validação externa
-  10. Visualização e comunicação
+[**→ Abrir o Tutorial**](tutorial.qmd)
 
-## Estrutura dos arquivos
+## Arquivos para download
 
-```
-.
-├── index.qmd       página inicial do site
-├── tutorial.qmd    o tutorial (código em R + saídas)
-├── _quarto.yml     configuração do site
-├── custom.css      tema visual
-├── assets/         logos institucionais
-└── data/           arquivos básicos para download
-    ├── adh_radar_base_2012_2024.xlsx   base pública do Atlas / Radar IDHM
-    └── uf_brasil.geojson               malha das Unidades da Federação
-```
+- [**Slides da aula**](https://demopop.github.io/indicadores-sinteticos/slides.html) — a apresentação usada no workshop (no navegador).
+- [**Script R completo** (`.R`)](tutorial.R) — versão executável do tutorial, para rodar linha a linha no RStudio
+- [Base do Atlas — Radar IDHM 2012–2024 (`.xlsx`)](data/adh_radar_base_2012_2024.xlsx)
+- [Malha das Unidades da Federação (`.geojson`)](data/uf_brasil.geojson)
 
-## Reprodução local
+Para reproduzir, baixe o **script R** e a **base**, mantendo o arquivo `.xlsx` (e o `.geojson`) numa pasta `data/` no diretório de trabalho. O primeiro bloco do script instala automaticamente os pacotes necessários (`readxl`, `dplyr`, `tidyr`, `ggplot2`, `sf`, `ggspatial`); depois é só rodar de cima para baixo.
 
-Requer R com os pacotes `readxl`, `dplyr`, `tidyr`, `ggplot2`, `sf` e `ggspatial`. Clone o repositório e, no RStudio, renderize com *Render* (ou `quarto render`), mantendo a pasta `data/` no diretório do projeto.
+## Autor
 
-## Dados
+**Caio César Soares Gonçalves** é professor do Departamento de Demografia do Cedeplar/UFMG, atuando em métodos estatísticos e computacionais e em ciência de dados. Doutor em População, Território e Estatísticas Públicas (ENCE/IBGE), mestre em Economia (UFRGS), especialista em Ciência de Dados e Big Data e economista (PUC Minas). Pesquisa métodos de produção de estatísticas demográficas, sociais e ambientais — combinando censos, pesquisas amostrais, registros administrativos e *big data*, com ênfase na estimação em pequenos domínios e na desagregação espaço-temporal de indicadores. Coordenou a área de indicadores sociais da Fundação João Pinheiro (IDHM e IMRS) e colaborou com IBGE, Ipea, IPEDF, UNFPA, BID e o *Office for National Statistics* (Reino Unido). Recebeu o *Young Statistician Prize* da IAOS (2021) e foi premiado no concurso de melhor tese de doutorado da ABE (2024).
 
-Base pública do **Atlas do Desenvolvimento Humano no Brasil** (PNUD, Ipea e Fundação João Pinheiro) — *Radar IDHM*, estimada a partir da PNAD Contínua/IBGE. Disponível em <https://www.atlasbrasil.org.br/acervo/biblioteca>.
+[ORCID](https://orcid.org/0000-0002-3366-7560) · [Google Scholar](https://scholar.google.com/citations?user=_uOyB2AAAAAJ&hl=en) · [Lattes](http://lattes.cnpq.br/6829577347369187) · [ResearchGate](https://www.researchgate.net/profile/Caio-Cesar-Soares-Goncalves) · [LinkedIn](https://www.linkedin.com/in/caiocsg/)
 
 ## Como citar
 
@@ -57,14 +34,16 @@ Base pública do **Atlas do Desenvolvimento Humano no Brasil** (PNUD, Ipea e Fun
 
 ## Licença
 
-Material distribuído sob a licença [Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.pt-br).
+Material distribuído sob a licença [Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.pt-br) — livre para compartilhar e adaptar, inclusive para fins comerciais, desde que citada a autoria.
 
----
+## Dúvidas e correções
 
-<p align="center">
-  <img src="assets/cedeplar-logo.png" height="46">
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/log_face.png" height="46">
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/Logo_UFMG.png" height="46">
+Encontrou um erro ou tem sugestão? Abra uma *issue* no [repositório do material](https://github.com/DemoPOP/indicadores-sinteticos) ou escreva para caiocsg@cedeplar.ufmg.br.
+
+*Versão 1.0 · última atualização: junho de 2026.*
+
+<p style="text-align:center; margin-top:2.5rem;">
+  <img src="assets/cedeplar-logo.png" height="46" style="margin:0 14px;">
+  <img src="assets/log_face.png" height="46" style="margin:0 14px;">
+  <img src="assets/Logo_UFMG.png" height="46" style="margin:0 14px;">
 </p>
