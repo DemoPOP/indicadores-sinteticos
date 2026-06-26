@@ -5,7 +5,8 @@ abstract: >-
   Tutorial em R que reconstrói o Índice de Desenvolvimento Humano Municipal
   (IDHM) para as 27 Unidades da Federação, com a base pública do Radar IDHM
   (2012–2024), percorrendo as 10 etapas do Handbook on Constructing Composite
-  Indicators (OCDE, 2008). Material do workshop DEMOPOP (CEDEPLAR-UFMG).
+  Indicators (OCDE, 2008). Material do workshop DEMOPOP (CEDEPLAR-UFMG),
+  disponível em português, inglês e espanhol.
 type: dataset
 authors:
   - family-names: "Gonçalves"
@@ -13,7 +14,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-3366-7560"
     affiliation: "Departamento de Demografia / CEDEPLAR-UFMG"
 date-released: "2026-06-26"
-version: "1.0.0"
+version: "1.1.0"
 license: CC-BY-4.0
 url: "https://demopop.github.io/indicadores-sinteticos/"
 repository-code: "https://github.com/DemoPOP/indicadores-sinteticos"
