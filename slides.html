@@ -526,6 +526,13 @@ $ IDHM        &lt;dbl&gt; 0.786, 0.754, 0.767, 0.780, 0.758, 0.759, 0.797, 0.745
 <section id="matriz-de-correlação" class="slide level2 smaller">
 <h2>Matriz de correlação</h2>
 <p><em>O que faz:</em> calcula a correlação entre cada par de indicadores (de −1 a 1). <em>Responde:</em> quais indicadores andam juntos — isto é, são candidatos a redundância?</p>
+<div class="fragment">
+<p>Dois tipos aparecem no workshop:</p>
+<ul>
+<li><strong>Pearson</strong> — associação <strong>linear</strong>, sobre os <em>valores</em>. É a da matriz abaixo.</li>
+<li><strong>Spearman</strong> — associação <strong>monotônica</strong>, sobre os <em>postos</em> (ranks): se uma sobe, a outra tende a subir, mesmo sem ser em linha reta. Robusta a outliers — e por isso a usamos adiante para comparar <strong>rankings</strong> (sensibilidade, validação).</li>
+</ul>
+</div>
 </section>
 <section id="rode-matriz-de-correlação" class="slide level2 scrollable">
 <h2>Rode: matriz de correlação</h2>
@@ -628,12 +635,20 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a>d  <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">scale</span>(indicadores))</span>
 <span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method =</span> <span class="st">"ward.D2"</span>)</span>
 <span id="cb24-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hc, <span class="at">labels =</span> ufs<span class="sc">$</span>NOME, <span class="at">main =</span> <span class="cn">NULL</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"Distância"</span>, <span class="at">sub =</span> <span class="st">""</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><div class="fragment">
+
+<div class="fragment">
 <p>Separa, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs de IDHM parecido podem estar em ramos distintos — exatamente o que a Etapa 8 explora ao desmontar o índice.</p>
 </div>
-</section></section>
+</section><section id="rode-dendrograma-output" class="slide level2 scrollable output-location-slide"><h2>Rode: dendrograma</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-11-1.png" width="1152"></p>
+</figure>
+</div>
+</div>
+</div></section></section>
 <section>
 <section id="etapa-5-normalização" class="title-slide slide level1 center">
 <h1>Etapa 5 · Normalização</h1>
@@ -718,11 +733,6 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <li><strong>Ponderação</strong> — com que <strong>peso</strong> cada componente entra.</li>
 <li><strong>Agregação</strong> — a <strong>regra</strong> que funde os componentes (aritmética? geométrica? multiplicativa?).</li>
 </ul>
-<div class="fragment">
-<blockquote>
-<p>Sutileza: em agregação aditiva/geométrica, os pesos são <strong>taxas de troca</strong> (substituição), não “coeficientes de importância”. “Pesos iguais” = taxa de troca unitária.</p>
-</blockquote>
-</div>
 </section>
 <section id="educação-que-pesos" class="slide level2 smaller">
 <h2>Educação: que pesos?</h2>
@@ -818,11 +828,50 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <h2>Três dimensões: pesos e compensação?</h2>
 <p><strong>Pergunta:</strong> as três dimensões pesam igual? Uma renda alta pode <strong>compensar</strong> uma educação baixa?</p>
 <div class="fragment">
-<p><strong>IDHM → pesos iguais + média geométrica</strong> (limita a compensação). A função parametriza ambas as escolhas:</p>
+<p><strong>IDHM → pesos iguais + média geométrica</strong> (limita a compensação).</p>
+</div>
+</section>
+<section id="compensação-um-exemplo" class="slide level2 smaller">
+<h2>Compensação: um exemplo</h2>
+<p>Dois países com a <strong>mesma média aritmética</strong> (0,70):</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Dim. A</th>
+<th style="text-align: center;">Dim. B</th>
+<th style="text-align: center;">Dim. C</th>
+<th style="text-align: center;">Aritmética</th>
+<th style="text-align: center;">Geométrica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>País 1</strong></td>
+<td style="text-align: center;">0,70</td>
+<td style="text-align: center;">0,70</td>
+<td style="text-align: center;">0,70</td>
+<td style="text-align: center;">0,70</td>
+<td style="text-align: center;">?</td>
+</tr>
+<tr class="even">
+<td><strong>País 2</strong></td>
+<td style="text-align: center;">0,90</td>
+<td style="text-align: center;">0,70</td>
+<td style="text-align: center;">0,50</td>
+<td style="text-align: center;">0,70</td>
+<td style="text-align: center;">?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pela média geométrica, qual fica maior?</strong></p>
+<div class="fragment">
+<p><strong>País 1 = 0,70</strong> · <strong>País 2 ≈ 0,68.</strong> O país <strong>equilibrado</strong> vence: a geométrica <strong>penaliza o desequilíbrio</strong> — uma nota alta não compensa plenamente uma baixa.</p>
 </div>
 </section>
 <section id="rode-a-função-do-índice" class="slide level2 scrollable">
 <h2>Rode: a função do índice</h2>
+<p>A função parametriza ambas as escolhas:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos NOSSA própria função. function(...) lista os argumentos de entrada; os que têm</span></span>
 <span id="cb30-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># '=' já trazem um valor padrão, usado quando não os informamos na chamada. Assim, variar</span></span>
@@ -1160,21 +1209,23 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <span id="cb38-20"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.size =</span> <span class="fl">0.4</span>, <span class="at">fill =</span> <span class="st">"#d6e4f0"</span>, <span class="at">color =</span> <span class="st">"#2980b9"</span>) <span class="sc">+</span></span>
 <span id="cb38-21"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posição no ranking (1 = melhor)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb38-22"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><aside class="notes">
-<p>Caixas estreitas (DF, SP, SC no topo; MA, AL na base) = posições robustas; caixas largas no miolo (AM, AP) = posição é artefato da regra. A largura é uma medida honesta de confiança no ranking.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+
+</section>
+<section id="rode-monte-carlo-output" class="slide level2 scrollable output-location-slide"><h2>Rode: Monte Carlo</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-19-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="monte-carlo-leitura" class="slide level2 smaller">
+<h2>Monte Carlo: leitura</h2>
+<p>Caixas <strong>estreitas</strong> (Distrito Federal, São Paulo e Santa Catarina no topo; Maranhão e Alagoas na base) indicam posições <strong>robustas</strong> às escolhas metodológicas.</p>
+<div class="fragment">
+<p>Caixas <strong>largas</strong>, no miolo da distribuição (Amazonas, Amapá), assinalam unidades cuja posição é <strong>artefato da regra adotada</strong>, não um fato estável sobre o desenvolvimento. A largura da caixa é uma medida honesta de <strong>quanta confiança</strong> dar a cada posição do ranking.</p>
+</div>
 </section>
 <section id="rode-o-efeito-do-log" class="slide level2 scrollable">
 <h2>Rode: o efeito do log</h2>
@@ -1301,13 +1352,21 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <span id="cb40-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>dimensao) <span class="sc">+</span></span>
 <span id="cb40-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Valor da dimensão"</span>, <span class="at">y =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span></span>
 <span id="cb40-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"><div class="fragment">
+
+<div class="fragment">
 <p><strong>Como ler:</strong> a reta mais <strong>inclinada</strong> marca a dimensão que mais acompanha o índice — logo, a que mais <strong>diferencia</strong> as UFs. Isso <strong>não</strong> é o mesmo que ter peso maior: os três pesos são iguais (1/3). A razão é sutil: uma dimensão em que <strong>todas as UFs são parecidas</strong> (pouca dispersão) quase não as separa, <em>mesmo</em> com peso igual; já a de <strong>maior dispersão</strong> acaba governando o ordenamento. Ou seja, sob pesos iguais, quem manda no ranking é a dimensão que mais <strong>varia</strong> entre as UFs.</p>
 </div>
 </section>
-<section id="mesmo-índice-perfis-distintos" class="slide level2 smaller">
+<section id="rode-contribuição-das-dimensões-output" class="slide level2 scrollable output-location-slide"><h2>Rode: contribuição das dimensões</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-21-1.png" width="1056"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="mesmo-índice-perfis-distintos" class="slide level2 smaller">
 <h2>Mesmo índice, perfis distintos</h2>
 <p><em>O que faz:</em> compara, dimensão a dimensão, duas UFs de IDHM quase igual. <em>Responde:</em> elas chegaram lá pelo mesmo caminho?</p>
 </section>
@@ -1327,13 +1386,21 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <span id="cb41-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
 <span id="cb41-12"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Subíndice (0–1)"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb41-13"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"><div class="fragment">
+
+<div class="fragment">
 <p>Mesmo IDHM (≈0,78): o <strong>RN</strong> se sustenta na longevidade, <strong>Roraima</strong> na educação. Uma política guiada só pelo índice trataria as duas como idênticas — o erro que a crítica da elegibilidade denuncia.</p>
 </div>
 </section>
-<section id="rode-o-que-mudou-no-tempo" class="slide level2 scrollable">
+<section id="rode-dois-perfis-output" class="slide level2 scrollable output-location-slide"><h2>Rode: dois perfis</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-22-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="rode-o-que-mudou-no-tempo" class="slide level2 scrollable">
 <h2>Rode: o que mudou no tempo?</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># volta à base completa 'radar' para comparar dois anos</span></span>
@@ -1415,8 +1482,8 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <p>Negativas, como a teoria prevê. Forte com <strong>pobreza</strong> (−0,83) e <strong>mortalidade</strong> (−0,75) — convergente, mas não redundante. Fraca com o <strong>Gini</strong> (−0,31): o <em>nível</em> diz pouco sobre a <em>desigualdade</em> — a dimensão que o IDHM deixa de fora.</p>
 </div>
 </section>
-<section id="rode-o-índice-irmão-idhmad" class="slide level2 scrollable">
-<h2>Rode: o índice irmão (IDHMAD)</h2>
+<section id="rode-o-índice-complementar-idhmad" class="slide level2 scrollable">
+<h2>Rode: o índice complementar (IDHMAD)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># tabela com IDHM, IDHMAD (ajustado à desigualdade), a perda (%) e a posição em cada ranking;</span></span>
 <span id="cb48-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># 'desloca' = quantas posições a UF muda ao passar de um ao outro</span></span>
@@ -1543,7 +1610,6 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <li><strong>Paleta</strong> — sequencial, perceptualmente uniforme e legível para daltônicos (<em>viridis</em>).</li>
 <li><strong>Viés de área</strong> — UFs grandes dominam o olhar; acompanhe de um ranking.</li>
 </ol>
-<p>E os obrigatórios: título, legenda, <strong>escala</strong>, <strong>norte</strong>, <strong>fonte</strong>.</p>
 </section>
 <section id="rode-mapa-do-idhm" class="slide level2 scrollable">
 <h2>Rode: mapa do IDHM</h2>
@@ -1569,10 +1635,18 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <span id="cb51-19"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"IDHM — Unidades da Federação, 2024"</span>,</span>
 <span id="cb51-20"><a aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fonte: Atlas do Desenvolvimento Humano / Radar IDHM (PNUD, FJP, IBGE)."</span>) <span class="sc">+</span></span>
 <span id="cb51-21"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
-<section id="rode-faixas-oficiais-2012-2024" class="slide level2 scrollable">
+
+</section>
+<section id="rode-mapa-do-idhm-output" class="slide level2 scrollable output-location-slide"><h2>Rode: mapa do IDHM</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-27-1.png" width="816"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="rode-faixas-oficiais-2012-2024" class="slide level2 scrollable">
 <h2>Rode: faixas oficiais, 2012 × 2024</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># paleta oficial do Atlas/PNUD: vermelho → laranja → amarelo → verde → azul</span></span>
@@ -1591,13 +1665,21 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <span id="cb52-14"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>ANO) <span class="sc">+</span>                                          <span class="co"># um mapa por ano, lado a lado</span></span>
 <span id="cb52-15"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cores_idhm, <span class="at">drop =</span> <span class="cn">FALSE</span>, <span class="at">name =</span> <span class="st">"Faixa IDHM"</span>) <span class="sc">+</span></span>
 <span id="cb52-16"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-28-1.png" width="960" class="r-stretch"><div class="fragment">
+
+<div class="fragment">
 <p>Entre 2012 e 2024, o “Médio” (amarelo) desaparece e surge o “Muito Alto” (azul). Gradiente sugere precisão que o índice não tem; faixas comunicam a ordem de grandeza que importa.</p>
 </div>
 </section>
-<section id="rode-trajetória-slope-chart" class="slide level2 scrollable">
+<section id="rode-faixas-oficiais-2012-2024-output" class="slide level2 scrollable output-location-slide"><h2>Rode: faixas oficiais, 2012 × 2024</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-28-1.png" width="1152"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="rode-trajetória-slope-chart" class="slide level2 scrollable">
 <h2>Rode: trajetória (slope chart)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># painel com os dois anos; ANO como fator vira eixo categórico (dois pontos no x)</span></span>
@@ -1611,12 +1693,20 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <span id="cb53-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#2980b9"</span>, <span class="at">size =</span> <span class="fl">1.6</span>) <span class="sc">+</span></span>
 <span id="cb53-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"IDHM"</span>) <span class="sc">+</span></span>
 <span id="cb53-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"><div class="fragment">
+
+<div class="fragment">
 <p>Todas as 27 sobem (≈ +0,065) e as retas convergem de leve: quem partia mais baixo cresceu mais.</p>
 </div>
-</section></section>
+</section><section id="rode-trajetória-slope-chart-output" class="slide level2 scrollable output-location-slide"><h2>Rode: trajetória (slope chart)</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-29-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div></section></section>
 <section>
 <section id="exercício" class="title-slide slide level1 center">
 <h1>Exercício</h1>
@@ -1628,13 +1718,8 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <li>Escolha um cenário — outros pesos, agregação aritmética, ou sem renda (<code>pesos = c(1, 1, 0)</code>).</li>
 <li>Calcule com <code>construir_indice()</code> e gere ranking e mapa (com escala, norte, fonte).</li>
 <li>Quais UFs mais sobem/descem vs.&nbsp;o IDHM oficial? Por quê?</li>
-<li>A mudança é <strong>substantiva</strong> ou um <strong>artefato</strong>?</li>
+<li>A mudança é <strong>substantiva</strong>?</li>
 </ol>
-<div class="fragment">
-<blockquote>
-<p><strong>Artefato</strong> = resultado que vem da <strong>regra e dos pesos</strong> que <em>você</em> escolheu, não da realidade medida. Se ao trocar a agregação uma UF sobe 10 posições, isso diz mais sobre a sua escolha do que sobre o desenvolvimento daquela UF. (Lembre: em agregação compensatória, o peso é uma <strong>taxa de troca</strong>, não um “coeficiente de importância”.)</p>
-</blockquote>
-</div>
 </section></section>
 <section>
 <section id="encerramento" class="title-slide slide level1 center">
@@ -1645,10 +1730,10 @@ renda               0.56         0.72      0.09        0.47        0.47        0
 <h2>As críticas ao IDHM</h2>
 <ul>
 <li><strong>Paradoxo da elegibilidade</strong> (Guimarães &amp; Jannuzzi, 2005) — como <strong>critério único</strong> de seleção, exclui quem está grave numa dimensão específica (saneamento, nutrição) por ter um IDHM agregado “razoável”. Vimos o princípio: RN e Roraima, mesmo IDHM por caminhos opostos.</li>
-<li><strong>Dimensões ausentes</strong> — o recorte em longevidade, educação e renda deixa de fora <strong>desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia</strong>. O próprio PNUD admite isso com índices irmãos (IDHMAD para a desigualdade).</li>
+<li><strong>Dimensões ausentes</strong> — o recorte em longevidade, educação e renda deixa de fora <strong>desigualdade, sustentabilidade ambiental, liberdade política, segurança, moradia</strong>. O próprio PNUD admite isso com índices complementares (IDHMAD para a desigualdade).</li>
 <li><strong>Balizas e transformações são convenções</strong> — os limites fixos (25–85 anos; R$ 8–4.033) e o <strong>log</strong> da renda são decisões normativas, não fatos: mudá-los desloca os valores (vimos no efeito do log).</li>
 <li><strong>Efeito-teto</strong> — indicadores que se aproximam do limite (frequência de 5–6 anos, quase universal; longevidade cada vez mais homogênea) <strong>perdem poder de diferenciar</strong> as unidades.</li>
-<li><strong>Falácia ecológica e reificação</strong> — o valor de uma UF não descreve nenhum habitante; e o número agregado, repetido, vira um fim em si (o “fetichismo do indicador”) — contra o que a volta às dimensões (Etapa 8) é o antídoto.</li>
+<li><strong>Falácia ecológica e reificação</strong> — concluir sobre uma <em>pessoa</em> a partir do <em>grupo</em> é a falácia ecológica: numa UF de renda média alta pode haver muita gente pobre — o morador não “é” a média (com um pé no forno e outro no freezer, <em>na média</em> você está confortável). Some-se a <strong>reificação</strong>: o número, repetido, vira um fim em si (o “fetichismo do indicador”) — contra o que a volta às dimensões (Etapa 8) é o antídoto.</li>
 </ul>
 </section>
 <section id="como-ler-qualquer-índice" class="slide level2 smaller">
