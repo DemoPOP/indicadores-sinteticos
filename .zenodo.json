@@ -1,0 +1,25 @@
+{
+  "title": "Produção de indicadores sintéticos — Workshop DEMOPOP",
+  "description": "Material do workshop \"Produção de indicadores sintéticos\" (DEMOPOP, CEDEPLAR-UFMG): tutorial em R que reconstrói o Índice de Desenvolvimento Humano Municipal (IDHM) para as 27 Unidades da Federação, com a base pública do Radar IDHM (2012–2024), percorrendo as 10 etapas do Handbook on Constructing Composite Indicators (OCDE, 2008). Inclui a página do tutorial, os slides da aula, o script R e os dados.",
+  "upload_type": "lesson",
+  "language": "por",
+  "license": "CC-BY-4.0",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Gonçalves, Caio César Soares",
+      "affiliation": "Departamento de Demografia / CEDEPLAR, Universidade Federal de Minas Gerais",
+      "orcid": "0000-0002-3366-7560"
+    }
+  ],
+  "keywords": [
+    "indicadores sintéticos",
+    "índices compostos",
+    "IDHM",
+    "desenvolvimento humano",
+    "demografia",
+    "R",
+    "OCDE",
+    "Radar IDHM"
+  ]
+}
