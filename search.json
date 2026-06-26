@@ -1,5 +1,362 @@
 [
   {
+    "objectID": "slides.html#antes-de-começar-material-e-pasta",
+    "href": "slides.html#antes-de-começar-material-e-pasta",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Antes de começar — material e pasta",
+    "text": "Antes de começar — material e pasta\nBaixe o material em demopop.github.io/indicadores-sinteticos: o script tutorial.R e os dados (data/). Organize numa pasta de trabalho:\nworkshop-idhm/\n├── tutorial.R\n└── data/\n    ├── adh_radar_base_2012_2024.xlsx\n    └── uf_brasil.geojson\nE aponte o R para essa pasta (o working directory), para que os caminhos data/... funcionem:\n\nsetwd(\"C:/Users/voce/Documents/workshop-idhm\")  # ajuste para a SUA pasta\nlist.files(\"data\")   # confere: o .xlsx e o .geojson devem aparecer\n\n\nCombinar o ritmo: vocês rodam os comandos, olhamos a saída juntos, eu comento; em cada decisão, pergunto e vocês respondem antes de eu revelar. Quem usa RStudio pode abrir um Projeto (.Rproj) na pasta, em vez do setwd()."
+  },
+  {
+    "objectID": "slides.html#a-notícia",
+    "href": "slides.html#a-notícia",
+    "title": "Produção de indicadores sintéticos",
+    "section": "A notícia",
+    "text": "A notícia\nEm 2024, o IDHM do Brasil alcançou 0,805 — situando o país, pela primeira vez, na faixa de “muito alto desenvolvimento humano”, ante 0,744 em 2012.\n\nAlgo a comemorar — mas que reabre uma pergunta analítica, e é ela que conduz este workshop:\n\nUm valor-síntese elevado é compatível com desigualdades profundas — entre territórios, sexos e raças? Aquilo que o número agrega, ele também esconde.\n\n\nA divulgação do Radar IDHM. “Muito alto” não significa “alto para todos”. A tensão entre a capacidade comunicativa do número agregado e a informação que ele suprime é o fio condutor."
+  },
+  {
+    "objectID": "slides.html#da-estatística-ao-índice-composto",
+    "href": "slides.html#da-estatística-ao-índice-composto",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Da estatística ao índice composto",
+    "text": "Da estatística ao índice composto\nA informação estatística se organiza em níveis crescentes de agregação:\n\\[\\text{dado bruto} \\to \\text{estatística (total, } \\%, \\text{razão, taxa, média)} \\to \\text{indicador} \\to \\text{índice}\\]\n\n\nUm indicador analítico retrata uma dimensão específica — a taxa de desocupação, a evasão escolar.\nUm indicador sintético (ou índice) agrega dois ou mais indicadores para representar um fenômeno multidimensional.\nO próprio PIB é, sob essa ótica, um grande agregado-síntese: combina bens heterogêneos por um numerário comum, os preços.\n\n\nDistinguir proporção (parte/todo), razão (grandezas distintas), taxa (eventos/exposição), média. “Demógrafos adoram taxas que não são taxas.” O PIB escapa da 1ª decisão (pesos) porque o mercado já os dá."
+  },
+  {
+    "objectID": "slides.html#a-escada-da-abstração",
+    "href": "slides.html#a-escada-da-abstração",
+    "title": "Produção de indicadores sintéticos",
+    "section": "A escada da abstração",
+    "text": "A escada da abstração\nPara medir um conceito abstrato, descemos uma escada:\n\\[\\text{conceito} \\to \\text{dimensões} \\to \\text{definição operacional (indicadores)}\\]\n\nUm paradoxo: ao operacionalizar, eu me aproximo do conceito (ganho uma medida) e, ao mesmo tempo, dele me distancio — toda síntese perde informação.\n\n\nE cada delimitação embute premissas que, por definição, não são testáveis. Guardem isto: é a mensagem final.\n\nA passagem top-down conceito→dimensão→indicador. O paradoxo aproximar/distanciar. Premissas não testáveis: nunca se prova que o índice “mede” o desenvolvimento humano — só se mantém a convenção honesta."
+  },
+  {
+    "objectID": "slides.html#o-que-é-desenvolvimento-humano",
+    "href": "slides.html#o-que-é-desenvolvimento-humano",
+    "title": "Produção de indicadores sintéticos",
+    "section": "O que é desenvolvimento humano?",
+    "text": "O que é desenvolvimento humano?\nPara vocês: o que é “desenvolvimento humano”? Que dimensões ele teria?\n\nNa formulação de Mahbub ul Haq, apoiada em Amartya Sen: a ampliação das liberdades e capacidades das pessoas — em contraposição ao desenvolvimento como mero crescimento da renda.\n\n\nO IDHM o operacionaliza em três dimensões — longevidade · educação · renda. E o que ficou de fora? — desigualdade, liberdade política, sustentabilidade ambiental.\n\nDeixar a sala propor dimensões antes de revelar. O “de fora” prepara a crítica do encerramento."
+  },
+  {
+    "objectID": "slides.html#que-indicador-mede-cada-dimensão",
+    "href": "slides.html#que-indicador-mede-cada-dimensão",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Que indicador mede cada dimensão?",
+    "text": "Que indicador mede cada dimensão?\nPensem no indicador observável que melhor representa cada dimensão:\n\n\nLongevidade → esperança de vida ao nascer (\\(e_0\\)), da tábua de vida (independe da estrutura etária).\nRenda → renda domiciliar per capita (entra em log na Etapa 5), não a Renda Nacional Bruta global.\nEducação → estoque (adultos com fundamental) + fluxo (jovens na idade certa) — combinados só na Etapa 6.\n\n\ne0 sintetiza nível e estrutura da mortalidade, todas as causas. Renda domiciliar mais perto do padrão de vida vivido. Educação: duas naturezas."
+  },
+  {
+    "objectID": "slides.html#rode-pacotes-e-dados",
+    "href": "slides.html#rode-pacotes-e-dados",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: pacotes e dados",
+    "text": "Rode: pacotes e dados\n\nradar &lt;- read_excel(\"data/adh_radar_base_2012_2024.xlsx\", sheet = \"Total\")\n\n# as 27 UFs no ano de 2024\nufs &lt;- filter(radar, ANO == 2024, AGREGACAO == \"Unidade da Federação\")\n\n# os 4 indicadores de fluxo escolar\ncols_fluxo &lt;- c(\"T_FREQ5A6\", \"T_FUND11A13\", \"T_FUND15A17\", \"T_MED18A20\")\n\ndim(ufs)\n\n[1] 27 83"
+  },
+  {
+    "objectID": "slides.html#o-que-temos",
+    "href": "slides.html#o-que-temos",
+    "title": "Produção de indicadores sintéticos",
+    "section": "O que temos",
+    "text": "O que temos\n\nglimpse(ufs[, c(\"NOME\", \"ESPVIDA\", \"T_FUND18M\", cols_fluxo, \"RDPC\", \"IDHM\")])\n\nRows: 27\nColumns: 9\n$ NOME        &lt;chr&gt; \"Rondônia\", \"Acre\", \"Amazonas\", \"Roraima\", \"Pará\", \"Amapá\", \"Tocanti…\n$ ESPVIDA     &lt;dbl&gt; 76.00, 75.86, 75.48, 74.35, 76.26, 74.32, 76.68, 75.62, 76.96, 77.26…\n$ T_FUND18M   &lt;dbl&gt; 64.82, 67.18, 74.51, 79.75, 66.73, 75.35, 69.81, 63.05, 59.66, 63.44…\n$ T_FREQ5A6   &lt;dbl&gt; 95.64, 93.06, 94.99, 95.84, 98.41, 83.01, 96.06, 98.48, 99.69, 98.54…\n$ T_FUND11A13 &lt;dbl&gt; 97.15, 91.52, 92.80, 92.26, 92.34, 92.32, 98.67, 95.05, 96.53, 97.01…\n$ T_FUND15A17 &lt;dbl&gt; 82.29, 74.26, 73.77, 72.35, 67.65, 68.18, 80.65, 72.75, 76.97, 86.57…\n$ T_MED18A20  &lt;dbl&gt; 65.58, 51.88, 62.91, 65.98, 50.79, 53.05, 67.79, 58.03, 57.86, 65.99…\n$ RDPC        &lt;dbl&gt; 769.89, 563.00, 550.19, 676.77, 592.77, 674.74, 771.42, 481.46, 603.…\n$ IDHM        &lt;dbl&gt; 0.786, 0.754, 0.767, 0.780, 0.758, 0.759, 0.797, 0.745, 0.764, 0.773…\n\n\n\n27 UFs, 2024. Indicadores brutos de cada dimensão — esperança de vida (anos), escolaridade e fluxo (%), renda (R$ constantes) — e o IDHM oficial, nosso gabarito para validar na Etapa 9."
+  },
+  {
+    "objectID": "slides.html#os-dados-estão-prontos",
+    "href": "slides.html#os-dados-estão-prontos",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Os dados estão prontos?",
+    "text": "Os dados estão prontos?\nMais que “imputar ausentes”: é onde o dado bruto se torna apto à análise — crítica de consistência, outliers, ausentes, suavização — e onde se fixam as referências e a polaridade que a normalização usará.\n\nComeçamos checando ausências nos indicadores do cálculo:\n\ncols_calc &lt;- c(\"ESPVIDA\", \"T_FUND18M\", cols_fluxo, \"RDPC\", \"IDHM\")\ncolSums(is.na(ufs[, cols_calc]))   # nº de ausências por indicador\n\n    ESPVIDA   T_FUND18M   T_FREQ5A6 T_FUND11A13 T_FUND15A17  T_MED18A20        RDPC \n          0           0           0           0           0           0           0 \n       IDHM \n          0 \n\n\n\n\nTudo zero: o Radar já vem consolidado. A imputação é dispensada — mas a decisão de tratamento permanece."
+  },
+  {
+    "objectID": "slides.html#rode-regras-de-consistência",
+    "href": "slides.html#rode-regras-de-consistência",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: regras de consistência",
+    "text": "Rode: regras de consistência\n\nregras &lt;- list(\n  renda_positiva    = ufs$RDPC &gt; 0,\n  espvida_plausivel = ufs$ESPVIDA &gt;= 50 & ufs$ESPVIDA &lt;= 90,\n  escol_percentual  = ufs$T_FUND18M &gt;= 0 & ufs$T_FUND18M &lt;= 100,\n  fluxo_percentual  = apply(ufs[, cols_fluxo] &gt;= 0 & ufs[, cols_fluxo] &lt;= 100, 1, all)\n)\nsapply(regras, function(ok) sum(!ok))   # quantas UFs FALHAM em cada regra\n\n   renda_positiva espvida_plausivel  escol_percentual  fluxo_percentual \n                0                 0                 0                 0 \n\n\n\nZero falhas. O valor do método aparece em dados brutos: a mesma estrutura flagraria automaticamente um % acima de 100 ou uma renda nula. (Pacotes validate, pointblank formalizam isso.)"
+  },
+  {
+    "objectID": "slides.html#rode-outliers-regra-do-boxplot",
+    "href": "slides.html#rode-outliers-regra-do-boxplot",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: outliers (regra do boxplot)",
+    "text": "Rode: outliers (regra do boxplot)\n\neh_outlier &lt;- function(x) {\n  q &lt;- quantile(x, c(.25, .75)); iqr &lt;- q[2] - q[1]\n  x &lt; q[1] - 1.5 * iqr | x &gt; q[2] + 1.5 * iqr\n}\nindic &lt;- data.frame(longev = ufs$ESPVIDA, escol = ufs$T_FUND18M,\n                     fluxo = rowMeans(ufs[, cols_fluxo]), renda = ufs$RDPC)\nsapply(indic, function(x) sum(eh_outlier(x)))\n\nlongev  escol  fluxo  renda \n     1      0      0      0 \n\nufs$NOME[eh_outlier(ufs$ESPVIDA)]\n\n[1] \"Distrito Federal\"\n\n\n\nSó a longevidade acusa um caso: o Distrito Federal. Sob min–max amostral, essa única UF definiria o teto e comprimiria todas as demais — por isso o IDHM usa balizas fixas (25–85). E extremo ≠ outlier: o DF, recordista de renda, nem é flagrado nela."
+  },
+  {
+    "objectID": "slides.html#examinar-a-estrutura",
+    "href": "slides.html#examinar-a-estrutura",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Examinar a estrutura",
+    "text": "Examinar a estrutura\nAntes de combinar: há redundância entre indicadores? A estrutura empírica respalda o agrupamento teórico? Que perfis de UF se formam?\n\n\nContra-alerta: certa correlação entre medidas de um mesmo agregado é esperada. Quem decide se duas medidas são “a mesma coisa” é a teoria, não o coeficiente."
+  },
+  {
+    "objectID": "slides.html#rode-matriz-de-correlação",
+    "href": "slides.html#rode-matriz-de-correlação",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: matriz de correlação",
+    "text": "Rode: matriz de correlação\n\nindicadores &lt;- ufs |&gt;\n  transmute(longevidade = ESPVIDA, escolaridade = T_FUND18M,\n            fluxo_5a6 = T_FREQ5A6, fluxo_11a13 = T_FUND11A13,\n            fluxo_15a17 = T_FUND15A17, fluxo_18a20 = T_MED18A20, renda = RDPC)\nround(cor(indicadores), 2)\n\n             longevidade escolaridade fluxo_5a6 fluxo_11a13 fluxo_15a17 fluxo_18a20 renda\nlongevidade         1.00         0.14      0.40        0.57        0.44        0.32  0.56\nescolaridade        0.14         1.00     -0.31        0.12        0.19        0.59  0.72\nfluxo_5a6           0.40        -0.31      1.00        0.28        0.30        0.21  0.09\nfluxo_11a13         0.57         0.12      0.28        1.00        0.69        0.62  0.47\nfluxo_15a17         0.44         0.19      0.30        0.69        1.00        0.74  0.47\nfluxo_18a20         0.32         0.59      0.21        0.62        0.74        1.00  0.64\nrenda               0.56         0.72      0.09        0.47        0.47        0.64  1.00\n\n\n\nOs fluxos do fundamental/médio se correlacionam forte (respalda combiná-los); o de 5–6 anos destoa (saturado). E o alerta central: renda × escolaridade = 0,72 — dupla contagem potencial ao pesá-las igualmente."
+  },
+  {
+    "objectID": "slides.html#rode-α-de-cronbach",
+    "href": "slides.html#rode-α-de-cronbach",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: α de Cronbach",
+    "text": "Rode: α de Cronbach\n\nalpha &lt;- function(itens) {\n  k &lt;- ncol(itens)\n  (k / (k - 1)) * (1 - sum(apply(itens, 2, var)) / var(rowSums(itens)))\n}\nc(com_5a6 = alpha(ufs[, c(\"T_FUND18M\", cols_fluxo)]),\n  sem_5a6 = alpha(ufs[, c(\"T_FUND18M\",\"T_FUND11A13\",\"T_FUND15A17\",\"T_MED18A20\")])) |&gt; round(3)\n\ncom_5a6 sem_5a6 \n  0.690   0.744 \n\n\n\nO α sobe de 0,69 para 0,74 ao remover o fluxo de 5–6 anos — o mesmo item saturado. O alpha é diagnóstico de coesão, não um “quanto mais alto, melhor”."
+  },
+  {
+    "objectID": "slides.html#rode-componentes-principais-pca",
+    "href": "slides.html#rode-componentes-principais-pca",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: componentes principais (PCA)",
+    "text": "Rode: componentes principais (PCA)\n\npca &lt;- prcomp(indicadores, scale. = TRUE)\nround(summary(pca)$importance[2, 1:3], 3)   # variância de PC1, PC2, PC3\n\n  PC1   PC2   PC3 \n0.508 0.228 0.110 \n\nround(pca$rotation[, 1], 2)                 # cargas no 1º componente\n\n longevidade escolaridade    fluxo_5a6  fluxo_11a13  fluxo_15a17  fluxo_18a20 \n        0.36         0.28         0.17         0.42         0.43         0.46 \n       renda \n        0.44 \n\n\n\nO 1º componente resume metade da variância (≈0,51): um eixo geral de desenvolvimento. Mas esses pesos maximizam variância estatística, não juízo de importância — por isso o IDHM não os adota."
+  },
+  {
+    "objectID": "slides.html#rode-agrupamento-dendrograma",
+    "href": "slides.html#rode-agrupamento-dendrograma",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: agrupamento (dendrograma)",
+    "text": "Rode: agrupamento (dendrograma)\n\nd  &lt;- dist(scale(indicadores))\nhc &lt;- hclust(d, method = \"ward.D2\")\nplot(hc, labels = ufs$NOME, main = NULL, xlab = \"\", ylab = \"Distância\", sub = \"\", cex = 0.7)\n\n\n\nSepara, em geral, Sul/Sudeste/Centro-Oeste de Norte/Nordeste. Duas UFs com IDHM parecido podem cair em ramos distintos — perfis diferentes (a Etapa 8 desmonta isso)."
+  },
+  {
+    "objectID": "slides.html#fixa-ou-amostral",
+    "href": "slides.html#fixa-ou-amostral",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Fixa ou amostral?",
+    "text": "Fixa ou amostral?\nPergunta: o “0” e o “1” da escala devem vir de referências fixas (balizas externas) ou dos mín/máx observados na amostra?\n\nIDHM → balizas fixas. É o que torna 2024 comparável a 2012. Com referência amostral, a melhor UF vira 1 por definição, e incluir/excluir uma UF muda o escore de todas.\n\\[\\text{min-max:}\\; I = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}} \\qquad \\text{z-score:}\\; z = \\frac{x - \\bar{x}}{s}\\]"
+  },
+  {
+    "objectID": "slides.html#rode-três-normalizações",
+    "href": "slides.html#rode-três-normalizações",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: três normalizações",
+    "text": "Rode: três normalizações\n\nev &lt;- ufs$ESPVIDA\nfixo     &lt;- (ev - 25) / (85 - 25)                 # min-max fixo (balizas do IDHM)\namostral &lt;- (ev - min(ev)) / (max(ev) - min(ev))  # min-max amostral\nzscore   &lt;- (ev - mean(ev)) / sd(ev)              # z-score\nsummary(data.frame(fixo, amostral, zscore))\n\n      fixo           amostral          zscore        \n Min.   :0.8220   Min.   :0.0000   Min.   :-1.69825  \n 1st Qu.:0.8437   1st Qu.:0.2394   1st Qu.:-0.63628  \n Median :0.8560   Median :0.3757   Median :-0.03177  \n Mean   :0.8566   Mean   :0.3829   Mean   : 0.00000  \n 3rd Qu.:0.8682   3rd Qu.:0.5101   3rd Qu.: 0.56457  \n Max.   :0.9125   Max.   :1.0000   Max.   : 2.73754  \n\n\n\nCada método responde a uma pergunta diferente. E há uma sutileza: o z-score iguala a dispersão (variância 1); o min–max iguala a amplitude ([0,1]), não a dispersão — o que muda a contribuição efetiva de cada indicador."
+  },
+  {
+    "objectID": "slides.html#rode-as-normalizações-do-idhm",
+    "href": "slides.html#rode-as-normalizações-do-idhm",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: as normalizações do IDHM",
+    "text": "Rode: as normalizações do IDHM\n\nufs$i.longev &lt;- (ufs$ESPVIDA - 25) / (85 - 25)              # min-max fixo 25–85\nufs$i.renda  &lt;- (log(ufs$RDPC) - log(8)) / (log(4033) - log(8))  # log + min-max 8–4033\nufs$si.escol &lt;- ufs$T_FUND18M / 100                        # estoque (% → [0,1])\nufs$si.fluxo &lt;- rowMeans(ufs[, cols_fluxo]) / 100          # fluxo (média dos 4, % → [0,1])\nsummary(ufs[, c(\"i.longev\", \"i.renda\", \"si.escol\", \"si.fluxo\")])\n\n    i.longev         i.renda          si.escol         si.fluxo     \n Min.   :0.8220   Min.   :0.6584   Min.   :0.5914   Min.   :0.7414  \n 1st Qu.:0.8437   1st Qu.:0.6943   1st Qu.:0.6347   1st Qu.:0.8081  \n Median :0.8560   Median :0.7195   Median :0.6981   Median :0.8276  \n Mean   :0.8566   Mean   :0.7339   Mean   :0.6944   Mean   :0.8282  \n 3rd Qu.:0.8682   3rd Qu.:0.7710   3rd Qu.:0.7481   3rd Qu.:0.8548  \n Max.   :0.9125   Max.   :0.8373   Max.   :0.8338   Max.   :0.8845  \n\n\n\nOs quatro subíndices ficam em [0,1], prontos para a Etapa 6 — em patamares distintos (fluxo mais alto, escolaridade mais baixa)."
+  },
+  {
+    "objectID": "slides.html#ponderar-agregar",
+    "href": "slides.html#ponderar-agregar",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Ponderar ≠ agregar",
+    "text": "Ponderar ≠ agregar\nDuas decisões distintas (e independentes):\n\nPonderação — com que peso cada componente entra.\nAgregação — a regra que funde os componentes (aritmética? geométrica? multiplicativa?).\n\n\n\nSutileza: em agregação aditiva/geométrica, os pesos são taxas de troca (substituição), não “coeficientes de importância”. “Pesos iguais” = taxa de troca unitária."
+  },
+  {
+    "objectID": "slides.html#educação-que-pesos",
+    "href": "slides.html#educação-que-pesos",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Educação: que pesos?",
+    "text": "Educação: que pesos?\nPergunta: estoque e fluxo devem pesar igual? Qual importa mais para o desenvolvimento futuro?\n\nIDHM → fluxo peso 2, estoque peso 1, por média geométrica: \\(\\left(I_{\\text{escol}}^{1}\\cdot I_{\\text{fluxo}}^{2}\\right)^{1/3}\\)\n\nufs$i.educ &lt;- (ufs$si.escol^1 * ufs$si.fluxo^2)^(1/3)\neduc_iguais &lt;- (ufs$si.escol^1 * ufs$si.fluxo^1)^(1/2)\ndata.frame(uf = ufs$NOME, educ_idhm = round(ufs$i.educ, 3),\n           educ_iguais = round(educ_iguais, 3),\n           dif = round(ufs$i.educ - educ_iguais, 3)) |&gt;\n  arrange(desc(abs(dif))) |&gt; head(6)\n\n\n\n\n\nuf\neduc_idhm\neduc_iguais\ndif\n\n\n\n\nCeará\n0.783\n0.743\n0.040\n\n\nPiauí\n0.742\n0.703\n0.039\n\n\nParaíba\n0.730\n0.693\n0.037\n\n\nAlagoas\n0.729\n0.693\n0.036\n\n\nRondônia\n0.778\n0.743\n0.035\n\n\nPernambuco\n0.764\n0.731\n0.033"
+  },
+  {
+    "objectID": "slides.html#três-dimensões-pesos-e-compensação",
+    "href": "slides.html#três-dimensões-pesos-e-compensação",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Três dimensões: pesos e compensação?",
+    "text": "Três dimensões: pesos e compensação?\nPergunta: as três dimensões pesam igual? Uma renda alta pode compensar uma educação baixa?\n\nIDHM → pesos iguais + média geométrica (limita a compensação). A função parametriza ambas as escolhas:\n\nconstruir_indice &lt;- function(dados, agregacao = \"geometrica\", pesos = c(1, 1, 1)) {\n  L &lt;- dados$i.longev; E &lt;- dados$i.educ; R &lt;- dados$i.renda\n  w &lt;- pesos / sum(pesos)\n  indice &lt;- if (agregacao == \"geometrica\") L^w[1] * E^w[2] * R^w[3]\n            else                            w[1]*L + w[2]*E + w[3]*R\n  data.frame(uf = dados$NOME, indice = round(indice, 4),\n             rank = rank(-indice, ties.method = \"min\"))\n}\nufs$idhm &lt;- construir_indice(ufs)$indice"
+  },
+  {
+    "objectID": "slides.html#rode-geométrica-aritmética",
+    "href": "slides.html#rode-geométrica-aritmética",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: geométrica × aritmética",
+    "text": "Rode: geométrica × aritmética\n\ngeo &lt;- construir_indice(ufs, agregacao = \"geometrica\")\nari &lt;- construir_indice(ufs, agregacao = \"aritmetica\")\ncomparar &lt;- geo |&gt; rename(rank_geo = rank, idx_geo = indice) |&gt;\n  left_join(ari |&gt; rename(rank_ari = rank, idx_ari = indice), by = \"uf\") |&gt;\n  mutate(mudanca = rank_geo - rank_ari)\narrange(comparar, desc(abs(mudanca)))[, c(\"uf\", \"rank_geo\", \"rank_ari\", \"mudanca\")] |&gt; head(8)\n\n\n\n\n\nuf\nrank_geo\nrank_ari\nmudanca\n\n\n\n\nAmapá\n22\n24\n-2\n\n\nAmazonas\n18\n17\n1\n\n\nPará\n24\n23\n1\n\n\nMaranhão\n27\n26\n1\n\n\nPernambuco\n17\n18\n-1\n\n\nAlagoas\n26\n27\n-1\n\n\nBahia\n23\n22\n1\n\n\nRondônia\n13\n13\n0\n\n\n\n\n\n\n\nAs UFs que mais sobem ao virar aritmética são as de perfil mais desigual: a aritmética compensa o desequilíbrio que a geométrica recusa."
+  },
+  {
+    "objectID": "slides.html#rode-pesos-derivados-dos-dados-pca",
+    "href": "slides.html#rode-pesos-derivados-dos-dados-pca",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: pesos derivados dos dados (PCA)",
+    "text": "Rode: pesos derivados dos dados (PCA)\n\npca_dim &lt;- prcomp(ufs[, c(\"i.longev\", \"i.educ\", \"i.renda\")], scale. = FALSE)\npesos_pca &lt;- abs(pca_dim$rotation[, 1]); pesos_pca &lt;- pesos_pca / sum(pesos_pca)\nround(pesos_pca, 3)\n\ni.longev   i.educ  i.renda \n   0.119    0.378    0.503 \n\ncor(construir_indice(ufs)$indice,\n    construir_indice(ufs, pesos = pesos_pca)$indice, method = \"spearman\")\n\n[1] 0.9871795\n\n\n\nA renda leva ~metade do peso — não por ser “mais importante”, mas por variar mais entre as UFs. Pesos da PCA medem o quanto cada dimensão diferencia, não o quanto importa. Por isso o IDHM fixa pesos iguais por convenção."
+  },
+  {
+    "objectID": "slides.html#duas-perguntas",
+    "href": "slides.html#duas-perguntas",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Duas perguntas",
+    "text": "Duas perguntas\n\nIncerteza: quanto o resultado se move ao variar as escolhas plausíveis?\nSensibilidade: qual escolha move mais o resultado?\n\nO Handbook recomenda usá-las juntas."
+  },
+  {
+    "objectID": "slides.html#rode-sensibilidade-spearman",
+    "href": "slides.html#rode-sensibilidade-spearman",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: sensibilidade (Spearman)",
+    "text": "Rode: sensibilidade (Spearman)\n\nidx_padrao &lt;- construir_indice(ufs)$indice\ncenarios &lt;- list(\n  \"renda dobrada\"            = list(\"geometrica\", c(1, 1, 2)),\n  \"educação dobrada\"         = list(\"geometrica\", c(1, 2, 1)),\n  \"índice social (s/ renda)\" = list(\"geometrica\", c(1, 1, 0)),\n  \"aritmética (iguais)\"      = list(\"aritmetica\",  c(1, 1, 1)))\nspearman &lt;- sapply(cenarios, function(cen)\n  round(cor(idx_padrao, construir_indice(ufs, cen[[1]], cen[[2]])$indice, method = \"spearman\"), 3))\nsort(spearman, decreasing = TRUE)\n\n     aritmética (iguais)            renda dobrada         educação dobrada \n                   0.997                    0.989                    0.988 \níndice social (s/ renda) \n                   0.940 \n\n\n\nSpearman perto de 1 = ranking resiste. Valores baixos não tornam o índice “errado”: indicam que o ranking é contingente às escolhas — que passam a exigir justificativa."
+  },
+  {
+    "objectID": "slides.html#rode-incerteza-por-monte-carlo",
+    "href": "slides.html#rode-incerteza-por-monte-carlo",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: incerteza por Monte Carlo",
+    "text": "Rode: incerteza por Monte Carlo\n\nset.seed(2026)\nsim &lt;- replicate(1000, {\n  w &lt;- runif(3, 0.5, 2); agr &lt;- sample(c(\"geometrica\", \"aritmetica\"), 1)\n  construir_indice(ufs, agregacao = agr, pesos = w)$rank\n})\nmc &lt;- as.data.frame(sim) |&gt; mutate(uf = ufs$NOME) |&gt;\n  pivot_longer(-uf, values_to = \"rank\") |&gt; mutate(uf = reorder(uf, rank, median))\nggplot(mc, aes(rank, uf)) +\n  geom_boxplot(outlier.size = 0.4, fill = \"#d6e4f0\", color = \"#2980b9\") +\n  labs(x = \"Posição no ranking (1 = melhor)\", y = NULL) + theme_minimal()\n\n\n\nCaixas estreitas (DF, SP, SC no topo; MA, AL na base) = posições robustas; caixas largas no miolo (AM, AP) = posição é artefato da regra. A largura é uma medida honesta de confiança no ranking."
+  },
+  {
+    "objectID": "slides.html#rode-o-efeito-do-log",
+    "href": "slides.html#rode-o-efeito-do-log",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: o efeito do log",
+    "text": "Rode: o efeito do log\n\nrenda_sem_log &lt;- (ufs$RDPC - 8) / (4033 - 8)\ni_sem_log &lt;- (ufs$i.longev * ufs$i.educ * renda_sem_log)^(1/3)\ndata.frame(uf = ufs$NOME,\n           rank_com_log = rank(-ufs$idhm, ties.method = \"min\"),\n           rank_sem_log = rank(-i_sem_log, ties.method = \"min\")) |&gt;\n  mutate(mudanca = rank_com_log - rank_sem_log) |&gt;\n  arrange(desc(mudanca)) |&gt; head(8)\n\n\n\n\n\nuf\nrank_com_log\nrank_sem_log\nmudanca\n\n\n\n\nAmapá\n22\n16\n6\n\n\nPará\n24\n22\n2\n\n\nSergipe\n20\n18\n2\n\n\nBahia\n23\n21\n2\n\n\nRio Grande do Sul\n6\n4\n2\n\n\nMato Grosso do Sul\n12\n10\n2\n\n\nRio Grande do Norte\n15\n14\n1\n\n\nParaíba\n21\n20\n1\n\n\n\n\n\n\n\nSem o log, as UFs de maior renda dominam o topo. O log é uma escolha de valor (retornos decrescentes da renda), não conveniência técnica."
+  },
+  {
+    "objectID": "slides.html#desmontar-o-agregado",
+    "href": "slides.html#desmontar-o-agregado",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Desmontar o agregado",
+    "text": "Desmontar o agregado\nA média oculta heterogeneidade: duas UFs com o mesmo IDHM podem ter perfis opostos. Voltar às dimensões arma o leitor contra a crítica do encerramento."
+  },
+  {
+    "objectID": "slides.html#rode-qual-dimensão-mais-diferencia",
+    "href": "slides.html#rode-qual-dimensão-mais-diferencia",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: qual dimensão mais diferencia?",
+    "text": "Rode: qual dimensão mais diferencia?\n\nufs |&gt; select(idhm, i.longev, i.educ, i.renda) |&gt;\n  pivot_longer(c(i.longev, i.educ, i.renda), names_to = \"dimensao\", values_to = \"valor\") |&gt;\n  mutate(dimensao = recode(dimensao, i.longev = \"Longevidade\", i.educ = \"Educação\", i.renda = \"Renda\")) |&gt;\n  ggplot(aes(valor, idhm)) + geom_point(color = \"#2980b9\") +\n  geom_smooth(method = \"lm\", se = FALSE, color = \"#c0392b\") +\n  facet_wrap(~dimensao) + labs(x = \"Valor da dimensão\", y = \"IDHM\") + theme_minimal()\n\n\n\nReta mais inclinada = mais diferencia (≠ maior peso, que é 1/3 igual). Sob pesos iguais, a dimensão de maior dispersão governa o ordenamento."
+  },
+  {
+    "objectID": "slides.html#rode-mesmo-idhm-perfis-distintos",
+    "href": "slides.html#rode-mesmo-idhm-perfis-distintos",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: mesmo IDHM, perfis distintos",
+    "text": "Rode: mesmo IDHM, perfis distintos\n\nperfil &lt;- ufs |&gt; filter(NOME %in% c(\"Rio Grande do Norte\", \"Roraima\")) |&gt;\n  select(NOME, i.longev, i.educ, i.renda) |&gt;\n  pivot_longer(-NOME, names_to = \"dimensao\", values_to = \"valor\") |&gt;\n  mutate(dimensao = recode(dimensao, i.longev = \"Longevidade\", i.educ = \"Educação\", i.renda = \"Renda\"))\nggplot(perfil, aes(dimensao, valor, fill = NOME)) + geom_col(position = \"dodge\") +\n  labs(x = NULL, y = \"Subíndice (0–1)\", fill = NULL) + theme_minimal()\n\n\n\nMesmo IDHM (≈0,78): o RN se sustenta na longevidade, Roraima na educação. Uma política guiada só pelo índice trataria as duas como idênticas — o erro que a crítica da elegibilidade denuncia."
+  },
+  {
+    "objectID": "slides.html#rode-o-que-mudou-no-tempo",
+    "href": "slides.html#rode-o-que-mudou-no-tempo",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: o que mudou no tempo?",
+    "text": "Rode: o que mudou no tempo?\n\ndelta &lt;- radar |&gt;\n  filter(AGREGACAO == \"Unidade da Federação\", ANO %in% c(2012, 2024)) |&gt;\n  select(NOME, ANO, IDHM_L, IDHM_E, IDHM_R) |&gt;\n  pivot_wider(names_from = ANO, values_from = c(IDHM_L, IDHM_E, IDHM_R)) |&gt;\n  transmute(uf = NOME, d_long = IDHM_L_2024 - IDHM_L_2012,\n            d_educ = IDHM_E_2024 - IDHM_E_2012, d_renda = IDHM_R_2024 - IDHM_R_2012)\nround(colMeans(delta[, c(\"d_long\", \"d_educ\", \"d_renda\")]), 4)\n\n d_long  d_educ d_renda \n 0.0294  0.1257  0.0331 \n\n\n\nA educação avança ~4× mais que as outras: é ela que puxa a subida do IDHM entre 2012 e 2024. A decomposição troca “o país melhorou” por qual dimensão melhorou, e quanto."
+  },
+  {
+    "objectID": "slides.html#reproduzir-e-validar",
+    "href": "slides.html#reproduzir-e-validar",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Reproduzir e validar",
+    "text": "Reproduzir e validar\n\nReprodução: nosso cálculo bate com o oficial? (verifica o pipeline)\nValidação externa: o índice se correlaciona com medidas distintas mas relacionadas (pobreza, mortalidade)? — validade convergente e discriminante."
+  },
+  {
+    "objectID": "slides.html#rode-reprodução-do-oficial",
+    "href": "slides.html#rode-reprodução-do-oficial",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: reprodução do oficial",
+    "text": "Rode: reprodução do oficial\nBater ao último dígito exige replicar duas convenções: arredondar cada subíndice a 3 casas e usar arredondamento comercial (metade para cima).\n\narred &lt;- function(x) floor(x * 1000 + 0.5) / 1000\nL &lt;- arred(ufs$i.longev); R &lt;- arred(ufs$i.renda)\nE &lt;- arred((arred(ufs$si.escol)^1 * arred(ufs$si.fluxo)^2)^(1/3))\nidhm_repro &lt;- arred((L * E * R)^(1/3))\nc(correlacao        = cor(ufs$IDHM, idhm_repro),\n  maior_dif         = max(abs(ufs$IDHM - idhm_repro)),\n  iguais_ao_oficial = sum(idhm_repro == ufs$IDHM)) |&gt; round(4)\n\n       correlacao         maior_dif iguais_ao_oficial \n                1                 0                27 \n\n\n\nCorrelação 1, diferença 0, 27/27 idênticas. A lição: reproduzir exige replicar não só as fórmulas, mas as convenções numéricas que quase nunca constam da metodologia."
+  },
+  {
+    "objectID": "slides.html#rode-validação-externa",
+    "href": "slides.html#rode-validação-externa",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: validação externa",
+    "text": "Rode: validação externa\n\nexternos &lt;- c(pobreza = \"PMPOB\", mort_infantil = \"MORT1\", gini = \"GINI\")\nsapply(externos, function(col) round(cor(ufs$idhm, ufs[[col]], method = \"spearman\"), 3))\n\n      pobreza mort_infantil          gini \n       -0.825        -0.751        -0.308 \n\n\n\nNegativas, como a teoria prevê. Forte com pobreza (−0,83) e mortalidade (−0,75) — convergente, mas não redundante. Fraca com o Gini (−0,31): o nível diz pouco sobre a desigualdade — a dimensão que o IDHM deixa de fora."
+  },
+  {
+    "objectID": "slides.html#rode-o-índice-irmão-idhmad",
+    "href": "slides.html#rode-o-índice-irmão-idhmad",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: o índice irmão (IDHMAD)",
+    "text": "Rode: o índice irmão (IDHMAD)\n\nad &lt;- ufs |&gt; transmute(uf = NOME, idhm = IDHM, idhmad = IDHMAD, perda = IDHMAD_PERDA,\n            rank_idhm   = rank(-IDHM,   ties.method = \"min\"),\n            rank_idhmad = rank(-IDHMAD, ties.method = \"min\"),\n            desloca     = rank_idhm - rank_idhmad)\nc(spearman = round(cor(ad$idhm, ad$idhmad, method = \"spearman\"), 3),\n  perda_media = round(mean(ad$perda), 1))\n\n   spearman perda_media \n      0.955      20.400 \n\narrange(ad, desc(abs(desloca))) |&gt; head(6)\n\n\n\n\n\nuf\nidhm\nidhmad\nperda\nrank_idhm\nrank_idhmad\ndesloca\n\n\n\n\nPará\n0.758\n0.600\n20.8\n24\n15\n9\n\n\nRio de Janeiro\n0.819\n0.659\n19.6\n5\n9\n-4\n\n\nAmazonas\n0.767\n0.613\n20.1\n17\n14\n3\n\n\nParaíba\n0.760\n0.586\n22.9\n21\n24\n-3\n\n\nPernambuco\n0.767\n0.593\n22.7\n17\n20\n-3\n\n\nMaranhão\n0.745\n0.577\n22.6\n27\n25\n2\n\n\n\n\n\n\n\nA perda média ~20%: um quinto do desenvolvimento humano evapora ao considerar a desigualdade. O ordenamento se preserva no atacado (Spearman ≈0,96), mas algumas UFs despencam — as que um IDHM “razoável” mascararia."
+  },
+  {
+    "objectID": "slides.html#três-cuidados-num-mapa",
+    "href": "slides.html#três-cuidados-num-mapa",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Três cuidados num mapa",
+    "text": "Três cuidados num mapa\n\nClassificação — intervalos iguais, quantis, Jenks contam histórias diferentes; o defensável é usar as faixas oficiais.\nPaleta — sequencial, perceptualmente uniforme e legível para daltônicos (viridis).\nViés de área — UFs grandes dominam o olhar; acompanhe de um ranking.\n\nE os obrigatórios: título, legenda, escala, norte, fonte."
+  },
+  {
+    "objectID": "slides.html#rode-mapa-do-idhm",
+    "href": "slides.html#rode-mapa-do-idhm",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: mapa do IDHM",
+    "text": "Rode: mapa do IDHM\n\nuf_geo &lt;- st_read(\"data/uf_brasil.geojson\", quiet = TRUE) |&gt; st_transform(5880)\nuf_geo$CODIGO &lt;- as.integer(uf_geo$codigo_ibg)\nmapa &lt;- left_join(uf_geo, mutate(ufs, CODIGO = as.integer(CODIGO)), by = \"CODIGO\")\nggplot(mapa) +\n  geom_sf(aes(fill = idhm), color = \"white\", linewidth = 0.2) +\n  scale_fill_viridis_c(option = \"plasma\", direction = -1, name = \"IDHM\") +\n  annotation_scale(location = \"bl\", style = \"ticks\") +\n  annotation_north_arrow(location = \"tr\", style = north_arrow_minimal(),\n                         height = unit(0.7, \"cm\"), width = unit(0.7, \"cm\")) +\n  labs(title = \"IDHM — UFs, 2024\") + theme_void()"
+  },
+  {
+    "objectID": "slides.html#rode-faixas-oficiais-2012-2024",
+    "href": "slides.html#rode-faixas-oficiais-2012-2024",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: faixas oficiais, 2012 × 2024",
+    "text": "Rode: faixas oficiais, 2012 × 2024\n\ncores_idhm &lt;- c(\"Muito Baixo\" = \"#C0392B\", \"Baixo\" = \"#E67E22\", \"Médio\" = \"#F1C40F\",\n                \"Alto\" = \"#1E8449\", \"Muito Alto\" = \"#5DADE2\")\nfaixas_anos &lt;- radar |&gt;\n  filter(AGREGACAO == \"Unidade da Federação\", ANO %in% c(2012, 2024)) |&gt;\n  transmute(CODIGO = as.integer(CODIGO), ANO,\n            faixa = cut(IDHM, c(-Inf, .5, .6, .7, .8, Inf), right = FALSE, labels = names(cores_idhm)))\nggplot(left_join(uf_geo, faixas_anos, by = \"CODIGO\")) +\n  geom_sf(aes(fill = faixa), color = \"white\", linewidth = 0.2) + facet_wrap(~ANO) +\n  scale_fill_manual(values = cores_idhm, drop = FALSE, name = \"Faixa IDHM\") + theme_void()\n\n\n\nEntre 2012 e 2024, o “Médio” (amarelo) desaparece e surge o “Muito Alto” (azul). Gradiente sugere precisão que o índice não tem; faixas comunicam a ordem de grandeza que importa."
+  },
+  {
+    "objectID": "slides.html#rode-trajetória-slope-chart",
+    "href": "slides.html#rode-trajetória-slope-chart",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Rode: trajetória (slope chart)",
+    "text": "Rode: trajetória (slope chart)\n\nevol &lt;- radar |&gt; filter(AGREGACAO == \"Unidade da Federação\", ANO %in% c(2012, 2024)) |&gt;\n  mutate(ANO = factor(ANO))\nggplot(evol, aes(ANO, IDHM, group = NOME)) +\n  geom_line(color = \"#2980b9\", alpha = 0.6) + geom_point(color = \"#2980b9\", size = 1.6) +\n  labs(x = NULL, y = \"IDHM\") + theme_minimal()\n\n\n\nTodas as 27 sobem (≈ +0,065) e as retas convergem de leve: quem partia mais baixo cresceu mais."
+  },
+  {
+    "objectID": "slides.html#construa-o-seu-índice",
+    "href": "slides.html#construa-o-seu-índice",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Construa o seu índice",
+    "text": "Construa o seu índice\n\nEscolha um cenário — outros pesos, agregação aritmética, ou sem renda (pesos = c(1, 1, 0)).\nCalcule com construir_indice() e gere ranking e mapa (com escala, norte, fonte).\nQuais UFs mais sobem/descem vs. o IDHM oficial? Por quê?\nA mudança é substantiva ou artefato da regra/pesos? (peso é taxa de troca, não importância.)\n\n\nPara ir além: rode o Monte Carlo (robustez), correlacione com um indicador externo (validade), compare com os pesos da PCA, ou desenhe o perfil das UFs que mais se deslocam."
+  },
+  {
+    "objectID": "slides.html#as-críticas-ao-idhm",
+    "href": "slides.html#as-críticas-ao-idhm",
+    "title": "Produção de indicadores sintéticos",
+    "section": "As críticas ao IDHM",
+    "text": "As críticas ao IDHM\n\nParadoxo da elegibilidade (Guimarães & Jannuzzi, 2005) — como critério único, exclui quem é grave numa dimensão específica. (Vimos: RN × Roraima.)\nDimensões ausentes — desigualdade, ambiente, liberdade política, segurança.\nBalizas e log são convenções, não fatos.\nEfeito-teto — indicadores quase universais perdem poder de diferenciar.\nFalácia ecológica e reificação — o valor da UF não descreve ninguém; o número vira um fim em si."
+  },
+  {
+    "objectID": "slides.html#como-ler-qualquer-índice",
+    "href": "slides.html#como-ler-qualquer-índice",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Como ler qualquer índice",
+    "text": "Como ler qualquer índice\n\nQue dimensões inclui — e o que ficou de fora?\nQue indicadores o operacionalizam — censo, amostra ou registro?\nComo normaliza — referência fixa ou amostral; e a polaridade?\nComo pondera e agrega — pesos (iguais? explícitos? dos dados?) e regra (compensatória ou não)?"
+  },
+  {
+    "objectID": "slides.html#mensagem-final",
+    "href": "slides.html#mensagem-final",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Mensagem final",
+    "text": "Mensagem final\nA simplicidade é constitutiva do IDH — poucas dimensões, agregação transparente, para ser comparável e crível.\n\nComo as premissas não são testáveis, nunca se prova que o índice mede o desenvolvimento humano: sua validade é uma convenção compartilhada, à maneira do papel-moeda, que vale enquanto a comunidade o reconhece.\n\n\nDaí a responsabilidade: manter a convenção explícita e honesta — e, antes de qualquer decisão, voltar sempre aos componentes."
+  },
+  {
+    "objectID": "slides.html#obrigado",
+    "href": "slides.html#obrigado",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Obrigado",
+    "text": "Obrigado\nCaio César Soares Gonçalves Departamento de Demografia / CEDEPLAR-UFMG\nMaterial completo: demopop.github.io/indicadores-sinteticos"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Produção de indicadores sintéticos",
+    "section": "",
+    "text": "Material do workshop Produção de indicadores sintéticos (DEMOPOP 2026), por Caio César Soares Gonçalves — Departamento de Demografia / CEDEPLAR-UFMG.\nO workshop reconstrói o Índice de Desenvolvimento Humano Municipal (IDHM) — aqui para as 27 Unidades da Federação, com a base pública do Radar IDHM (2012–2024) — passo a passo, seguindo as 10 etapas do Handbook on Constructing Composite Indicators (OCDE, 2008). Em cada etapa, o IDHM é o caso âncora e catalogam-se as técnicas existentes, de modo que o método possa ser aplicado a qualquer conceito multidimensional."
+  },
+  {
+    "objectID": "index.html#comece-aqui",
+    "href": "index.html#comece-aqui",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Comece aqui",
+    "text": "Comece aqui\n→ Abrir o Tutorial"
+  },
+  {
+    "objectID": "index.html#arquivos-para-download",
+    "href": "index.html#arquivos-para-download",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Arquivos para download",
+    "text": "Arquivos para download\n\nScript R completo (.R) — versão executável do tutorial, para rodar linha a linha no RStudio\nBase do Atlas — Radar IDHM 2012–2024 (.xlsx)\nMalha das Unidades da Federação (.geojson)\n\nPara reproduzir, baixe o script R e a base, mantendo o arquivo .xlsx (e o .geojson) numa pasta data/ no diretório de trabalho. O primeiro bloco do script instala automaticamente os pacotes necessários (readxl, dplyr, tidyr, ggplot2, sf, ggspatial); depois é só rodar de cima para baixo."
+  },
+  {
+    "objectID": "index.html#autor",
+    "href": "index.html#autor",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Autor",
+    "text": "Autor\nCaio César Soares Gonçalves é professor do Departamento de Demografia do Cedeplar/UFMG, atuando em métodos estatísticos e computacionais e em ciência de dados. Doutor em População, Território e Estatísticas Públicas (ENCE/IBGE), mestre em Economia (UFRGS), especialista em Ciência de Dados e Big Data e economista (PUC Minas). Pesquisa métodos de produção de estatísticas demográficas, sociais e ambientais — combinando censos, pesquisas amostrais, registros administrativos e big data, com ênfase na estimação em pequenos domínios e na desagregação espaço-temporal de indicadores. Coordenou a área de indicadores sociais da Fundação João Pinheiro (IDHM e IMRS) e colaborou com IBGE, Ipea, IPEDF, UNFPA, BID e o Office for National Statistics (Reino Unido). Recebeu o Young Statistician Prize da IAOS (2021) e foi premiado no concurso de melhor tese de doutorado da ABE (2024).\nORCID · Google Scholar · Lattes · ResearchGate · LinkedIn"
+  },
+  {
+    "objectID": "index.html#como-citar",
+    "href": "index.html#como-citar",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Como citar",
+    "text": "Como citar\n\nGonçalves, C. C. S. (2026). Produção de indicadores sintéticos [material de workshop]. Workshop de Métodos Demográficos — DEMOPOP, Departamento de Demografia / CEDEPLAR-UFMG. https://demopop.github.io/indicadores-sinteticos/"
+  },
+  {
+    "objectID": "index.html#licença",
+    "href": "index.html#licença",
+    "title": "Produção de indicadores sintéticos",
+    "section": "Licença",
+    "text": "Licença\nMaterial distribuído sob a licença Creative Commons Atribuição 4.0 Internacional (CC BY 4.0) — livre para compartilhar e adaptar, inclusive para fins comerciais, desde que citada a autoria."
+  },
+  {
     "objectID": "tutorial.html",
     "href": "tutorial.html",
     "title": "Tutorial — Produção de indicadores sintéticos",
@@ -222,47 +579,5 @@
     "title": "Tutorial — Produção de indicadores sintéticos",
     "section": "Referências",
     "text": "Referências\n\nAnand, S.; Sen, A. (1994). Human Development Index: methodology and measurement. PNUD (Occasional Paper 12). Disponível em: https://hdr.undp.org/content/human-development-index-methodology-and-measurement\nFundação João Pinheiro (2025). Índice Mineiro de Responsabilidade Social: metodologia da 10ª edição. Belo Horizonte: FJP (Estatística & Informações, n. 72). Disponível em: https://drive.google.com/file/d/1CySE1StUkQxNO4JOnx3w7E_31y4SGjUX/view\nGuimarães, J. R. S.; Jannuzzi, P. M. (2005). IDH, indicadores sintéticos e suas aplicações em políticas públicas: uma análise crítica. Revista Brasileira de Estudos Urbanos e Regionais, 7(1). Disponível em: https://rbeur.anpur.org.br/rbeur/article/view/136\nJannuzzi, P. M. (2001; 2014). Indicadores sociais no Brasil.\nOCDE / JRC — Joint Research Centre (2008). Handbook on Constructing Composite Indicators. Disponível em: https://www.oecd.org/en/publications/handbook-on-constructing-composite-indicators-methodology-and-user-guide_9789264043466-en.html\nPNUD (1990). Human Development Report 1990. Nova York: Oxford University Press. Disponível em: https://hdr.undp.org/content/human-development-report-1990\nPNUD; Ipea; FJP (2013). Atlas do Desenvolvimento Humano no Brasil — metodologia do IDHM. Disponível em: https://www.atlasbrasil.org.br\nPNUD (2026). Brasil alcança, pela primeira vez, patamar de “muito alto desenvolvimento humano”, aponta PNUD [nota à imprensa]. Disponível em: https://www.undp.org/pt/brazil/press-releases/brasil-alcanca-pela-primeira-vez-patamar-de-muito-alto-desenvolvimento-humano-aponta-pnud\nPNUD; FJP; IBGE (2026). Radar IDHM 2024 — evolução do IDHM e de seus componentes, 2012–2024. Brasília.\nRubin, D. B. (1976). Inference and missing data. Biometrika, 63(3), 581–592. Disponível em: https://doi.org/10.1093/biomet/63.3.581\nSen, A. (2000). Desenvolvimento como liberdade. São Paulo: Companhia das Letras."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Produção de indicadores sintéticos",
-    "section": "",
-    "text": "Material do workshop Produção de indicadores sintéticos (DEMOPOP 2026), por Caio César Soares Gonçalves — Departamento de Demografia / CEDEPLAR-UFMG.\nO workshop reconstrói o Índice de Desenvolvimento Humano Municipal (IDHM) — aqui para as 27 Unidades da Federação, com a base pública do Radar IDHM (2012–2024) — passo a passo, seguindo as 10 etapas do Handbook on Constructing Composite Indicators (OCDE, 2008). Em cada etapa, o IDHM é o caso âncora e catalogam-se as técnicas existentes, de modo que o método possa ser aplicado a qualquer conceito multidimensional."
-  },
-  {
-    "objectID": "index.html#comece-aqui",
-    "href": "index.html#comece-aqui",
-    "title": "Produção de indicadores sintéticos",
-    "section": "Comece aqui",
-    "text": "Comece aqui\n→ Abrir o Tutorial"
-  },
-  {
-    "objectID": "index.html#arquivos-para-download",
-    "href": "index.html#arquivos-para-download",
-    "title": "Produção de indicadores sintéticos",
-    "section": "Arquivos para download",
-    "text": "Arquivos para download\n\nScript R completo (.R) — versão executável do tutorial, para rodar linha a linha no RStudio\nBase do Atlas — Radar IDHM 2012–2024 (.xlsx)\nMalha das Unidades da Federação (.geojson)\n\nPara reproduzir, baixe o script R e a base, mantendo o arquivo .xlsx (e o .geojson) numa pasta data/ no diretório de trabalho. O primeiro bloco do script instala automaticamente os pacotes necessários (readxl, dplyr, tidyr, ggplot2, sf, ggspatial); depois é só rodar de cima para baixo."
-  },
-  {
-    "objectID": "index.html#autor",
-    "href": "index.html#autor",
-    "title": "Produção de indicadores sintéticos",
-    "section": "Autor",
-    "text": "Autor\nCaio César Soares Gonçalves é professor do Departamento de Demografia do Cedeplar/UFMG, atuando em métodos estatísticos e computacionais e em ciência de dados. Doutor em População, Território e Estatísticas Públicas (ENCE/IBGE), mestre em Economia (UFRGS), especialista em Ciência de Dados e Big Data e economista (PUC Minas). Pesquisa métodos de produção de estatísticas demográficas, sociais e ambientais — combinando censos, pesquisas amostrais, registros administrativos e big data, com ênfase na estimação em pequenos domínios e na desagregação espaço-temporal de indicadores. Coordenou a área de indicadores sociais da Fundação João Pinheiro (IDHM e IMRS) e colaborou com IBGE, Ipea, IPEDF, UNFPA, BID e o Office for National Statistics (Reino Unido). Recebeu o Young Statistician Prize da IAOS (2021) e foi premiado no concurso de melhor tese de doutorado da ABE (2024).\nORCID · Google Scholar · Lattes · ResearchGate · LinkedIn"
-  },
-  {
-    "objectID": "index.html#como-citar",
-    "href": "index.html#como-citar",
-    "title": "Produção de indicadores sintéticos",
-    "section": "Como citar",
-    "text": "Como citar\n\nGonçalves, C. C. S. (2026). Produção de indicadores sintéticos [material de workshop]. Workshop de Métodos Demográficos — DEMOPOP, Departamento de Demografia / CEDEPLAR-UFMG. https://demopop.github.io/indicadores-sinteticos/"
-  },
-  {
-    "objectID": "index.html#licença",
-    "href": "index.html#licença",
-    "title": "Produção de indicadores sintéticos",
-    "section": "Licença",
-    "text": "Licença\nMaterial distribuído sob a licença Creative Commons Atribuição 4.0 Internacional (CC BY 4.0) — livre para compartilhar e adaptar, inclusive para fins comerciais, desde que citada a autoria."
   }
 ]

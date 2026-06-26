@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://demopop.github.io/indicadores-sinteticos/tutorial.html</loc>
-    <lastmod>2026-06-26T00:18:52.829Z</lastmod>
+    <loc>https://demopop.github.io/indicadores-sinteticos/slides.html</loc>
+    <lastmod>2026-06-26T01:44:05.682Z</lastmod>
   </url>
   <url>
     <loc>https://demopop.github.io/indicadores-sinteticos/index.html</loc>
-    <lastmod>2026-06-26T00:18:52.828Z</lastmod>
+    <lastmod>2026-06-26T01:44:05.682Z</lastmod>
+  </url>
+  <url>
+    <loc>https://demopop.github.io/indicadores-sinteticos/tutorial.html</loc>
+    <lastmod>2026-06-26T01:44:05.683Z</lastmod>
   </url>
 </urlset>
