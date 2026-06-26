@@ -1,0 +1,15 @@
+/* Slides — legibilidade para projeção em sala */
+.reveal pre code { font-size: 0.78em; line-height: 1.35; }
+.reveal div.sourceCode { margin: 0.4em 0; }
+
+.reveal h1, .reveal h2, .reveal h3 { color: #2c3e50; }
+
+.reveal blockquote {
+  border-left: 4px solid #d85a30;
+  background: #faece7;
+  padding: 0.5rem 0.9rem;
+}
+
+/* saídas de código um pouco maiores também */
+.reveal pre:not(.sourceCode) code,
+.reveal .cell-output pre code { font-size: 0.72em; }
