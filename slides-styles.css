@@ -4,7 +4,10 @@
 
 /* saídas de console (summary, glimpse...) um pouco menores, por serem largas */
 .reveal pre:not(.sourceCode) code,
-.reveal .cell-output pre code { font-size: 0.74em; }
+.reveal .cell-output pre code { font-size: 0.86em; }
+
+/* tabelas de saída (df-print: kable) também maiores */
+.reveal .cell-output-display table { font-size: 0.9em; }
 
 .reveal h1, .reveal h2, .reveal h3 { color: #2c3e50; }
 
