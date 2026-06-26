@@ -17,7 +17,6 @@ O workshop reconstrói o **Índice de Desenvolvimento Humano Municipal (IDHM)** 
 
 ## Arquivos para download
 
-- [**Slides da aula**](slides.html) — a apresentação usada no workshop, no navegador (para PDF, acrescente `?print-pdf` ao fim da URL e use *Imprimir → Salvar como PDF*).
 - [**Script R completo** (`.R`)](tutorial.R) — versão executável do tutorial, para rodar linha a linha no RStudio
 - [Base do Atlas — Radar IDHM 2012–2024 (`.xlsx`)](data/adh_radar_base_2012_2024.xlsx)
 - [Malha das Unidades da Federação (`.geojson`)](data/uf_brasil.geojson)
@@ -32,7 +31,7 @@ Para reproduzir, baixe o **script R** e a **base**, mantendo o arquivo `.xlsx` (
 
 ## Como citar
 
-> Gonçalves, C. C. S. (2026). *Produção de indicadores sintéticos* [material de workshop]. Workshop de Métodos Demográficos — DEMOPOP, Departamento de Demografia / CEDEPLAR-UFMG. <https://demopop.github.io/indicadores-sinteticos/>
+> Gonçalves, C. C. S. (2026). *Produção de indicadores sintéticos* [material de workshop]. Workshop de Métodos Demográficos — DEMOPOP, Departamento de Demografia / CEDEPLAR-UFMG. <https://doi.org/10.5281/zenodo.20905250>
 
 ## Licença
 
